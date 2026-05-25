@@ -25,7 +25,7 @@ st.set_page_config(
 st.markdown("""
     <style>
     /* 1. Pengaturan Font Global */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
         font-family: 'Inter', sans-serif;
@@ -57,7 +57,7 @@ st.markdown("""
         margin-top: 15px !important;
     }
 
-    /* 3. FIX MUTLAK: Menyembunyikan Teks Bertumpuk di File Uploader */
+    /* 3. FIX MUTLAK: Menghilangkan Teks Duplikat pada Tombol Uploader */
     [data-testid="stFileUploader"] {
         background-color: #F8FAFC !important;
         border: 2px dashed #CBD5E1 !important;
@@ -65,33 +65,40 @@ st.markdown("""
         padding: 15px !important;
     }
 
-    /* Menormalkan container tombol unggah bawaan Streamlit */
+    /* Mengatur ulang container tombol utama di dalam uploader */
     [data-testid="stFileUploader"] button {
-        width: auto !important;
         background-color: #475569 !important;
-        color: #FFFFFF !important;
-        border-radius: 6px !important;
-        padding: 6px 16px !important;
         border: none !important;
+        border-radius: 6px !important;
+        padding: 8px 18px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     
-    /* Menyembunyikan elemen teks duplikat di dalam tombol uploader */
-    [data-testid="stFileUploader"] button data {
+    /* Menyembunyikan semua teks bawaan (termasuk ikon) di dalam tombol agar tidak merempet/double */
+    [data-testid="stFileUploader"] button * {
+        font-size: 0px !important;
+        color: transparent !important;
         display: none !important;
     }
     
-    /* Memastikan hanya satu teks utama yang muncul dengan posisi rapi */
-    [data-testid="stFileUploader"] button span {
+    /* Membuat 1 teks "Upload" baru yang bersih, presisi, dan tidak akan duplikat */
+    [data-testid="stFileUploader"] button::after {
+        content: "Upload" !important;
         color: #FFFFFF !important;
-        position: relative !important;
-        display: inline-block !important;
-        width: auto !important;
-        font-weight: 500 !important;
-        letter-spacing: normal !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        font-family: 'Inter', sans-serif !important;
+        display: block !important;
     }
 
+    /* Memperbaiki teks keterangan ukuran file di bawah tombol */
     [data-testid="stFileUploader"] text {
         fill: #475569 !important;
+    }
+    [data-testid="stFileUploader"] div {
+        color: #475569 !important;
     }
 
     /* 4. Area Konten Utama */
@@ -119,7 +126,7 @@ st.markdown("""
         margin-left: 10px !important;
     }
 
-    /* 6. Tombol Utama "Proses Peramalan" (Modern Gradient) */
+    /* 6. Tombol Utama "Proses Peramalan" */
     .stButton>button {
         width: 100%;
         border-radius: 10px;
