@@ -75,7 +75,7 @@ st.markdown("""
         border: none !important;
         border-radius: 4px !important;
         padding: 6px 14px !important;
-        display: inline-flex !important;
+        display: inline-flex !items;
         align-items: center !important;
         justify-content: center !important;
         box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
@@ -291,12 +291,10 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
     
     # Hitung interval jika standard deviasi tersedia
     if residual_std > 0:
-        # Pendekatan batas formal statistik (Z = 1.96 untuk tingkat keyakinan 95%)
         upper_bound = future_forecast + (1.96 * residual_std)
         lower_bound = future_forecast - (1.96 * residual_std)
-        lower_bound = np.clip(lower_bound, 0, None) # Nilai tidak boleh minus untuk konteks bisnis umum
+        lower_bound = np.clip(lower_bound, 0, None)
         
-        # Tambah batas atas
         fig.add_trace(go.Scatter(
             x=future_periods + future_periods[::-1],
             y=list(upper_bound) + list(lower_bound[::-1]),
@@ -509,48 +507,80 @@ def evaluate_all_methods(train, test, test_periods, params):
     return comparison_df, details
 
 
-# FITUR 2: Implementasi Multi-Sheet Excel untuk Hasil Perbandingan Semua Metode
+# FITUR 2 (DIPERBAIKI): Konversi Excel Multi-Sheet Berfitur Lebar Kolom Otomatis & Desimal Rapi
 def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_forecast):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        # Sheet 1: Perbandingan Semua Metode
         comparison_df.to_excel(writer, index=False, sheet_name='Perbandingan_Metode')
         
-        # Sheet 2: Hasil Proyeksi Terpilih
         best_df = pd.DataFrame({"Periode": future_labels, "Forecast Utama": future_forecast})
         best_df.to_excel(writer, index=False, sheet_name='Proyeksi_Metode_Terbaik')
         
         workbook  = writer.book
-        header_format = workbook.add_format({'bold': True, 'bg_color': '#1E3A8A', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center'})
+        
+        header_format = workbook.add_format({
+            'bold': True, 'bg_color': '#1E3A8A', 'font_color': '#FFFFFF', 
+            'border': 1, 'align': 'center', 'valign': 'vcenter'
+        })
+        num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
+        text_format = workbook.add_format({'border': 1, 'align': 'left'})
         
         # Format Sheet 1
         ws1 = writer.sheets['Perbandingan_Metode']
+        ws1.set_row(0, 24)
         for col_num, value in enumerate(comparison_df.columns.values):
             ws1.write(0, col_num, value, header_format)
             
+        for i, col in enumerate(comparison_df.columns):
+            max_len = max(comparison_df[col].astype(str).map(len).max(), len(col)) + 4
+            if col == "Metode":
+                ws1.set_column(i, i, max_len, text_format)
+            else:
+                ws1.set_column(i, i, max_len, num_format)
+                
         # Format Sheet 2
         ws2 = writer.sheets['Proyeksi_Metode_Terbaik']
-        ws2.write_string(0, 0, f"Hasil Proyeksi Menggunakan: {best_method_name}", header_format)
+        ws2.set_row(0, 24)
         for col_num, value in enumerate(best_df.columns.values):
-            ws2.write(1, col_num, value, header_format)
+            ws2.write(0, col_num, value, header_format)
+            
+        for i, col in enumerate(best_df.columns):
+            max_len = max(best_df[col].astype(str).map(len).max(), len(col)) + 5
+            if col == "Periode":
+                ws2.set_column(i, i, max_len, text_format)
+            else:
+                ws2.set_column(i, i, max_len, num_format)
             
     return output.getvalue()
 
 
+# DIPERBAIKI: Konversi Single Sheet dengan Format yang Rapi dan Tidak Terpotong
 def convert_df_to_excel(df):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Hasil_Proyeksi')
+        
         workbook  = writer.book
         worksheet = writer.sheets['Hasil_Proyeksi']
-        header_format = workbook.add_format({'bold': True, 'bg_color': '#1E3A8A', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center'})
-        num_format = workbook.add_format({'num_format': '#,##0.0000', 'border': 1})
-        text_format = workbook.add_format({'border': 1})
+        worksheet.set_row(0, 24)
+        
+        header_format = workbook.add_format({
+            'bold': True, 'bg_color': '#1E3A8A', 'font_color': '#FFFFFF', 
+            'border': 1, 'align': 'center', 'valign': 'vcenter'
+        })
+        num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
+        text_format = workbook.add_format({'border': 1, 'align': 'left'})
+        
         for col_num, value in enumerate(df.columns.values):
             worksheet.write(0, col_num, value, header_format)
-        worksheet.set_column('A:A', 10, text_format)
-        worksheet.set_column('B:B', 20, text_format)
-        worksheet.set_column('C:C', 25, num_format)
+            
+        for i, col in enumerate(df.columns):
+            max_len = max(df[col].astype(str).map(len).max(), len(col)) + 4
+            if col in ["No", "Periode"]:
+                worksheet.set_column(i, i, max_len, text_format)
+            else:
+                worksheet.set_column(i, i, max_len, num_format)
+                
     return output.getvalue()
 
 
@@ -673,7 +703,6 @@ metric_col3.metric("Data Uji", len(test))
 
 # --- AREA IMPLEMENTASI GRID TAB & PROSES UTAMA ---
 
-# FITUR 4: Modifikasi Struktur Tab untuk Menyediakan Ruang Analisis Karakteristik Data
 tab_data, tab_grafik = st.tabs(["🔍 Analisis Karakteristik Data", "📊 Hasil & Grafik Utama"])
 
 with tab_data:
@@ -709,7 +738,6 @@ with tab_grafik:
             future_forecast = run_forecast(selected_method, values, int(future_horizon), params)
             future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
 
-            # Hitung Standard Deviasi dari Error Historis untuk Fitur 3 (Confidence Interval)
             residuals = test - forecast_test
             std_error = np.std(residuals)
 
@@ -742,7 +770,6 @@ with tab_grafik:
 
             with tab2:
                 st.write("### 🔮 Proyeksi Tren Masa Depan")
-                # Menggunakan Fitur 3: Grafik Proyeksi dengan Confidence Interval
                 st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error), use_container_width=True)
                 st.divider()
 
@@ -760,7 +787,8 @@ with tab_grafik:
                     st.download_button(
                         label="📥 Download Excel (.xlsx)", data=excel_data,
                         file_name=f"Proyeksi_{selected_method.replace(' ', '_')}.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+                        use_container_width=True
                     )
         else:
             # --- MODE PERBANDINGAN SEMUA METODE ---
@@ -770,7 +798,6 @@ with tab_grafik:
             best_method = comparison_df.iloc[0]["Metode"]
             best_mape = comparison_df.iloc[0]["MAPE"]
 
-            # FITUR 1: Implementasi Best-Model Selector (Rekomendasi Otomatis)
             st.success(
                 f"🏛️ **Rekomendasi Keputusan Korporat:** Berdasarkan hasil uji coba akurasi data latih, "
                 f"metode **{best_method}** dipilih sebagai model terbaik dengan tingkat "
@@ -779,11 +806,9 @@ with tab_grafik:
 
             st.dataframe(comparison_df, use_container_width=True, hide_index=True)
             
-            # Hitung proyeksi masa depan dari model terbaik untuk diekspor
             best_future_forecast = run_forecast(best_method, values, int(future_horizon), params)
             best_future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
 
-            # FITUR 2: Peletakan Tombol Ekspor Multi-Sheet Laporan di Mode Perbandingan
             st.write("### 📊 Ekspor Laporan Komprehensif")
             all_excel_data = convert_all_to_excel(comparison_df, best_method, best_future_labels, best_future_forecast)
             st.download_button(
