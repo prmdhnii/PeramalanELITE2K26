@@ -24,7 +24,7 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Fondasi Font & Background Utama colorful green*/
+    /* 1. Fondasi Font & Background Utama Cerah */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
@@ -136,7 +136,7 @@ st.markdown("""
         margin-left: 5px !important;
     }
 
-    /* 6. Tombol Utama Pro (Neon/Bright green Style) */
+    /* 6. Tombol Utama Pro (Neon/Bright Coral Style) */
     .stButton>button {
         width: 100%;
         border-radius: 8px;
@@ -181,7 +181,6 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
-
 # --- FUNGSI PROSES DAN PERHITUNGAN DASAR ---
 
 def clean_numeric_series(series: pd.Series) -> pd.Series:
