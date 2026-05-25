@@ -75,7 +75,7 @@ st.markdown("""
         border: none !important;
         border-radius: 4px !important;
         padding: 6px 14px !important;
-        display: inline-flex !items;
+        display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
@@ -136,13 +136,13 @@ st.markdown("""
         margin-left: 5px !important;
     }
 
-    /* 6. Tombol Utama (Solid Corporate Blue) */
+    /* 6. Tombol Utama (Solid Corporate Blue) - DIPERBAIKI AGAR TEKS TERLIHAT JELAS */
     .stButton>button {
         width: 100%;
         border-radius: 6px;
         background-color: #1E3A8A !important;
-        color: white !important;
-        font-weight: 600;
+        color: #FFFFFF !important;            /* Memaksa teks berwarna putih bersih */
+        font-weight: 700 !important;          /* Membuat teks lebih tebal dan tegas */
         font-size: 0.95rem;
         padding: 0.55rem 1rem;
         border: 1px solid #172554 !important;
@@ -152,6 +152,7 @@ st.markdown("""
     
     .stButton>button:hover {
         background-color: #1D4ED8 !important;
+        color: #FFFFFF !important;            /* Memastikan teks tetap putih saat hover */
         border: 1px solid #1E3A8A !important;
     }
 
@@ -282,7 +283,6 @@ def plot_actual_forecast(periods, actual, forecast, title):
     return fig
 
 
-# FITUR 3: Implementasi Batas Atas & Batas Bawah (Confidence Interval) pada Grafik
 def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, future_forecast, residual_std=0):
     fig = go.Figure()
     
@@ -507,7 +507,6 @@ def evaluate_all_methods(train, test, test_periods, params):
     return comparison_df, details
 
 
-# FITUR 2 (DIPERBAIKI): Konversi Excel Multi-Sheet Berfitur Lebar Kolom Otomatis & Desimal Rapi
 def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_forecast):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
@@ -554,7 +553,6 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
     return output.getvalue()
 
 
-# DIPERBAIKI: Konversi Single Sheet dengan Format yang Rapi dan Tidak Terpotong
 def convert_df_to_excel(df):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
@@ -777,43 +775,55 @@ with tab_grafik:
                 with col_tabel:
                     st.write("**Tabel Angka Proyeksi**")
                     f_df = pd.DataFrame({"Periode": future_labels, "Forecast": future_forecast})
+                    
+                    # Tampilan Grid Proyeksi Tunggal yang Rapi
                     f_df_view = f_df.copy()
                     f_df_view.insert(0, "No", range(1, len(f_df_view) + 1))
                     st.dataframe(f_df_view, use_container_width=True, hide_index=True)
-                
+
                 with col_download:
-                    st.write("**Opsi Ekspor**")
-                    excel_data = convert_df_to_excel(f_df_view)
+                    st.write("**Aksi Data**")
+                    excel_data = convert_df_to_excel(f_df)
                     st.download_button(
-                        label="📥 Download Excel (.xlsx)", data=excel_data,
-                        file_name=f"Proyeksi_{selected_method.replace(' ', '_')}.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", 
+                        label="📥 Download Hasil Proyeksi (Excel)",
+                        data=excel_data,
+                        file_name=f"proyeksi_{selected_method.lower().replace(' ', '_')}.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         use_container_width=True
                     )
-        else:
-            # --- MODE PERBANDINGAN SEMUA METODE ---
-            st.subheader("🏁 Perbandingan Performa Semua Metode")
+
+        elif mode == "Bandingkan semua metode":
             comparison_df, details = evaluate_all_methods(train, test, test_periods, params)
             
-            best_method = comparison_df.iloc[0]["Metode"]
-            best_mape = comparison_df.iloc[0]["MAPE"]
-
-            st.success(
-                f"🏛️ **Rekomendasi Keputusan Korporat:** Berdasarkan hasil uji coba akurasi data latih, "
-                f"metode **{best_method}** dipilih sebagai model terbaik dengan tingkat "
-                f"kesalahan terendah (MAPE: {best_mape:.2f}%)."
-            )
-
+            st.subheader("📊 Hasil Perbandingan Akurasi Semua Metode")
+            st.write("Tabel diurutkan otomatis dari metode dengan tingkat akurasi tertinggi (MAPE terkecil).")
+            
+            # Tampilan Grid Perbandingan Tabel Akurasi
             st.dataframe(comparison_df, use_container_width=True, hide_index=True)
             
-            best_future_forecast = run_forecast(best_method, values, int(future_horizon), params)
+            # FITUR 1: DETEKSI OTOMATIS MODEL TERBAIK (Sistem cerdas mencari MAPE terkecil)
+            best_method_name = comparison_df.iloc[0]["Metode"]
+            best_mape = comparison_df.iloc[0]["MAPE"]
+            
+            st.success(f"💡 **Rekomendasi Sistem:** Metode **{best_method_name}** dipilih secara otomatis sebagai model terbaik karena memiliki tingkat error MAPE paling rendah ({best_mape:.2f}%).")
+            
+            # Jalankan peramalan masa depan langsung menggunakan model terbaik
+            best_future_forecast = run_forecast(best_method_name, values, int(future_horizon), params)
             best_future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
-
-            st.write("### 📊 Ekspor Laporan Komprehensif")
-            all_excel_data = convert_all_to_excel(comparison_df, best_method, best_future_labels, best_future_forecast)
+            
+            # Hitung deviasi standar dari residual model terbaik untuk interval keyakinan grafik
+            best_forecast_test = details[best_method_name]["forecast"]
+            best_residuals = test - best_forecast_test
+            best_std_error = np.std(best_residuals)
+            
+            # Tampilkan grafik masa depan dari model terbaik terpilih
+            st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, best_future_labels, best_future_forecast, best_std_error), use_container_width=True)
+            
+            # Tombol unduh laporan multi-sheet komparasi
+            excel_all_data = convert_all_to_excel(comparison_df, best_method_name, best_future_labels, best_future_forecast)
             st.download_button(
-                label="📥 Download Laporan Perbandingan Lengkap (.xlsx)",
-                data=all_excel_data,
-                file_name="Laporan_Evaluasi_Peramalan_Komprehensif.xlsx",
+                label="📥 Download Laporan Komparasi Lengkap (Excel)",
+                data=excel_all_data,
+                file_name="laporan_komparasi_peramalan.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
