@@ -24,40 +24,46 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Paksa Teks menjadi Bold dan Warna Gelap agar Jelas */
+    /* 1. Paksa Background Utama & Teks agar Jelas */
+    .stApp {
+        background-color: #FDFDFD !important;
+    }
+    
+    /* Paksa semua teks berwarna gelap agar tidak samar */
     h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton, .stRadio, .stSelectbox {
+        color: #2D3142 !important;
         font-weight: 700 !important;
-        color: #2D3142 !important; /* Warna abu-abu sangat gelap agar kontras */
     }
 
-    /* 2. Warna Tabel menjadi #C8CEEE */
+    /* 2. Sidebar Tetap di Warna C8CEEE */
+    [data-testid="stSidebar"] {
+        background-color: #C8CEEE !important;
+    }
+
+    /* 3. Perbaikan Tabel: Warna latar belakang C8CEEE & Teks hitam */
     [data-testid="stDataFrame"] {
         background-color: #C8CEEE !important;
         border: 2px solid #B0B9D6 !important;
     }
-    /* Warna header dan sel tabel */
-    [data-testid="stDataFrame"] div {
+    /* Memastikan isi sel tabel terlihat */
+    [data-testid="stDataFrame"] div[data-testid="stElementContainer"] {
         background-color: #C8CEEE !important;
         color: #000000 !important;
     }
-
-    /* 3. Tombol (Upload, Proses, dll) menjadi #D8BEE5 */
+    
+    /* 4. Tombol: D8BEE5 dengan Teks Gelap */
     button {
         background-color: #D8BEE5 !important;
         color: #2D3142 !important;
-        font-weight: 800 !important;
         border: 1px solid #C5A5D5 !important;
+        font-weight: 800 !important;
     }
     
-    /* Hover effect untuk tombol agar tetap terlihat jelas */
-    button:hover {
-        background-color: #C8A3D5 !important;
-        border: 1px solid #A886B5 !important;
-    }
-
-    /* 4. Memperjelas container agar tidak transparan */
-    .stApp {
-        background-color: #FDFDFD !important; /* Latar belakang bersih */
+    /* Pastikan warna teks dalam input box terlihat */
+    input, select {
+        background-color: #FFFFFF !important;
+        color: #2D3142 !important;
+        border: 1px solid #C8CEEE !important;
     }
     </style>
 """, unsafe_allow_html=True)
