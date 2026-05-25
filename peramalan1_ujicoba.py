@@ -24,34 +24,31 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Mengubah background utama yang gelap menjadi #F3E4F5 */
+    /* 1. Memaksa latar belakang utama menjadi #F3E4F5 */
     .stApp {
         background-color: #F3E4F5 !important;
     }
-    
-    /* 2. Mengubah background elemen container/tabel menjadi #F3E4F5 dan teks menjadi kontras */
-    [data-testid="stAppViewContainer"], 
-    [data-testid="stMainBlockContainer"],
-    [data-testid="stDataFrame"],
-    .stDataFrame {
+
+    /* 2. Target spesifik untuk tabel yang masih hitam/gelap */
+    [data-testid="stDataFrame"], 
+    .stDataFrame, 
+    div[data-testid="stElementContainer"] > div > div > div > div {
+        background-color: #F3E4F5 !important;
+    }
+
+    /* 3. Paksa warna sel tabel menjadi terang dan teks menjadi gelap */
+    table, th, td {
         background-color: #F3E4F5 !important;
         color: #2D3142 !important;
     }
 
-    /* 3. Memastikan isi sel tabel terlihat jelas dan tidak transparan */
-    [data-testid="stDataFrame"] div[data-testid="stElementContainer"],
-    [data-testid="stDataFrame"] table {
-        background-color: #F3E4F5 !important;
-        color: #000000 !important;
-    }
-
-    /* 4. Memastikan semua teks di area kanan (Dashboard) terlihat jelas */
+    /* 4. Memperjelas teks di dashboard agar terlihat di atas background #F3E4F5 */
     h1, h2, h3, h4, p, label, .stMarkdown, .stText {
         color: #2D3142 !important;
         font-weight: 700 !important;
     }
 
-    /* 5. Memastikan Sidebar tetap konsisten */
+    /* 5. Sidebar agar tetap konsisten dengan warna yang Anda inginkan */
     [data-testid="stSidebar"] {
         background-color: #C8CEEE !important;
     }
