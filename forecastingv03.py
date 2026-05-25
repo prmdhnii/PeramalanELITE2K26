@@ -24,7 +24,7 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Fondasi Font & Background Utama Cerah */
+    /* 1. Fondasi Font & Background Utama warna hijau*/
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
