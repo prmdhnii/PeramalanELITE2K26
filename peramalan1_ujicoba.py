@@ -24,47 +24,40 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* Mengatur warna background utama aplikasi */
-    .stApp {
-        background-color: #F8F5FB !important;
+    /* 1. Paksa Teks menjadi Bold dan Warna Gelap agar Jelas */
+    h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton, .stRadio, .stSelectbox {
+        font-weight: 700 !important;
+        color: #2D3142 !important; /* Warna abu-abu sangat gelap agar kontras */
     }
 
-    /* Mengatur warna sidebar */
-    [data-testid="stSidebar"] {
+    /* 2. Warna Tabel menjadi #C8CEEE */
+    [data-testid="stDataFrame"] {
         background-color: #C8CEEE !important;
+        border: 2px solid #B0B9D6 !important;
+    }
+    /* Warna header dan sel tabel */
+    [data-testid="stDataFrame"] div {
+        background-color: #C8CEEE !important;
+        color: #000000 !important;
     }
 
-    /* Mengatur latar belakang container agar senada dengan warna E8DAF0 */
-    [data-testid="stVerticalBlock"] > div > div > div > div {
-        background-color: #FFFFFF !important;
-        border-radius: 10px;
-        padding: 10px;
-    }
-
-    /* Memperbaiki tampilan tabel agar rapi */
-    .stDataFrame {
-        background-color: #E8DAF0 !important;
-        border-radius: 8px;
-        padding: 5px;
-    }
-
-    /* Mengatur warna input agar konsisten */
-    input, select, textarea {
-        background-color: #FFFFFF !important;
-        border: 1px solid #C8CEEE !important;
-    }
-
-    /* Memperbaiki tampilan tombol proses */
-    div.stButton > button {
-        background-color: #E8DAF0 !important;
-        color: #4A4A4A !important;
-        border: 1px solid #C8CEEE !important;
-        font-weight: bold;
+    /* 3. Tombol (Upload, Proses, dll) menjadi #D8BEE5 */
+    button {
+        background-color: #D8BEE5 !important;
+        color: #2D3142 !important;
+        font-weight: 800 !important;
+        border: 1px solid #C5A5D5 !important;
     }
     
-    /* Menghilangkan border default yang berantakan */
-    [data-testid="stMetricValue"] {
-        background-color: transparent !important;
+    /* Hover effect untuk tombol agar tetap terlihat jelas */
+    button:hover {
+        background-color: #C8A3D5 !important;
+        border: 1px solid #A886B5 !important;
+    }
+
+    /* 4. Memperjelas container agar tidak transparan */
+    .stApp {
+        background-color: #FDFDFD !important; /* Latar belakang bersih */
     }
     </style>
 """, unsafe_allow_html=True)
