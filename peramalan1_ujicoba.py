@@ -24,139 +24,50 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-    
-    /* 1. Reset Global Font & Background Utama (Clean Soft Light Background) */
-    html, body, [class*="st-"], .main, .stApp {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-        background-color: #F6F7FB !important; /* Latar belakang aplikasi yang bersih */
-        color: #2D3142 !important;
-    }
-    
-    h1, h2, h3, h4, h5, h6, p, span, label {
-        color: #2D3142 !important;
+    /* Mengatur warna background utama aplikasi */
+    .stApp {
+        background-color: #F8F5FB !important;
     }
 
-    /* 2. Sidebar Perombakan Total dengan Warna Utama (#C4CEEE) */
-    [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
-        background-color: #C4CEEE !important; /* Warna Utama Pilihan Anda */
-        border-right: 1px solid #B0BCDE !important;
-    }
-    
-    /* Komponen Teks di Dalam Sidebar */
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] .stWidgetLabel p {
-        color: #2D3142 !important;
-        font-weight: 600 !important;
-    }
-    
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] h4 {
-        color: #4A5580 !important; /* Teks Header Sidebar Kontras */
-        font-weight: 700 !important;
-        border-bottom: 2px solid #AEC0F0 !important;
-        padding-bottom: 5px;
-        margin-top: 15px !important;
+    /* Mengatur warna sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #C8CEEE !important;
     }
 
-    /* Input & Dropdown Fields di dalam Sidebar */
-    [data-testid="stSidebar"] input, 
-    [data-testid="stSidebar"] select, 
-    [data-testid="stSidebar"] div[role="button"] {
+    /* Mengatur latar belakang container agar senada dengan warna E8DAF0 */
+    [data-testid="stVerticalBlock"] > div > div > div > div {
         background-color: #FFFFFF !important;
-        color: #2D3142 !important;
-        border: 1px solid #A2B0DB !important;
+        border-radius: 10px;
+        padding: 10px;
     }
 
-    /* 3. Kotak Alert / Banner Petunjuk (Menggunakan Warna Aksen #E8DAF0) */
-    .stAlert, [data-testid="stNotification"] {
-        background-color: #E8DAF0 !important; /* Warna Aksen Pilihan Anda */
-        border: 1px solid #D5C2DE !important;
-        border-left: 5px solid #8E70A6 !important; 
-        color: #4A3559 !important;
-        border-radius: 8px !important;
-    }
-    .stAlert p, .stAlert div {
-        color: #4A3559 !important;
+    /* Memperbaiki tampilan tabel agar rapi */
+    .stDataFrame {
+        background-color: #E8DAF0 !important;
+        border-radius: 8px;
+        padding: 5px;
     }
 
-    /* 4. File Uploader Area */
-    [data-testid="stFileUploader"] {
-        background-color: #EBEFFA !important;
-        border: 2px dashed #C4CEEE !important; 
-        border-radius: 8px !important;
-    }
-    [data-testid="stFileUploader"] button {
-        background-color: #8E70A6 !important; /* Tombol Aksen Ungu Lavender */
-        color: #FFFFFF !important;
-        border: none !important;
-    }
-    [data-testid="stFileUploader"] button:hover {
-        background-color: #765A8C !important;
-    }
-
-    /* 5. Tombol Eksekusi Utama (Solid Lavender/Aksen #E8DAF0 Base) */
-    .stButton>button {
-        width: 100%;
-        border-radius: 6px !important;
-        background-color: #8E70A6 !important; /* Diambil dari gradasi aksen lavender agar kontras tinggi */
-        color: #FFFFFF !important;            
-        font-weight: 700 !important;          
-        border: 1px solid #765A8C !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-        transition: all 0.2s ease;
-    }
-    .stButton>button:hover {
-        background-color: #765A8C !important; 
-        color: #FFFFFF !important;
-    }
-
-    /* 6. Komponen Tabel Data Grid */
-    .stDataFrame, [data-testid="stTable"] {
+    /* Mengatur warna input agar konsisten */
+    input, select, textarea {
         background-color: #FFFFFF !important;
-        border: 1px solid #E2E5ED !important;
-        border-radius: 6px !important;
+        border: 1px solid #C8CEEE !important;
+    }
+
+    /* Memperbaiki tampilan tombol proses */
+    div.stButton > button {
+        background-color: #E8DAF0 !important;
+        color: #4A4A4A !important;
+        border: 1px solid #C8CEEE !important;
+        font-weight: bold;
     }
     
-    .stDataFrame div, .stDataFrame span {
-        color: #2D3142 !important;
-    }
-
-    /* 7. Card Metric */
+    /* Menghilangkan border default yang berantakan */
     [data-testid="stMetricValue"] {
-        background-color: #FFFFFF !important;
-        color: #2D3142 !important;
-        border-left: 5px solid #C4CEEE !important; /* Border Utama */
-        border-top: 1px solid #E2E5ED !important;
-        border-right: 1px solid #E2E5ED !important;
-        border-bottom: 1px solid #E2E5ED !important;
-        border-radius: 8px !important;
-        padding: 12px 18px !important;
-    }
-    [data-testid="stMetricLabel"] {
-        color: #5C647F !important;
-        font-weight: 600 !important;
-    }
-
-    /* Navigation Tabs */
-    button[data-baseweb="tab"] {
-        color: #7C829C !important;
-        font-weight: 600 !important;
-    }
-    button[data-baseweb="tab"][aria-selected="true"] {
-        color: #8E70A6 !important;
-        border-bottom-color: #8E70A6 !important;
-    }
-
-    hr {
-        border-color: #E2E5ED !important;
+        background-color: transparent !important;
     }
     </style>
-    """, unsafe_allow_html=True)
-
+""", unsafe_allow_html=True)
 # --- FUNGSI PROSES DAN PERHITUNGAN DASAR ---
 
 def clean_numeric_series(series: pd.Series) -> pd.Series:
