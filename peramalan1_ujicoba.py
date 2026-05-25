@@ -24,36 +24,37 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Memaksa latar belakang utama menjadi #F3E4F5 */
+    /* 1. Paksa Background Utama menjadi #F3E4F5 */
     .stApp {
         background-color: #F3E4F5 !important;
     }
 
-    /* 2. Target spesifik untuk tabel yang masih hitam/gelap */
+    /* 2. Target Tabel dan Container yang Masih Gelap */
+    /* Mengubah latar belakang tabel dan elemen di dalamnya menjadi #F3E4F5 */
     [data-testid="stDataFrame"], 
-    .stDataFrame, 
-    div[data-testid="stElementContainer"] > div > div > div > div {
+    div[data-testid="stElementContainer"],
+    div[data-testid="stDataEditor"] {
         background-color: #F3E4F5 !important;
     }
-
-    /* 3. Paksa warna sel tabel menjadi terang dan teks menjadi gelap */
-    table, th, td {
+    
+    /* Memaksa elemen tabel internal (th, td) menjadi cerah */
+    table, th, td, tr {
         background-color: #F3E4F5 !important;
         color: #2D3142 !important;
     }
 
-    /* 4. Memperjelas teks di dashboard agar terlihat di atas background #F3E4F5 */
-    h1, h2, h3, h4, p, label, .stMarkdown, .stText {
+    /* 3. Membuat Teks Menjadi BOLD dan Jelas Terbaca */
+    h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton {
         color: #2D3142 !important;
         font-weight: 700 !important;
     }
 
-    /* 5. Sidebar agar tetap konsisten dengan warna yang Anda inginkan */
+    /* 4. Mempertahankan Warna Sidebar (C8CEEE) */
     [data-testid="stSidebar"] {
         background-color: #C8CEEE !important;
     }
 
-    /* 6. Tombol tetap menggunakan warna aksen sebelumnya */
+    /* 5. Mengatur Tombol agar Sesuai (D8BEE5) */
     button {
         background-color: #D8BEE5 !important;
         color: #2D3142 !important;
