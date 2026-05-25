@@ -21,141 +21,157 @@ st.set_page_config(
     layout="wide"
 )
 
-# Suntikan CSS untuk mengubah tampilan dasar
+# Suntikan CSS - DIUBAH MENJADI ENTERPRISE FORMAL STYLE
 st.markdown("""
     <style>
-    /* 1. Pengaturan Font Global */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap');
+    /* 1. Fondasi Font & Background Utama */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
         font-family: 'Inter', sans-serif;
     }
+    
+    /* Area Konten Utama dibuat abu-abu formal super soft */
+    .main {
+        background-color: #F8FAFC !important;
+    }
 
-    /* 2. Sidebar Premium (Bersih, Kontras Tinggi & Rapi) */
+    /* 2. Sidebar Executive Look (Putih Bersih dengan Border Halus) */
     [data-testid="stSidebar"] {
         background-color: #FFFFFF !important;
-        border-right: 1px solid #E2E8F0;
+        border-right: 1px solid #E2E8F0 !important;
     }
     
-    /* Memaksa teks label di Sidebar agar berwarna gelap & tebal */
+    /* Teks Menu Navigasi & Label Input Sidebar */
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stWidgetLabel p,
     [data-testid="stSidebar"] p {
-        color: #0F172A !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        color: #334155 !important; /* Slate Grey formal */
+        font-weight: 500 !important;
+        font-size: 0.9rem !important;
     }
 
-    /* Mengatur Header/Judul Bagian di Sidebar */
+    /* Judul Bagian/Header di Sidebar */
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
-        color: #0F172A !important;
+        color: #0F172A !important; /* Deep Navy */
         font-weight: 700 !important;
-        border-bottom: 2px solid #F1F5F9;
-        padding-bottom: 8px;
-        margin-top: 15px !important;
+        font-size: 1.1rem !important;
+        border-bottom: 1px solid #E2E8F0;
+        padding-bottom: 6px;
+        margin-top: 20px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    /* 3. FIX MUTLAK: Menghilangkan Teks Duplikat pada Tombol Uploader */
+    /* 3. FIX LAYOUT UPLOADER: Minimalis, Rapi, & 1 Tombol Solid */
     [data-testid="stFileUploader"] {
-        background-color: #F8FAFC !important;
-        border: 2px dashed #CBD5E1 !important;
-        border-radius: 10px !important;
-        padding: 15px !important;
+        background-color: #F1F5F9 !important; /* Kontras formal dengan sidebar putih */
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 6px !important;
+        padding: 12px !important;
     }
 
-    /* Mengatur ulang container tombol utama di dalam uploader */
+    /* Memperbaiki container tombol di dalam uploader */
     [data-testid="stFileUploader"] button {
-        background-color: #475569 !important;
+        background-color: #0F172A !important; /* Tombol Hitam/Navy Pekat */
         border: none !important;
-        border-radius: 6px !important;
-        padding: 8px 18px !important;
+        border-radius: 4px !important;
+        padding: 6px 14px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
     }
     
-    /* Menyembunyikan semua teks bawaan (termasuk ikon) di dalam tombol agar tidak merempet/double */
+    /* Menyembunyikan elemen teks ganda bawaan Streamlit */
     [data-testid="stFileUploader"] button * {
         font-size: 0px !important;
         color: transparent !important;
         display: none !important;
     }
     
-    /* Membuat 1 teks "Upload" baru yang bersih, presisi, dan tidak akan duplikat */
+    /* Memaksa hanya 1 teks "Upload File" yang muncul secara formal */
     [data-testid="stFileUploader"] button::after {
-        content: "Upload" !important;
+        content: "Pilih File" !important;
         color: #FFFFFF !important;
-        font-size: 0.9rem !important;
-        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
         font-family: 'Inter', sans-serif !important;
         display: block !important;
     }
 
-    /* Memperbaiki teks keterangan ukuran file di bawah tombol */
+    /* Teks pelengkap ukuran/format file di bawah uploader */
     [data-testid="stFileUploader"] text {
-        fill: #475569 !important;
+        fill: #64748B !important;
     }
     [data-testid="stFileUploader"] div {
-        color: #475569 !important;
+        color: #64748B !important;
+        font-size: 0.8rem !important;
     }
 
-    /* 4. Area Konten Utama */
+    /* 4. Area Konten Utama (Judul & Header) */
     .main h1 {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-        letter-spacing: -1px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        color: #0F172A !important; /* Mengubah teks judul utama menjadi Deep Navy formal */
+        font-weight: 700 !important;
+        letter-spacing: -0.5px;
+        font-size: 2rem !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .main p {
+        color: #475569 !important; /* Sub-deskripsi abu-abu redup */
     }
 
-    /* 5. Card Metric (Timbul & Profesional) */
+    /* 5. Institusional Metric Cards (Gaya Perbankan/Korporat) */
     [data-testid="stMetricValue"] {
         background-color: #FFFFFF !important;
-        color: #2563EB !important;
+        color: #0F172A !important; /* Angka tidak biru lagi, tapi navy solid formal */
         font-weight: 700 !important;
-        border-radius: 12px !important;
-        padding: 20px !important;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
-        border: 1px solid #F1F5F9 !important;
+        font-size: 1.8rem !important;
+        border-radius: 6px !important;
+        padding: 15px 20px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+        border: 1px solid #E2E8F0 !important;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #64748B !important;
+        color: #475569 !important;
         font-weight: 500 !important;
-        margin-left: 10px !important;
+        font-size: 0.85rem !important;
+        margin-left: 5px !important;
     }
 
-    /* 6. Tombol Utama "Proses Peramalan" */
+    /* 6. Tombol Aksi Utama "Proses Peramalan" (Solid Corporate Blue) */
     .stButton>button {
         width: 100%;
-        border-radius: 10px;
-        background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
+        border-radius: 6px;
+        background-color: #1E3A8A !important; /* Biru formal institusi (Navy Corporate) */
         color: white !important;
-        font-weight: 700;
-        font-size: 1rem;
-        padding: 0.6rem 1rem;
-        border: none;
-        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
-        transition: all 0.2s ease;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 0.55rem 1rem;
+        border: 1px solid #172554 !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: background-color 0.2s ease;
     }
     
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-        background: linear-gradient(90deg, #1D4ED8 0%, #1E40AF 100%);
-        border: none;
+        background-color: #1D4ED8 !important; /* Transisi sedikit terang saat diarahkan kursor */
+        border: 1px solid #1E3A8A !important;
     }
 
-    /* 7. Desain Tabel & Pembatas */
+    /* 7. Desain Tabel Data Grid */
     .stDataFrame {
         background-color: #FFFFFF;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 6px;
     }
 
+    /* Modifikasi batas garis tipis formal */
     hr {
-        margin: 1.5rem 0 !important;
+        margin: 1.2rem 0 !important;
         border-color: #E2E8F0 !important;
     }
     </style>
@@ -280,6 +296,7 @@ def plot_actual_forecast(periods, actual, forecast, title):
     fig.add_trace(go.Scatter(
         x=periods,
         y=actual,
+         Club_color='#1E3A8A',
         mode="lines+markers",
         name="Aktual"
     ))
@@ -1069,11 +1086,8 @@ if process_button:
                 st.dataframe(error_table_view, use_container_width=True, hide_index=True)
 
         with tab2:
-            # Kita buat layout satu kolom saja dulu agar grafik terlihat besar dan jelas
             st.write("### 🔮 Proyeksi Tren Masa Depan")
             
-            # --- BAGIAN GRAFIK (DI ATAS) ---
-            # Kita panggil grafik agar muncul full width dulu supaya "nendang" visualnya
             st.plotly_chart(
                 plot_future_forecast(period_labels, values, future_labels, future_forecast),
                 use_container_width=True
@@ -1081,7 +1095,6 @@ if process_button:
             
             st.divider()
 
-            # --- BAGIAN DATA (DI BAWAH) ---
             col_tabel, col_download = st.columns([2, 1])
             with col_tabel:
                 st.write("**Tabel Angka Proyeksi**")
@@ -1101,39 +1114,9 @@ if process_button:
                     use_container_width=True
                 )
     else:
-        # --- MODE PERBANDINGAN (Agar tidak error lagi) ---
         st.subheader("🏁 Perbandingan Performa Semua Metode")
         
         comparison_df, details = evaluate_all_methods(train, test, test_periods, params)
         
         best_method = comparison_df.iloc[0]["Metode"]
         best_mape = comparison_df.iloc[0]["MAPE"]
-        
-        # Tampilan banner sukses untuk metode terbaik
-        st.success(f"🏆 Metode Terbaik: **{best_method}** dengan MAPE **{best_mape:.2f}%**")
-
-        tab_rank, tab_best = st.tabs(["📊 Tabel Ranking Akurasi", "🏆 Detail Metode Terbaik"])
-
-        with tab_rank:
-            st.write("Metode diurutkan dari yang paling akurat (MAPE terkecil):")
-            # Memberi warna hijau pada hasil terbaik di tabel
-            st.dataframe(comparison_df.style.highlight_min(axis=0, subset=['MAPE'], color='#D1FAE5'), use_container_width=True)
-
-        with tab_best:
-            best_detail = details[best_method]
-            st.write(f"Grafik validasi untuk metode **{best_method}**:")
-            st.plotly_chart(
-                plot_actual_forecast(test_periods, test, best_detail["forecast"], f"Performa Terbaik: {best_method}"), 
-                use_container_width=True
-            )
-            
-            # Tambahkan juga grafik masa depannya
-            f_forecast_best = run_forecast(best_method, values, int(future_horizon), params)
-            f_labels_best = make_future_labels(period_dates, period_labels, int(future_horizon))
-            st.plotly_chart(
-                plot_future_forecast(period_labels, values, f_labels_best, f_forecast_best),
-                use_container_width=True
-            )    
-
-else:
-    st.info("Klik tombol Proses Peramalan untuk menjalankan perhitungan.")
