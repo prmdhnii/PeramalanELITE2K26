@@ -21,141 +21,157 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- TOTAL OVERRIDE CSS: BEIGE PRIMARY & SAGE GREEN ACCENT ---
+# Suntikan CSS - BEIGE & SAGE GREEN AESTHETIC STYLE
 st.markdown("""
     <style>
+    /* 1. Fondasi Font & Background Utama (Soft Beige) */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
-    /* 1. Reset Global Font & Background Utama (Beige) */
-    html, body, [class*="st-"], .main, .stApp {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-        background-color: #F5F2EB !important; /* Authentic Warm Beige */
-        color: #3A3D3A !important;
+    html, body, [class*="st-"] {
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
     
-    /* Mendongkrak teks utama agar kontras di atas beige */
-    h1, h2, h3, h4, h5, h6, p, span, label {
-        color: #3A3D3A !important;
+    .main {
+        background-color: #F7F4EB !important; /* Soft Light Beige */
     }
 
-    /* 2. Sidebar Perombakan Total (Cream White / Light Beige) */
-    [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
-        background-color: #EFECE3 !important; /* Slightly darker beige/cream untuk kedalaman */
-        border-right: 1px solid #DCD7CA !important;
+    /* 2. Sidebar Warna Warm Cream / Off-White */
+    [data-testid="stSidebar"] {
+        background-color: #FFFDF9 !important;
+        border-right: 1px solid #E6E1D3 !important;
     }
     
-    /* Teks & Header di dalam Sidebar */
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] .stWidgetLabel p {
-        color: #4A4E4A !important;
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stWidgetLabel p,
+    [data-testid="stSidebar"] p {
+        color: #4A473E !important;
         font-weight: 600 !important;
+        font-size: 0.9rem !important;
     }
-    
+
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] h4 {
-        color: #4E5E52 !important; /* Sage Green Tua */
+    [data-testid="stSidebar"] h3 {
+        color: #607264 !important; /* Sage Green Tua */
         font-weight: 700 !important;
-        border-bottom: 2px solid #DCD7CA !important;
-        padding-bottom: 5px;
-        margin-top: 15px !important;
+        font-size: 1.1rem !important;
+        border-bottom: 2px solid #E6E1D3;
+        padding-bottom: 8px;
+        margin-top: 20px !important;
+        letter-spacing: 0.5px;
     }
 
-    /* Input Fields & Sliders di Sidebar */
-    [data-testid="stSidebar"] input, 
-    [data-testid="stSidebar"] select, 
-    [data-testid="stSidebar"] div[role="button"] {
-        background-color: #FFFFFF !important;
-        color: #3A3D3A !important;
-        border: 1px solid #C4BEB1 !important;
-    }
-
-    /* 3. Kotak Alert / Banner Petunjuk (Soft Sage Background) */
-    .stAlert, [data-testid="stNotification"] {
-        background-color: #E2EAE4 !important; /* Soft Sage Tint */
-        border: 1px solid #BAC9BE !important;
-        border-left: 5px solid #6E8474 !important; /* Darker Sage Accent */
-        color: #3D4A40 !important;
-        border-radius: 8px !important;
-    }
-    .stAlert p, .stAlert div {
-        color: #3D4A40 !important;
-    }
-
-    /* 4. File Uploader Area */
+    /* 3. Layout Uploader Kontras Estetik */
     [data-testid="stFileUploader"] {
-        background-color: #EAE5D9 !important;
-        border: 2px dashed #8BA090 !important; /* Sage border line */
-        border-radius: 8px !important;
+        background-color: #F1ECE1 !important;
+        border: 2px dashed #87988A !important; /* Sage Border */
+        border-radius: 10px !important;
+        padding: 15px !important;
     }
+
     [data-testid="stFileUploader"] button {
-        background-color: #6E8474 !important; /* Sage Button */
-        color: #FFFFFF !important;
+        background-color: #607264 !important; /* Sage Green Button */
         border: none !important;
-    }
-    [data-testid="stFileUploader"] button:hover {
-        background-color: #586B5D !important;
-    }
-
-    /* 5. Tombol Utama Kontras (Solid Sage Green) */
-    .stButton>button {
-        width: 100%;
         border-radius: 6px !important;
-        background-color: #6E8474 !important; /* Sage Green */
-        color: #FFFFFF !important;            
-        font-weight: 700 !important;          
-        border: 1px solid #586B5D !important;
+        padding: 8px 16px !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-        transition: all 0.2s ease;
-    }
-    .stButton>button:hover {
-        background-color: #586B5D !important; /* Sage Tua */
-        color: #FFFFFF !important;
-        border: 1px solid #455449 !important;
-    }
-
-    /* 6. Komponen Data Table / Dataframe Grid */
-    .stDataFrame, [data-testid="stTable"] {
-        background-color: #FFFFFF !important;
-        border: 1px solid #DCD7CA !important;
-        border-radius: 6px !important;
     }
     
-    /* Fix warna teks di dalam internal tabel agar tidak putih/hilang */
-    .stDataFrame div, .stDataFrame span {
-        color: #2B2C2B !important;
+    [data-testid="stFileUploader"] button * {
+        font-size: 0px !important;
+        color: transparent !important;
+        display: none !important;
+    }
+    
+    [data-testid="stFileUploader"] button::after {
+        content: "Pilih File" !important;
+        color: #FFFFFF !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        display: block !important;
     }
 
-    /* 7. Metric Cards Customization */
+    [data-testid="stFileUploader"] text {
+        fill: #607264 !important;
+    }
+    [data-testid="stFileUploader"] div {
+        color: #706B5E !important;
+    }
+
+    /* 4. Area Judul Konten Utama */
+    .main h1 {
+        color: #3D463E !important; /* Deep Sage Earthy */
+        font-weight: 700 !important;
+        font-size: 2.2rem !important;
+        margin-bottom: 6px !important;
+    }
+    
+    .main p {
+        color: #706B5E !important;
+    }
+
+    /* 5. Metric Cards Minimalis Elegan */
     [data-testid="stMetricValue"] {
         background-color: #FFFFFF !important;
-        color: #2E3630 !important;
-        border-left: 5px solid #8BA090 !important; /* Sage Green bar */
-        border-top: 1px solid #DCD7CA !important;
-        border-right: 1px solid #DCD7CA !important;
-        border-bottom: 1px solid #DCD7CA !important;
-        border-radius: 8px !important;
-        padding: 12px 18px !important;
+        color: #3D463E !important;
+        font-weight: 700 !important;
+        font-size: 1.8rem !important;
+        border-radius: 10px !important;
+        padding: 15px 20px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+        border-left: 5px solid #87988A !important; /* Aksen Sage Green */
+        border-top: 1px solid #E6E1D3 !important;
+        border-right: 1px solid #E6E1D3 !important;
+        border-bottom: 1px solid #E6E1D3 !important;
     }
+    
     [data-testid="stMetricLabel"] {
-        color: #586B5D !important;
+        color: #607264 !important;
         font-weight: 600 !important;
+        font-size: 0.88rem !important;
+        margin-left: 5px !important;
     }
 
-    /* Navigation Tabs */
+    /* 6. Tombol Utama (Solid Sage Green Accent) */
+    .stButton>button {
+        width: 100%;
+        border-radius: 6px;
+        background-color: #607264 !important; /* Sage Green */
+        color: #FFFFFF !important;            
+        font-weight: 700 !important;          
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+        border: 1px solid #4E5D51 !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #4E5D51 !important; /* Darker Sage */
+        color: #FFFFFF !important;            
+        border: 1px solid #3D463E !important;
+    }
+
+    /* 7. Desain Tabel Data Grid */
+    .stDataFrame {
+        background-color: #FFFFFF;
+        border: 1px solid #E6E1D3 !important;
+        border-radius: 8px;
+    }
+
+    /* Navigasi Tab Streamlit Custom */
     button[data-baseweb="tab"] {
-        color: #707571 !important;
         font-weight: 600 !important;
+        color: #706B5E !important;
     }
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #6E8474 !important;
-        border-bottom-color: #6E8474 !important;
+        color: #607264 !important;
+        border-bottom-color: #607264 !important;
     }
 
     hr {
-        border-color: #DCD7CA !important;
+        margin: 1.4rem 0 !important;
+        border-color: #E6E1D3 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -267,26 +283,21 @@ def make_future_labels(period_dates, existing_labels, horizon: int):
 
 def plot_actual_forecast(periods, actual, forecast, title):
     fig = go.Figure()
-    # Aktual: Deep Dark Gray
-    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Aktual", line=dict(color='#4A4E4A', width=2.5)))
-    # Forecast: Clear Sage Green
-    fig.add_trace(go.Scatter(x=periods, y=forecast, mode="lines+markers", name="Forecast", line=dict(color='#6E8474', width=2.5)))
-    
-    fig.update_layout(
-        title=title, xaxis_title="Periode", yaxis_title="Nilai", 
-        hovermode="x unified", template="plotly_white",
-        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)'
-    )
+    # Aktual: Deep Charcoal Gray agar kontras
+    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Aktual", line=dict(color='#4A473E', width=2.5)))
+    # Forecast: Sage Green Estetik
+    fig.add_trace(go.Scatter(x=periods, y=forecast, mode="lines+markers", name="Forecast", line=dict(color='#607264', width=2.5)))
+    fig.update_layout(title=title, xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white")
     return fig
 
 
 def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, future_forecast, residual_std=0):
     fig = go.Figure()
     
-    # Historis (Deep Dark Gray)
-    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Aktual Historis", line=dict(color='#4A4E4A', width=2.5)))
+    # Historis (Deep Gray-Brown)
+    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Aktual Historis", line=dict(color='#4A473E', width=2.5)))
     
-    # Hitung interval jika standard deviasi tersedia (Soft Sage Alpha Tint)
+    # Hitung interval jika standard deviasi tersedia (Soft Sage Tint)
     if residual_std > 0:
         upper_bound = future_forecast + (1.96 * residual_std)
         lower_bound = future_forecast - (1.96 * residual_std)
@@ -296,7 +307,7 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
             x=future_periods + future_periods[::-1],
             y=list(upper_bound) + list(lower_bound[::-1]),
             fill='toself',
-            fillcolor='rgba(110, 132, 116, 0.15)',
+            fillcolor='rgba(135, 152, 138, 0.2)', /* Transparansi Sage Green */
             line=dict(color='rgba(255,255,255,0)'),
             hoverinfo="skip",
             showlegend=True,
@@ -304,16 +315,14 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
         ))
 
     # Garis Forecast Utama (Sage Green Dash Line)
-    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi Utama", line=dict(color='#6E8474', width=2.5, dash='dash')))
+    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi Utama", line=dict(color='#607264', width=2.5, dash='dash')))
 
     fig.update_layout(
         title="Grafik Proyeksi Nilai Masa Depan",
         xaxis_title="Periode",
         yaxis_title="Nilai",
         hovermode="x unified",
-        template="plotly_white",
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)'
+        template="plotly_white"
     )
     return fig
 
@@ -520,7 +529,7 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
         workbook  = writer.book
         
         header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#6E8474', 'font_color': '#FFFFFF', 
+            'bold': True, 'bg_color': '#607264', 'font_color': '#FFFFFF', 
             'border': 1, 'align': 'center', 'valign': 'vcenter'
         })
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
@@ -565,7 +574,7 @@ def convert_df_to_excel(df):
         worksheet.set_row(0, 24)
         
         header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#6E8474', 'font_color': '#FFFFFF', 
+            'bold': True, 'bg_color': '#607264', 'font_color': '#FFFFFF', 
             'border': 1, 'align': 'center', 'valign': 'vcenter'
         })
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
@@ -586,7 +595,7 @@ def convert_df_to_excel(df):
 
 # --- INTERFACE UTAMA DASHBOARD ---
 
-st.title("📈 Dashboard Peramalan Data Historis")
+st.title("Dashboard Peramalan Data Historis")
 st.write("Aplikasi ini menghitung peramalan tingkat lanjut, melakukan validasi model, mendeteksi karakteristik data historis, serta menghitung error metrik.")
 
 if not STATSMODELS_AVAILABLE:
@@ -628,8 +637,8 @@ with st.sidebar:
 
 
 if uploaded_file is None:
-    st.info("💡 Petunjuk: Silakan unggah berkas excel atau csv kamu di panel bagian kiri untuk memulai analisis.")
-    st.subheader("📋 Contoh Struktur Tabel Excel/CSV yang Benar")
+    st.info("Silakan upload file CSV atau Excel terlebih dahulu.")
+    st.subheader("Contoh Format Data")
     sample = pd.DataFrame({
         "Tanggal": pd.date_range("2024-01-01", periods=12, freq="MS"),
         "Penjualan": [120, 135, 128, 140, 150, 160, 155, 170, 180, 175, 190, 200]
@@ -720,15 +729,15 @@ with tab_data:
         roll_df["Rolling_Mean"] = roll_df["Aktual"].rolling(window=min(3, len(values)), min_periods=1).mean()
         
         roll_fig = go.Figure()
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines", line=dict(color='#4A4E4A')))
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Tren (Rolling Average)", line=dict(dash='dot', color='#8BA090')))
-        roll_fig.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), template="plotly_white", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines", line=dict(color='#4A473E')))
+        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Tren (Rolling Average)", line=dict(dash='dot', color='#87988A')))
+        roll_fig.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), template="plotly_white")
         st.plotly_chart(roll_fig, use_container_width=True)
 
 with tab_grafik:
     history_fig = go.Figure()
-    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual", line=dict(color='#4A4E4A')))
-    history_fig.update_layout(title="Grafik Data Historis", xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white", paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual", line=dict(color='#4A473E')))
+    history_fig.update_layout(title="Grafik Data Historis", xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white")
     st.plotly_chart(history_fig, use_container_width=True)
 
     if process_button:
