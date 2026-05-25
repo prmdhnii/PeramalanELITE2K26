@@ -57,25 +57,38 @@ st.markdown("""
         margin-top: 15px !important;
     }
 
-    /* 3. FIX: Merapikan File Uploader agar Tidak Bertumpuk */
+    /* 3. FIX MUTLAK: Merapikan File Uploader & Tombol Internal agar Tidak Bertumpuk */
     [data-testid="stFileUploader"] {
         background-color: #F8FAFC !important;
         border: 2px dashed #CBD5E1 !important;
         border-radius: 10px !important;
-        padding: 5px !important;
+        padding: 15px !important;
+    }
+
+    /* Menormalkan container tombol unggah bawaan Streamlit */
+    [data-testid="stFileUploader"] button {
+        width: auto !important;
+        background-color: #475569 !important;
+        color: #FFFFFF !important;
+        border-radius: 6px !important;
+        padding: 4px 12px !important;
     }
     
-    /* Memperbaiki warna teks instruksi drag & drop bawaan uploader di dalam sidebar */
-    [data-testid="stFileUploader"] section {
-        background-color: #F8FAFC !important;
+    /* Memperbaiki struktur teks/ikon di dalam tombol unggah agar tidak bergeser atau bertumpuk */
+    [data-testid="stFileUploader"] button span,
+    [data-testid="stFileUploader"] button div {
+        color: #FFFFFF !important;
+        position: relative !important;
+        display: inline-block !important;
+        letter-spacing: normal !important;
+        width: auto !important;
     }
-    
+
     [data-testid="stFileUploader"] text {
-        fill: #475569 !important; /* Mengubah warna teks svg agar terbaca */
+        fill: #475569 !important;
     }
 
     /* 4. Area Konten Utama */
-    /* Memastikan Judul Dashboard Tetap Menyala Terang di Mode Gelap */
     .main h1 {
         color: #FFFFFF !important;
         font-weight: 800 !important;
@@ -100,7 +113,7 @@ st.markdown("""
         margin-left: 10px !important;
     }
 
-    /* 6. Tombol "Proses Peramalan" (Modern Gradient) */
+    /* 6. Tombol Utama "Proses Peramalan" (Modern Gradient) */
     .stButton>button {
         width: 100%;
         border-radius: 10px;
