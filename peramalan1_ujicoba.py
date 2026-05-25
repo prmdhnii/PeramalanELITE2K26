@@ -24,42 +24,50 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Paksa Background Utama menjadi #F3E4F5 */
+    /* 1. Background utama yang lembut dan formal */
     .stApp {
-        background-color: #F3E4F5 !important;
+        background-color: #F8F7FA !important;
     }
 
-    /* 2. Target Tabel dan Container yang Masih Gelap */
-    /* Mengubah latar belakang tabel dan elemen di dalamnya menjadi #F3E4F5 */
+    /* 2. Styling Tabel (Dataframe) agar lebih formal dan tidak transparan */
     [data-testid="stDataFrame"], 
-    div[data-testid="stElementContainer"],
-    div[data-testid="stDataEditor"] {
-        background-color: #F3E4F5 !important;
+    div[data-testid="stElementContainer"] {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E0DFF5 !important;
+        border-radius: 8px !important;
     }
     
-    /* Memaksa elemen tabel internal (th, td) menjadi cerah */
     table, th, td, tr {
-        background-color: #F3E4F5 !important;
-        color: #2D3142 !important;
+        background-color: #FFFFFF !important;
+        color: #334155 !important; /* Warna teks abu-abu gelap profesional */
+        border-bottom: 1px solid #F1F5F9 !important;
     }
-
-    /* 3. Membuat Teks Menjadi BOLD dan Jelas Terbaca */
+    
+    /* 3. Tipografi: Tegas, Bold, dan Jelas */
     h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton {
-        color: #2D3142 !important;
-        font-weight: 700 !important;
+        color: #1E293B !important; /* Biru gelap hampir hitam */
+        font-family: 'Segoe UI', sans-serif !important;
+        font-weight: 600 !important;
     }
 
-    /* 4. Mempertahankan Warna Sidebar (C8CEEE) */
+    /* 4. Sidebar dengan warna #F3E4F5 yang kalem */
     [data-testid="stSidebar"] {
-        background-color: #C8CEEE !important;
+        background-color: #F3E4F5 !important;
     }
 
-    /* 5. Mengatur Tombol agar Sesuai (D8BEE5) */
+    /* 5. Tombol dengan warna aksen formal */
     button {
+        background-color: #E2D1E5 !important;
+        color: #4A3A4D !important;
+        font-weight: 700 !important;
+        border-radius: 5px !important;
+        border: 1px solid #D8BEE5 !important;
+    }
+    
+    /* Hover effect agar tombol responsif */
+    button:hover {
         background-color: #D8BEE5 !important;
-        color: #2D3142 !important;
-        font-weight: 800 !important;
-        border: 1px solid #C5A5D5 !important;
+        border: 1px solid #C8A3D5 !important;
     }
     </style>
 """, unsafe_allow_html=True)
