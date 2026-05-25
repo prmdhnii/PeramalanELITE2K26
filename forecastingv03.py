@@ -24,10 +24,24 @@ st.set_page_config(
 # Suntikan CSS untuk mengubah tampilan dasar
 st.markdown("""
     <style>
-    /* 1. Mengubah Background Sidebar */
+    /* 1. Mengubah Background Sidebar dan Menyesuaikan Warna Teks/Komponen agar Jelas */
     [data-testid="stSidebar"] {
         background-color: #F8FAFC; /* Abu-abu sangat muda yang bersih */
         border-right: 1px solid #E2E8F0;
+    }
+    
+    /* Menargetkan semua teks, label, radio button, dan teks slider di dalam sidebar agar berwarna gelap */
+    [data-testid="stSidebar"] .stWidgetLabel, 
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] h4, 
+    [data-testid="stSidebar"] h5, 
+    [data-testid="stSidebar"] h6,
+    [data-testid="stSidebar"] span,
+    [data-testid="stSidebar"] label {
+        color: #0F172A !important; /* Warna biru gelap charcoal agar kontras dengan latar putih */
     }
 
     /* 2. Mengubah Font dan Warna Judul Utama */
@@ -53,7 +67,7 @@ st.markdown("""
         width: 100%;
         border-radius: 8px;
         background-color: #2563EB;
-        color: white;
+        color: white !important; /* Memastikan teks tombol tetap putih */
         font-weight: 600;
         border: none;
         transition: 0.3s;
