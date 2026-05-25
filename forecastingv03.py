@@ -24,58 +24,106 @@ st.set_page_config(
 # Suntikan CSS untuk mengubah tampilan dasar
 st.markdown("""
     <style>
-    /* 1. Mengubah Background Sidebar dan Menyesuaikan Warna Teks/Komponen agar Jelas */
+    /* 1. Pengaturan Font Global */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    
+    html, body, [class*="st-"] {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* 2. Sidebar Premium (Putih Bersih & Teks Tajam) */
     [data-testid="stSidebar"] {
-        background-color: #F8FAFC; /* Abu-abu sangat muda yang bersih */
+        background-color: #FFFFFF !important;
         border-right: 1px solid #E2E8F0;
     }
     
-    /* Menargetkan semua teks, label, radio button, dan teks slider di dalam sidebar agar berwarna gelap */
-    [data-testid="stSidebar"] .stWidgetLabel, 
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3, 
-    [data-testid="stSidebar"] h4, 
-    [data-testid="stSidebar"] h5, 
-    [data-testid="stSidebar"] h6,
-    [data-testid="stSidebar"] span,
-    [data-testid="stSidebar"] label {
-        color: #0F172A !important; /* Warna biru gelap charcoal agar kontras dengan latar putih */
+    /* Memaksa semua teks di Sidebar agar berwarna gelap & jelas */
+    [data-testid="stSidebar"] .stText, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] .stMarkdown p,
+    [data-testid="stSidebar"] .stWidgetLabel p {
+        color: #1E293B !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
     }
 
-    /* 2. Mengubah Font dan Warna Judul Utama */
+    /* Mengatur Header di Sidebar */
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+        border-bottom: 2px solid #F1F5F9;
+        padding-bottom: 10px;
+    }
+
+    /* 3. Area Utama (Main Content) */
+    .main {
+        background-color: #F8FAFC;
+    }
+
+    /* Judul Utama */
     h1 {
-        color: #0F172A; /* Biru gelap charcoal (sangat profesional) */
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 700;
-        letter-spacing: -0.5px;
+        color: #0F172A !important;
+        font-weight: 800 !important;
+        letter-spacing: -1px;
     }
 
-    /* 3. Membuat "Card" untuk Metrik agar terlihat timbul */
-    [data-testid="stMetricValue"] {
+    /* 4. Mempercantik Widget & Input */
+    /* Tombol Upload */
+    [data-testid="stFileUploader"] {
         background-color: #FFFFFF;
-        padding: 15px;
+        border: 1px dashed #CBD5E1;
         border-radius: 10px;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        border: 1px solid #F1F5F9;
-        color: #2563EB !important; /* Warna biru khas perusahaan IT modern */
+        padding: 10px;
+    }
+
+    /* Slider & Radio */
+    .stSlider [data-baseweb="slider"] {
+        margin-bottom: 25px;
+    }
+
+    /* 5. Card Metric (Timbul & Profesional) */
+    [data-testid="stMetricValue"] {
+        background-color: #FFFFFF !important;
+        color: #2563EB !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+        padding: 20px !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid #F1F5F9 !important;
     }
     
-    /* 4. Mempercantik Tombol Proses */
+    [data-testid="stMetricLabel"] {
+        color: #64748B !important;
+        font-weight: 500 !important;
+        margin-left: 10px !important;
+    }
+
+    /* 6. Tombol "Proses Peramalan" (Gradient Style) */
     .stButton>button {
         width: 100%;
-        border-radius: 8px;
-        background-color: #2563EB;
-        color: white !important; /* Memastikan teks tombol tetap putih */
-        font-weight: 600;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #2563EB 0%, #1D4ED8 100%);
+        color: white !important;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
         border: none;
-        transition: 0.3s;
+        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        transition: all 0.2s ease;
     }
     
     .stButton>button:hover {
-        background-color: #1E40AF; /* Warna berubah sedikit gelap saat disentuh mouse */
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        background: linear-gradient(90deg, #1D4ED8 0%, #1E40AF 100%);
         border: none;
+    }
+
+    /* 7. Table Styling */
+    .stDataFrame {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
     </style>
     """, unsafe_allow_html=True)
