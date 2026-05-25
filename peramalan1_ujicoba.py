@@ -24,50 +24,47 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Background utama yang lembut dan formal */
+    /* 1. Background utama yang elegan */
     .stApp {
-        background-color: #F8F7FA !important;
+        background-color: #0f172a !important;
     }
 
-    /* 2. Styling Tabel (Dataframe) agar lebih formal dan tidak transparan */
+    /* 2. Styling Tabel (Dataframe) */
     [data-testid="stDataFrame"], 
     div[data-testid="stElementContainer"] {
-        background-color: #FFFFFF !important;
-        border: 1px solid #E0DFF5 !important;
+        background-color: #1e293b !important;
+        border: 1px solid #334155 !important;
         border-radius: 8px !important;
     }
     
     table, th, td, tr {
-        background-color: #FFFFFF !important;
-        color: #334155 !important; /* Warna teks abu-abu gelap profesional */
-        border-bottom: 1px solid #F1F5F9 !important;
+        background-color: #1e293b !important;
+        color: #f8fafc !important; 
+        border-bottom: 1px solid #334155 !important;
     }
     
-    /* 3. Tipografi: Tegas, Bold, dan Jelas */
+    /* 3. Tipografi: Putih agar kontras di latar gelap */
     h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton {
-        color: #1E293B !important; /* Biru gelap hampir hitam */
+        color: #f8fafc !important; 
         font-family: 'Segoe UI', sans-serif !important;
-        font-weight: 600 !important;
     }
 
-    /* 4. Sidebar dengan warna #F3E4F5 yang kalem */
+    /* 4. Sidebar dengan warna lebih gelap */
     [data-testid="stSidebar"] {
-        background-color: #F3E4F5 !important;
+        background-color: #020617 !important;
     }
 
-    /* 5. Tombol dengan warna aksen formal */
+    /* 5. Tombol dengan warna aksen (Neon Blue/Indigo) */
     button {
-        background-color: #E2D1E5 !important;
-        color: #4A3A4D !important;
+        background-color: #4f46e5 !important;
+        color: #ffffff !important;
         font-weight: 700 !important;
         border-radius: 5px !important;
-        border: 1px solid #D8BEE5 !important;
+        border: none !important;
     }
     
-    /* Hover effect agar tombol responsif */
     button:hover {
-        background-color: #D8BEE5 !important;
-        border: 1px solid #C8A3D5 !important;
+        background-color: #6366f1 !important;
     }
     </style>
 """, unsafe_allow_html=True)
