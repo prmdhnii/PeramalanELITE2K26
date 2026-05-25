@@ -24,160 +24,135 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Fondasi Font & Background Utama Cerah */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
-    html, body, [class*="st-"] {
-        font-family: 'Plus Jakarta Sans', sans-serif;
+    /* 1. Reset Global Font & Background Utama (Clean Soft Light Background) */
+    html, body, [class*="st-"], .main, .stApp {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        background-color: #F6F7FB !important; /* Latar belakang aplikasi yang bersih */
+        color: #2D3142 !important;
     }
     
-    .main {
-        background: linear-gradient(135deg, #F5F7FF 0%, #FAFAFA 100%) !important;
+    h1, h2, h3, h4, h5, h6, p, span, label {
+        color: #2D3142 !important;
     }
 
-    /* 2. Sidebar Cerah & Segar */
-    [data-testid="stSidebar"] {
-        background-color: #FFFFFF !important;
-        border-right: 2px solid #E0E4FF !important;
+    /* 2. Sidebar Perombakan Total dengan Warna Utama (#C4CEEE) */
+    [data-testid="stSidebar"], [data-testid="stSidebar"] > div:first-child {
+        background-color: #C4CEEE !important; /* Warna Utama Pilihan Anda */
+        border-right: 1px solid #B0BCDE !important;
     }
     
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stWidgetLabel p,
-    [data-testid="stSidebar"] p {
-        color: #4A5568 !important;
+    /* Komponen Teks di Dalam Sidebar */
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label, 
+    [data-testid="stSidebar"] .stWidgetLabel p {
+        color: #2D3142 !important;
         font-weight: 600 !important;
-        font-size: 0.9rem !important;
     }
-
+    
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3 {
-        color: #4F46E5 !important;
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] h4 {
+        color: #4A5580 !important; /* Teks Header Sidebar Kontras */
         font-weight: 700 !important;
-        font-size: 1.1rem !important;
-        border-bottom: 2px solid #F0F2FF;
-        padding-bottom: 8px;
-        margin-top: 20px !important;
-        letter-spacing: 0.5px;
+        border-bottom: 2px solid #AEC0F0 !important;
+        padding-bottom: 5px;
+        margin-top: 15px !important;
     }
 
-    /* 3. Layout Uploader Colorful */
-    [data-testid="stFileUploader"] {
-        background-color: #F0F4FF !important;
-        border: 2px dashed #6366F1 !important;
-        border-radius: 12px !important;
-        padding: 15px !important;
+    /* Input & Dropdown Fields di dalam Sidebar */
+    [data-testid="stSidebar"] input, 
+    [data-testid="stSidebar"] select, 
+    [data-testid="stSidebar"] div[role="button"] {
+        background-color: #FFFFFF !important;
+        color: #2D3142 !important;
+        border: 1px solid #A2B0DB !important;
     }
 
-    [data-testid="stFileUploader"] button {
-        background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
-        border: none !important;
+    /* 3. Kotak Alert / Banner Petunjuk (Menggunakan Warna Aksen #E8DAF0) */
+    .stAlert, [data-testid="stNotification"] {
+        background-color: #E8DAF0 !important; /* Warna Aksen Pilihan Anda */
+        border: 1px solid #D5C2DE !important;
+        border-left: 5px solid #8E70A6 !important; 
+        color: #4A3559 !important;
         border-radius: 8px !important;
-        padding: 8px 16px !important;
-        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2) !important;
     }
-    
-    [data-testid="stFileUploader"] button * {
-        font-size: 0px !important;
-        color: transparent !important;
-        display: none !important;
+    .stAlert p, .stAlert div {
+        color: #4A3559 !important;
     }
-    
-    [data-testid="stFileUploader"] button::after {
-        content: "Pilih File Kamu" !important;
+
+    /* 4. File Uploader Area */
+    [data-testid="stFileUploader"] {
+        background-color: #EBEFFA !important;
+        border: 2px dashed #C4CEEE !important; 
+        border-radius: 8px !important;
+    }
+    [data-testid="stFileUploader"] button {
+        background-color: #8E70A6 !important; /* Tombol Aksen Ungu Lavender */
         color: #FFFFFF !important;
-        font-size: 0.85rem !important;
-        font-weight: 600 !important;
-        display: block !important;
+        border: none !important;
+    }
+    [data-testid="stFileUploader"] button:hover {
+        background-color: #765A8C !important;
     }
 
-    [data-testid="stFileUploader"] text {
-        fill: #4F46E5 !important;
-    }
-    [data-testid="stFileUploader"] div {
-        color: #4A5568 !important;
-        font-weight: 500;
-    }
-
-    /* 4. Area Konten Utama */
-    .main h1 {
-        background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800 !important;
-        font-size: 2.3rem !important;
-        margin-bottom: 8px !important;
-    }
-    
-    .main p {
-        color: #64748B !important;
-        font-weight: 500;
-    }
-
-    /* 5. Metric Cards Penuh Warna Pastel */
-    [data-testid="stMetricValue"] {
-        background: #FFFFFF !important;
-        color: #1E1B4B !important;
-        font-weight: 700 !important;
-        font-size: 2rem !important;
-        border-radius: 12px !important;
-        padding: 15px 20px !important;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
-        border-left: 5px solid #EC4899 !important;
-        border-top: 1px solid #EEF2F6 !important;
-        border-right: 1px solid #EEF2F6 !important;
-        border-bottom: 1px solid #EEF2F6 !important;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        color: #4F46E5 !important;
-        font-weight: 700 !important;
-        font-size: 0.9rem !important;
-        margin-left: 5px !important;
-    }
-
-    /* 6. Tombol Utama Pro (Neon/Bright Coral Style) */
+    /* 5. Tombol Eksekusi Utama (Solid Lavender/Aksen #E8DAF0 Base) */
     .stButton>button {
         width: 100%;
-        border-radius: 8px;
-        background: linear-gradient(135deg, #FF4B4B 0%, #FF6B6B 100%) !important;
+        border-radius: 6px !important;
+        background-color: #8E70A6 !important; /* Diambil dari gradasi aksen lavender agar kontras tinggi */
         color: #FFFFFF !important;            
         font-weight: 700 !important;          
-        font-size: 1rem;
-        padding: 0.65rem 1rem;
-        border: none !important;
-        box-shadow: 0 4px 12px rgba(255, 75, 75, 0.3);
+        border: 1px solid #765A8C !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
         transition: all 0.2s ease;
     }
-    
     .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(255, 75, 75, 0.4);
-        background: linear-gradient(135deg, #FF6B6B 0%, #FF4B4B 100%) !important;
-        color: #FFFFFF !important;            
+        background-color: #765A8C !important; 
+        color: #FFFFFF !important;
     }
 
-    /* 7. Desain Tabel Data Grid */
-    .stDataFrame {
-        background-color: #FFFFFF;
-        border: 2px solid #F0F2FF !important;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+    /* 6. Komponen Tabel Data Grid */
+    .stDataFrame, [data-testid="stTable"] {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E5ED !important;
+        border-radius: 6px !important;
+    }
+    
+    .stDataFrame div, .stDataFrame span {
+        color: #2D3142 !important;
     }
 
-    /* Customisasi Tabs Streamlit agar Colorful */
+    /* 7. Card Metric */
+    [data-testid="stMetricValue"] {
+        background-color: #FFFFFF !important;
+        color: #2D3142 !important;
+        border-left: 5px solid #C4CEEE !important; /* Border Utama */
+        border-top: 1px solid #E2E5ED !important;
+        border-right: 1px solid #E2E5ED !important;
+        border-bottom: 1px solid #E2E5ED !important;
+        border-radius: 8px !important;
+        padding: 12px 18px !important;
+    }
+    [data-testid="stMetricLabel"] {
+        color: #5C647F !important;
+        font-weight: 600 !important;
+    }
+
+    /* Navigation Tabs */
     button[data-baseweb="tab"] {
-        font-weight: 700 !important;
-        color: #64748B !important;
+        color: #7C829C !important;
+        font-weight: 600 !important;
     }
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #4F46E5 !important;
-        border-bottom-color: #4F46E5 !important;
+        color: #8E70A6 !important;
+        border-bottom-color: #8E70A6 !important;
     }
 
     hr {
-        margin: 1.5rem 0 !important;
-        border-color: #E2E8F0 !important;
+        border-color: #E2E5ED !important;
     }
     </style>
     """, unsafe_allow_html=True)
