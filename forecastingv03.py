@@ -22,63 +22,73 @@ st.set_page_config(
 )
 
 # Suntikan CSS untuk mengubah tampilan dasar
+Nah, dari screenshot terbaru yang kamu kirim, kelihatan jelas masalahnya: tombol bawaan Streamlit bertabrakan dengan kotak kustom file uploader yang kita buat di CSS, dan judul utama di halaman kanan jadi ikutan gelap tersembunyi.
+
+Berikut adalah perbaikan kode CSS yang sudah dirapikan total. Tabrakan teks di tombol upload sudah dihilangkan, warna latar belakang komponen diperjelas, dan judul utama dipastikan tetap menyala terang di mode gelap.
+
+Silakan ganti blok st.markdown(""" <style> ... </style> """, unsafe_allow_html=True) milikmu dengan kode di bawah ini:
+
+Python
+# Suntikan CSS Premium & Perbaikan Bug Layout Sidebar
 st.markdown("""
     <style>
     /* 1. Pengaturan Font Global */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
         font-family: 'Inter', sans-serif;
     }
 
-    /* 2. Sidebar Premium (Putih Bersih & Teks Tajam) */
+    /* 2. Sidebar Premium (Bersih, Kontras Tinggi & Rapi) */
     [data-testid="stSidebar"] {
         background-color: #FFFFFF !important;
         border-right: 1px solid #E2E8F0;
     }
     
-    /* Memaksa semua teks di Sidebar agar berwarna gelap & jelas */
-    [data-testid="stSidebar"] .stText, 
-    [data-testid="stSidebar"] label, 
-    [data-testid="stSidebar"] .stMarkdown p,
-    [data-testid="stSidebar"] .stWidgetLabel p {
-        color: #1E293B !important;
+    /* Memaksa teks label di Sidebar agar berwarna gelap & tebal */
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stWidgetLabel p,
+    [data-testid="stSidebar"] p {
+        color: #0F172A !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
     }
 
-    /* Mengatur Header di Sidebar */
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+    /* Mengatur Header/Judul Bagian di Sidebar */
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3 {
         color: #0F172A !important;
         font-weight: 700 !important;
         border-bottom: 2px solid #F1F5F9;
-        padding-bottom: 10px;
+        padding-bottom: 8px;
+        margin-top: 15px !important;
     }
 
-    /* 3. Area Utama (Main Content) */
-    .main {
-        background-color: #F8FAFC;
+    /* 3. FIX: Merapikan File Uploader agar Tidak Bertumpuk */
+    [data-testid="stFileUploader"] {
+        background-color: #F8FAFC !important;
+        border: 2px dashed #CBD5E1 !important;
+        border-radius: 10px !important;
+        padding: 5px !important;
+    }
+    
+    /* Memperbaiki warna teks instruksi drag & drop bawaan uploader di dalam sidebar */
+    [data-testid="stFileUploader"] section {
+        background-color: #F8FAFC !important;
+    }
+    
+    [data-testid="stFileUploader"] text {
+        fill: #475569 !important; /* Mengubah warna teks svg agar terbaca */
     }
 
-    /* Judul Utama */
-    h1 {
-        color: #0F172A !important;
+    /* 4. Area Konten Utama */
+    /* Memastikan Judul Dashboard Tetap Menyala Terang di Mode Gelap */
+    .main h1 {
+        color: #FFFFFF !important;
         font-weight: 800 !important;
         letter-spacing: -1px;
-    }
-
-    /* 4. Mempercantik Widget & Input */
-    /* Tombol Upload */
-    [data-testid="stFileUploader"] {
-        background-color: #FFFFFF;
-        border: 1px dashed #CBD5E1;
-        border-radius: 10px;
-        padding: 10px;
-    }
-
-    /* Slider & Radio */
-    .stSlider [data-baseweb="slider"] {
-        margin-bottom: 25px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     /* 5. Card Metric (Timbul & Profesional) */
@@ -98,7 +108,7 @@ st.markdown("""
         margin-left: 10px !important;
     }
 
-    /* 6. Tombol "Proses Peramalan" (Gradient Style) */
+    /* 6. Tombol "Proses Peramalan" (Modern Gradient) */
     .stButton>button {
         width: 100%;
         border-radius: 10px;
@@ -119,11 +129,16 @@ st.markdown("""
         border: none;
     }
 
-    /* 7. Table Styling */
+    /* 7. Desain Tabel & Pembatas */
     .stDataFrame {
-        background-color: white;
+        background-color: #FFFFFF;
         border-radius: 10px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    hr {
+        margin: 1.5rem 0 !important;
+        border-color: #E2E8F0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
