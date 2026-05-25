@@ -16,15 +16,15 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Dashboard Peramalan Beige & Sage",
+    page_title="Dashboard Peramalan Colorful",
     page_icon="📈",
     layout="wide"
 )
 
-# Suntikan CSS - BEIGE & SAGE GREEN AESTHETIC STYLE
+# Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Fondasi Font & Background Utama (Soft Beige) */
+    /* 1. Fondasi Font & Background Utama Cerah */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
@@ -32,19 +32,19 @@ st.markdown("""
     }
     
     .main {
-        background-color: #F7F4EB !important; /* Soft Light Beige */
+        background: linear-gradient(135deg, #F5F7FF 0%, #FAFAFA 100%) !important;
     }
 
-    /* 2. Sidebar Warna Warm Cream / Off-White */
+    /* 2. Sidebar Cerah & Segar */
     [data-testid="stSidebar"] {
-        background-color: #FFFDF9 !important;
-        border-right: 1px solid #E6E1D3 !important;
+        background-color: #FFFFFF !important;
+        border-right: 2px solid #E0E4FF !important;
     }
     
     [data-testid="stSidebar"] label,
     [data-testid="stSidebar"] .stWidgetLabel p,
     [data-testid="stSidebar"] p {
-        color: #4A473E !important;
+        color: #4A5568 !important;
         font-weight: 600 !important;
         font-size: 0.9rem !important;
     }
@@ -52,29 +52,29 @@ st.markdown("""
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3 {
-        color: #607264 !important; /* Sage Green Tua */
+        color: #4F46E5 !important;
         font-weight: 700 !important;
         font-size: 1.1rem !important;
-        border-bottom: 2px solid #E6E1D3;
+        border-bottom: 2px solid #F0F2FF;
         padding-bottom: 8px;
         margin-top: 20px !important;
         letter-spacing: 0.5px;
     }
 
-    /* 3. Layout Uploader Kontras Estetik */
+    /* 3. Layout Uploader Colorful */
     [data-testid="stFileUploader"] {
-        background-color: #F1ECE1 !important;
-        border: 2px dashed #87988A !important; /* Sage Border */
-        border-radius: 10px !important;
+        background-color: #F0F4FF !important;
+        border: 2px dashed #6366F1 !important;
+        border-radius: 12px !important;
         padding: 15px !important;
     }
 
     [data-testid="stFileUploader"] button {
-        background-color: #607264 !important; /* Sage Green Button */
+        background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%) !important;
         border: none !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         padding: 8px 16px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2) !important;
     }
     
     [data-testid="stFileUploader"] button * {
@@ -84,7 +84,7 @@ st.markdown("""
     }
     
     [data-testid="stFileUploader"] button::after {
-        content: "Pilih File" !important;
+        content: "Pilih File Kamu" !important;
         color: #FFFFFF !important;
         font-size: 0.85rem !important;
         font-weight: 600 !important;
@@ -92,86 +92,92 @@ st.markdown("""
     }
 
     [data-testid="stFileUploader"] text {
-        fill: #607264 !important;
+        fill: #4F46E5 !important;
     }
     [data-testid="stFileUploader"] div {
-        color: #706B5E !important;
+        color: #4A5568 !important;
+        font-weight: 500;
     }
 
-    /* 4. Area Judul Konten Utama */
+    /* 4. Area Konten Utama */
     .main h1 {
-        color: #3D463E !important; /* Deep Sage Earthy */
-        font-weight: 700 !important;
-        font-size: 2.2rem !important;
-        margin-bottom: 6px !important;
+        background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800 !important;
+        font-size: 2.3rem !important;
+        margin-bottom: 8px !important;
     }
     
     .main p {
-        color: #706B5E !important;
+        color: #64748B !important;
+        font-weight: 500;
     }
 
-    /* 5. Metric Cards Minimalis Elegan */
+    /* 5. Metric Cards Penuh Warna Pastel */
     [data-testid="stMetricValue"] {
-        background-color: #FFFFFF !important;
-        color: #3D463E !important;
+        background: #FFFFFF !important;
+        color: #1E1B4B !important;
         font-weight: 700 !important;
-        font-size: 1.8rem !important;
-        border-radius: 10px !important;
+        font-size: 2rem !important;
+        border-radius: 12px !important;
         padding: 15px 20px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
-        border-left: 5px solid #87988A !important; /* Aksen Sage Green */
-        border-top: 1px solid #E6E1D3 !important;
-        border-right: 1px solid #E6E1D3 !important;
-        border-bottom: 1px solid #E6E1D3 !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05) !important;
+        border-left: 5px solid #EC4899 !important;
+        border-top: 1px solid #EEF2F6 !important;
+        border-right: 1px solid #EEF2F6 !important;
+        border-bottom: 1px solid #EEF2F6 !important;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #607264 !important;
-        font-weight: 600 !important;
-        font-size: 0.88rem !important;
+        color: #4F46E5 !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
         margin-left: 5px !important;
     }
 
-    /* 6. Tombol Utama (Solid Sage Green Accent) */
+    /* 6. Tombol Utama Pro (Neon/Bright Coral Style) */
     .stButton>button {
         width: 100%;
-        border-radius: 6px;
-        background-color: #607264 !important; /* Sage Green */
+        border-radius: 8px;
+        background: linear-gradient(135deg, #FF4B4B 0%, #FF6B6B 100%) !important;
         color: #FFFFFF !important;            
         font-weight: 700 !important;          
-        font-size: 0.95rem;
-        padding: 0.6rem 1rem;
-        border: 1px solid #4E5D51 !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        font-size: 1rem;
+        padding: 0.65rem 1rem;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(255, 75, 75, 0.3);
         transition: all 0.2s ease;
     }
     
     .stButton>button:hover {
-        background-color: #4E5D51 !important; /* Darker Sage */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(255, 75, 75, 0.4);
+        background: linear-gradient(135deg, #FF6B6B 0%, #FF4B4B 100%) !important;
         color: #FFFFFF !important;            
-        border: 1px solid #3D463E !important;
     }
 
     /* 7. Desain Tabel Data Grid */
     .stDataFrame {
         background-color: #FFFFFF;
-        border: 1px solid #E6E1D3 !important;
-        border-radius: 8px;
+        border: 2px solid #F0F2FF !important;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
     }
 
-    /* Navigasi Tab Streamlit Custom */
+    /* Customisasi Tabs Streamlit agar Colorful */
     button[data-baseweb="tab"] {
-        font-weight: 600 !important;
-        color: #706B5E !important;
+        font-weight: 700 !important;
+        color: #64748B !important;
     }
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #607264 !important;
-        border-bottom-color: #607264 !important;
+        color: #4F46E5 !important;
+        border-bottom-color: #4F46E5 !important;
     }
 
     hr {
-        margin: 1.4rem 0 !important;
-        border-color: #E6E1D3 !important;
+        margin: 1.5rem 0 !important;
+        border-color: #E2E8F0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -279,14 +285,14 @@ def make_future_labels(period_dates, existing_labels, horizon: int):
     return [f"Periode {len(existing_labels) + i}" for i in range(1, horizon + 1)]
 
 
-# --- FUNGSI GRAFIK PLOTLY (DISESUAIKAN TEMA BEIGE SAGE) ---
+# --- FUNGSI GRAFIK PLOTLY (COLORFUL & VIBRANT THESIS STYLE) ---
 
 def plot_actual_forecast(periods, actual, forecast, title):
     fig = go.Figure()
-    # Aktual: Deep Charcoal Gray agar kontras
-    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Aktual", line=dict(color='#4A473E', width=2.5)))
-    # Forecast: Sage Green Estetik
-    fig.add_trace(go.Scatter(x=periods, y=forecast, mode="lines+markers", name="Forecast", line=dict(color='#607264', width=2.5)))
+    # Warna Aktual: Indigo Cerah
+    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Aktual", line=dict(color='#4F46E5', width=3)))
+    # Warna Forecast: Pink/Neon Red Cerah
+    fig.add_trace(go.Scatter(x=periods, y=forecast, mode="lines+markers", name="Forecast", line=dict(color='#EC4899', width=3)))
     fig.update_layout(title=title, xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white")
     return fig
 
@@ -294,10 +300,10 @@ def plot_actual_forecast(periods, actual, forecast, title):
 def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, future_forecast, residual_std=0):
     fig = go.Figure()
     
-    # Historis (Deep Gray-Brown)
-    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Aktual Historis", line=dict(color='#4A473E', width=2.5)))
+    # Historis (Vibrant Indigo)
+    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Aktual Historis", line=dict(color='#4F46E5', width=3)))
     
-    # Hitung interval jika standard deviasi tersedia (Soft Sage Tint)
+    # Interval Keyakinan (Soft Pink Transparent)
     if residual_std > 0:
         upper_bound = future_forecast + (1.96 * residual_std)
         lower_bound = future_forecast - (1.96 * residual_std)
@@ -307,15 +313,15 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
             x=future_periods + future_periods[::-1],
             y=list(upper_bound) + list(lower_bound[::-1]),
             fill='toself',
-            fillcolor='rgba(135, 152, 138, 0.2)', /* Transparansi Sage Green */
+            fillcolor='rgba(236, 72, 153, 0.15)',
             line=dict(color='rgba(255,255,255,0)'),
             hoverinfo="skip",
             showlegend=True,
             name="Interval Keyakinan (95%)"
         ))
 
-    # Garis Forecast Utama (Sage Green Dash Line)
-    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi Utama", line=dict(color='#607264', width=2.5, dash='dash')))
+    # Garis Forecast Masa Depan (Vibrant Pink Putus-putus)
+    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi Utama", line=dict(color='#EC4899', width=3, dash='dash')))
 
     fig.update_layout(
         title="Grafik Proyeksi Nilai Masa Depan",
@@ -328,9 +334,6 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
 
 
 # --- ALGORITMA METODE PERAMALAN ---
-
-def delete_bracket(name):
-    return name
 
 def forecast_naive(history, horizon, **kwargs):
     if len(history) == 0: return np.zeros(horizon)
@@ -529,7 +532,7 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
         workbook  = writer.book
         
         header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#607264', 'font_color': '#FFFFFF', 
+            'bold': True, 'bg_color': '#4F46E5', 'font_color': '#FFFFFF', 
             'border': 1, 'align': 'center', 'valign': 'vcenter'
         })
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
@@ -574,7 +577,7 @@ def convert_df_to_excel(df):
         worksheet.set_row(0, 24)
         
         header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#607264', 'font_color': '#FFFFFF', 
+            'bold': True, 'bg_color': '#4F46E5', 'font_color': '#FFFFFF', 
             'border': 1, 'align': 'center', 'valign': 'vcenter'
         })
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
@@ -595,50 +598,50 @@ def convert_df_to_excel(df):
 
 # --- INTERFACE UTAMA DASHBOARD ---
 
-st.title("Dashboard Peramalan Data Historis")
-st.write("Aplikasi ini menghitung peramalan tingkat lanjut, melakukan validasi model, mendeteksi karakteristik data historis, serta menghitung error metrik.")
+st.title("✨ Dashboard Peramalan Data Historis")
+st.write("Aplikasi analitik interaktif berbasis sains data untuk menghitung peramalan tingkat lanjut.")
 
 if not STATSMODELS_AVAILABLE:
-    st.warning("Library statsmodels belum tersedia. Metode Exponential Smoothing dan ARIMA memakai fallback Naive Forecast.")
+    st.warning("⚠️ Library statsmodels belum tersedia. Metode Exponential Smoothing dan ARIMA memakai fallback Naive Forecast.")
 
 with st.sidebar:
-    st.header("Pengaturan Input")
-    uploaded_file = st.file_uploader("Upload data historis", type=["csv", "xlsx"])
+    st.header("🔮 Pengaturan Input")
+    uploaded_file = st.file_uploader("Upload data historis (.csv / .xlsx)", type=["csv", "xlsx"])
     st.divider()
 
-    st.header("Pengaturan Evaluasi")
-    test_percentage = st.slider("Persentase data uji", min_value=10, max_value=50, value=20, step=5)
-    future_horizon = st.number_input("Jumlah periode forecast masa depan", min_value=1, max_value=60, value=6, step=1)
-    mode = st.radio("Mode perhitungan", ["Satu metode", "Bandingkan semua metode"])
-    selected_method = st.selectbox("Pilih metode", list(FORECAST_METHODS.keys()))
+    st.header("⚙️ Pengaturan Evaluasi")
+    test_percentage = st.slider("Persentase data uji (%)", min_value=10, max_value=50, value=20, step=5)
+    future_horizon = st.number_input("Jumlah periode ke depan", min_value=1, max_value=60, value=6, step=1)
+    mode = st.radio("Mode Perhitungan", ["Satu metode", "Bandingkan semua metode"])
+    selected_method = st.selectbox("Pilih Metode Utama", list(FORECAST_METHODS.keys()))
     st.divider()
 
-    st.header("Parameter Metode")
-    st.write("Parameter Exponential Smoothing")
-    smoothing_mode = st.radio("Mode parameter smoothing", ["Optimasi otomatis", "Input manual"])
+    st.header("🛠️ Parameter Tambahan")
+    st.write("**Exponential Smoothing Parameters**")
+    smoothing_mode = st.radio("Metode Penyetelan", ["Optimasi otomatis", "Input manual"])
 
     if smoothing_mode == "Input manual":
-        alpha_input = st.slider("Alpha", min_value=0.01, max_value=0.99, value=0.30, step=0.01)
-        beta_input = st.slider("Beta", min_value=0.01, max_value=0.99, value=0.20, step=0.01)
-        gamma_input = st.slider("Gamma", min_value=0.01, max_value=0.99, value=0.10, step=0.01)
+        alpha_input = st.slider("Alpha (Level)", min_value=0.01, max_value=0.99, value=0.30, step=0.01)
+        beta_input = st.slider("Beta (Trend)", min_value=0.01, max_value=0.99, value=0.20, step=0.01)
+        gamma_input = st.slider("Gamma (Seasonality)", min_value=0.01, max_value=0.99, value=0.10, step=0.01)
     else:
         alpha_input = beta_input = gamma_input = None
 
     ma_window = st.number_input("Window Moving Average", min_value=2, max_value=24, value=3, step=1)
-    wma_weight_text = st.text_input("Bobot WMA", value="0.2, 0.3, 0.5", help="Contoh: 0.2, 0.3, 0.5.")
-    seasonal_periods = st.number_input("Seasonal periods", min_value=2, max_value=52, value=12, step=1)
+    wma_weight_text = st.text_input("Bobot WMA (Pisahkan koma)", value="0.2, 0.3, 0.5")
+    seasonal_periods = st.number_input("Seasonal Periods (Musiman)", min_value=2, max_value=52, value=12, step=1)
 
-    st.write("Parameter ARIMA")
-    arima_p = st.number_input("p", min_value=0, max_value=5, value=1, step=1)
-    arima_d = st.number_input("d", min_value=0, max_value=2, value=1, step=1)
-    arima_q = st.number_input("q", min_value=0, max_value=5, value=1, step=1)
+    st.write("**ARIMA Parameters (p, d, q)**")
+    arima_p = st.number_input("Order p (AR)", min_value=0, max_value=5, value=1, step=1)
+    arima_d = st.number_input("Order d (I)", min_value=0, max_value=2, value=1, step=1)
+    arima_q = st.number_input("Order q (MA)", min_value=0, max_value=5, value=1, step=1)
 
-    process_button = st.button("Proses Peramalan", type="primary")
+    process_button = st.button("🚀 Jalankan Proses", type="primary")
 
 
 if uploaded_file is None:
-    st.info("Silakan upload file CSV atau Excel terlebih dahulu.")
-    st.subheader("Contoh Format Data")
+    st.info("💡 Petunjuk: Silakan unggah berkas excel atau csv kamu di panel bagian kiri untuk memulai analisis.")
+    st.subheader("📋 Contoh Struktur Tabel Excel/CSV yang Benar")
     sample = pd.DataFrame({
         "Tanggal": pd.date_range("2024-01-01", periods=12, freq="MS"),
         "Penjualan": [120, 135, 128, 140, 150, 160, 155, 170, 180, 175, 190, 200]
@@ -656,7 +659,7 @@ except Exception as e:
 if df_raw.empty:
     st.error("File tidak memiliki data."); st.stop()
 
-st.subheader("Preview Data")
+st.subheader("📊 Pratinjau Data Unggahan")
 preview_df = df_raw.head(20).copy()
 preview_df.insert(0, "No", range(1, len(preview_df) + 1))
 st.dataframe(preview_df, use_container_width=True, hide_index=True)
@@ -667,11 +670,11 @@ col1, col2 = st.columns(2)
 with col1:
     period_options = ["Tidak ada"] + columns
     default_period_index = period_options.index("Tanggal") if "Tanggal" in period_options else 0
-    period_option = st.selectbox("Pilih kolom periode", period_options, index=default_period_index)
+    period_option = st.selectbox("Pilih Kolom Indeks Waktu/Periode", period_options, index=default_period_index)
 
 with col2:
     default_value_index = columns.index("Penjualan") if "Penjualan" in columns else 0
-    value_col = st.selectbox("Pilih kolom nilai aktual", columns, index=default_value_index)
+    value_col = st.selectbox("Pilih Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
 
 period_col = None if period_option == "Tidak ada" else period_option
 df = df_raw.copy()
@@ -686,7 +689,7 @@ if period_col is not None:
 
 values_series = clean_numeric_series(df[value_col])
 if len(values_series) < 6:
-    st.error("Data numerik terlalu sedikit. Minimal gunakan 6 baris data historis.")
+    st.error("Data numerik terdeteksi terlalu sedikit! Mohon gunakan minimal 6 baris data numerik.")
     st.stop()
 
 df = df.loc[values_series.index].reset_index(drop=True)
@@ -703,41 +706,41 @@ train, test, test_size = split_train_test(values, test_percentage)
 train_periods = period_labels[:-test_size]
 test_periods = period_labels[-test_size:]
 
-st.subheader("Ringkasan Data")
+st.subheader("📌 Ringkasan Distribusi Data")
 metric_col1, metric_col2, metric_col3 = st.columns(3)
-metric_col1.metric("Jumlah Data", len(values))
-metric_col2.metric("Data Latih", len(train))
-metric_col3.metric("Data Uji", len(test))
+metric_col1.metric("Total Observasi", len(values))
+metric_col2.metric("Dataset Latih (Train)", len(train))
+metric_col3.metric("Dataset Uji (Test Validation)", len(test))
 
 
 # --- AREA IMPLEMENTASI GRID TAB & PROSES UTAMA ---
 
-tab_data, tab_grafik = st.tabs(["🔍 Analisis Karakteristik Data", "📊 Hasil & Grafik Utama"])
+tab_data, tab_grafik = st.tabs(["🔍 Karakteristik & Tren Data", "📊 Hasil Komputasi Peramalan"])
 
 with tab_data:
     st.write("### Analisis Karakteristik Data Historis")
     c_desc, c_roll = st.columns([1, 2])
     
     with c_desc:
-        st.write("**Statistik Deskriptif Internal**")
+        st.write("**Statistik Deskriptif Utama**")
         desc_df = pd.DataFrame(values, columns=[value_col]).describe()
         st.dataframe(desc_df, use_container_width=True)
         
     with c_roll:
-        st.write("**Deteksi Tren (Rolling Mean 3 Periode)**")
+        st.write("**Deteksi Pergerakan Tren (Rolling Mean)**")
         roll_df = pd.DataFrame({"Periode": period_labels, "Aktual": values})
         roll_df["Rolling_Mean"] = roll_df["Aktual"].rolling(window=min(3, len(values)), min_periods=1).mean()
         
         roll_fig = go.Figure()
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines", line=dict(color='#4A473E')))
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Tren (Rolling Average)", line=dict(dash='dot', color='#87988A')))
+        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines", line=dict(color="#4F46E5")))
+        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Tren Isyarat (MA)", line=dict(dash='dot', color='#06B6D4', width=2)))
         roll_fig.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), template="plotly_white")
         st.plotly_chart(roll_fig, use_container_width=True)
 
 with tab_grafik:
     history_fig = go.Figure()
-    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual", line=dict(color='#4A473E')))
-    history_fig.update_layout(title="Grafik Data Historis", xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white")
+    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual", line=dict(color="#A855F7", width=3)))
+    history_fig.update_layout(title="Visualisasi Runtun Waktu Historis", xaxis_title="Periode", yaxis_title="Nilai", template="plotly_white")
     st.plotly_chart(history_fig, use_container_width=True)
 
     if process_button:
@@ -752,7 +755,7 @@ with tab_grafik:
 
             st.subheader(f"📊 Hasil Analisis: {selected_method}")
             with st.container(border=True):
-                st.write("**📈 Performa Model (Error)**")
+                st.write("**🎯 Metrik Validasi Tingkat Akurasi**")
                 m1, m2, m3 = st.columns(3)
                 m1.metric("Akurasi (MAPE)", f"{metrics['MAPE']:.2f}%" if not np.isnan(metrics['MAPE']) else "N/A")
                 m2.metric("Error (MAD)", f"{metrics['MAD']:.4f}")
@@ -760,63 +763,66 @@ with tab_grafik:
 
             if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"]:
                 with st.container(border=True):
-                    st.write("**⚙️ Konfigurasi Smoothing (Alpha, Beta, Gamma)**")
+                    st.write("**⚙️ Nilai Parameter Alpha, Beta, Gamma Optimal**")
                     p1, p2, p3 = st.columns(3)
-                    p1.metric("Alpha (Level)", format_param(used_params.get("Alpha")), help="Bobot data terbaru")
-                    p2.metric("Beta (Trend)", format_param(used_params.get("Beta")), help="Bobot pola tren")
-                    p3.metric("Gamma (Seasonality)", format_param(used_params.get("Gamma")), help="Bobot pola musiman")
-                    st.caption(f"Metode optimasi: {smoothing_mode}")
+                    p1.metric("Alpha (Level)", format_param(used_params.get("Alpha")))
+                    p2.metric("Beta (Trend)", format_param(used_params.get("Beta")))
+                    p3.metric("Gamma (Seasonality)", format_param(used_params.get("Gamma")))
 
             st.write("") 
-            tab1, tab2 = st.tabs(["📉 Grafik & Validasi", "🔮 Proyeksi Masa Depan"])
+            tab1, tab2 = st.tabs(["📉 Grafik Evaluasi Model", "🔮 Hasil Proyeksi Masa Depan"])
 
             with tab1:
-                st.plotly_chart(plot_actual_forecast(test_periods, test, forecast_test, "Validasi Model: Aktual vs Prediksi"), use_container_width=True)
-                with st.expander("Klik untuk cek Tabel Error per Periode"):
+                st.plotly_chart(plot_actual_forecast(test_periods, test, forecast_test, "Uji Validasi: Data Aktual vs Estimasi Model"), use_container_width=True)
+                with st.expander("Lihat Rincian Tabel Komputasi Error"):
                     error_table_view = error_table.copy()
                     error_table_view.insert(0, "No", range(1, len(error_table_view) + 1))
                     st.dataframe(error_table_view, use_container_width=True, hide_index=True)
 
             with tab2:
-                st.write("### 🔮 Proyeksi Tren Masa Depan")
+                st.write("### 🔮 Proyeksi Nilai Masa Depan")
                 st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error), use_container_width=True)
                 st.divider()
 
                 col_tabel, col_download = st.columns([2, 1])
                 with col_tabel:
-                    st.write("**Tabel Angka Proyeksi**")
-                    f_df = pd.DataFrame({"Periode": future_labels, "Forecast Utama": future_forecast})
+                    st.write("**Tabel Angka Hasil Prediksi**")
+                    f_df = pd.DataFrame({"Periode": future_labels, "Hasil Forecast": future_forecast})
                     f_df_view = f_df.copy()
                     f_df_view.insert(0, "No", range(1, len(f_df_view) + 1))
                     st.dataframe(f_df_view, use_container_width=True, hide_index=True)
-
+                
                 with col_download:
-                    st.write("**Unduh Berkas**")
+                    st.write("**Unduh Hasil**")
                     excel_data = convert_df_to_excel(f_df)
                     st.download_button(
-                        label="📥 Download Proyeksi (.xlsx)",
+                        label="📥 Download Hasil (.xlsx)",
                         data=excel_data,
-                        file_name=f"Proyeksi_{selected_method}.xlsx",
+                        file_name=f"Hasil_Proyeksi_{selected_method}.xlsx",
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
 
         else:
+            # Mode: Bandingkan semua metode
             comparison_df, details = evaluate_all_methods(train, test, test_periods, params)
-            best_method_name = comparison_df.iloc[0]["Metode"]
+            best_method = comparison_df.iloc[0]["Metode"]
             
-            future_forecast = run_forecast(best_method_name, values, int(future_horizon), params)
+            future_forecast = run_forecast(best_method, values, int(future_horizon), params)
             future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
             
-            st.subheader("📊 Tabel Perbandingan Performa Metode")
+            st.subheader("🏆 Tabel Perbandingan Akurasi Semua Metode")
+            st.write("Diurutkan otomatis dari model dengan tingkat error (MAPE) terkecil.")
+            
             st.dataframe(comparison_df, use_container_width=True, hide_index=True)
             
-            st.success(f"Model terbaik berdasarkan nilai MAPE terkecil: **{best_method_name}**")
+            st.success(f"💡 Rekomendasi Model Terbaik Berdasarkan Uji Akurasi: **{best_method}**")
+            
             st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, 0), use_container_width=True)
             
-            excel_all = convert_all_to_excel(comparison_df, best_method_name, future_labels, future_forecast)
+            excel_all = convert_all_to_excel(comparison_df, best_method, future_labels, future_forecast)
             st.download_button(
-                label="📥 Download Laporan Perbandingan (.xlsx)",
+                label="📥 Download Laporan Perbandingan Lengkap (.xlsx)",
                 data=excel_all,
-                file_name="Laporan_Perbandingan_Metode.xlsx",
+                file_name="Laporan_Perbandingan_Metode_Peramalan.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
