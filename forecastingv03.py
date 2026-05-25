@@ -22,14 +22,6 @@ st.set_page_config(
 )
 
 # Suntikan CSS untuk mengubah tampilan dasar
-Nah, dari screenshot terbaru yang kamu kirim, kelihatan jelas masalahnya: tombol bawaan Streamlit bertabrakan dengan kotak kustom file uploader yang kita buat di CSS, dan judul utama di halaman kanan jadi ikutan gelap tersembunyi.
-
-Berikut adalah perbaikan kode CSS yang sudah dirapikan total. Tabrakan teks di tombol upload sudah dihilangkan, warna latar belakang komponen diperjelas, dan judul utama dipastikan tetap menyala terang di mode gelap.
-
-Silakan ganti blok st.markdown(""" <style> ... </style> """, unsafe_allow_html=True) milikmu dengan kode di bawah ini:
-
-Python
-# Suntikan CSS Premium & Perbaikan Bug Layout Sidebar
 st.markdown("""
     <style>
     /* 1. Pengaturan Font Global */
