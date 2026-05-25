@@ -57,7 +57,7 @@ st.markdown("""
         margin-top: 15px !important;
     }
 
-    /* 3. FIX MUTLAK: Merapikan File Uploader & Tombol Internal agar Tidak Bertumpuk */
+    /* 3. FIX MUTLAK: Menyembunyikan Teks Bertumpuk di File Uploader */
     [data-testid="stFileUploader"] {
         background-color: #F8FAFC !important;
         border: 2px dashed #CBD5E1 !important;
@@ -71,17 +71,23 @@ st.markdown("""
         background-color: #475569 !important;
         color: #FFFFFF !important;
         border-radius: 6px !important;
-        padding: 4px 12px !important;
+        padding: 6px 16px !important;
+        border: none !important;
     }
     
-    /* Memperbaiki struktur teks/ikon di dalam tombol unggah agar tidak bergeser atau bertumpuk */
-    [data-testid="stFileUploader"] button span,
-    [data-testid="stFileUploader"] button div {
+    /* Menyembunyikan elemen teks duplikat di dalam tombol uploader */
+    [data-testid="stFileUploader"] button data {
+        display: none !important;
+    }
+    
+    /* Memastikan hanya satu teks utama yang muncul dengan posisi rapi */
+    [data-testid="stFileUploader"] button span {
         color: #FFFFFF !important;
         position: relative !important;
         display: inline-block !important;
-        letter-spacing: normal !important;
         width: auto !important;
+        font-weight: 500 !important;
+        letter-spacing: normal !important;
     }
 
     [data-testid="stFileUploader"] text {
