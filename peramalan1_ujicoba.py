@@ -24,46 +24,44 @@ st.set_page_config(
 # Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Paksa Background Utama & Teks agar Jelas */
+    /* 1. Mengubah background utama yang gelap menjadi #F3E4F5 */
     .stApp {
-        background-color: #FDFDFD !important;
+        background-color: #F3E4F5 !important;
     }
     
-    /* Paksa semua teks berwarna gelap agar tidak samar */
-    h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton, .stRadio, .stSelectbox {
+    /* 2. Mengubah background elemen container/tabel menjadi #F3E4F5 dan teks menjadi kontras */
+    [data-testid="stAppViewContainer"], 
+    [data-testid="stMainBlockContainer"],
+    [data-testid="stDataFrame"],
+    .stDataFrame {
+        background-color: #F3E4F5 !important;
+        color: #2D3142 !important;
+    }
+
+    /* 3. Memastikan isi sel tabel terlihat jelas dan tidak transparan */
+    [data-testid="stDataFrame"] div[data-testid="stElementContainer"],
+    [data-testid="stDataFrame"] table {
+        background-color: #F3E4F5 !important;
+        color: #000000 !important;
+    }
+
+    /* 4. Memastikan semua teks di area kanan (Dashboard) terlihat jelas */
+    h1, h2, h3, h4, p, label, .stMarkdown, .stText {
         color: #2D3142 !important;
         font-weight: 700 !important;
     }
 
-    /* 2. Sidebar Tetap di Warna C8CEEE */
+    /* 5. Memastikan Sidebar tetap konsisten */
     [data-testid="stSidebar"] {
         background-color: #C8CEEE !important;
     }
 
-    /* 3. Perbaikan Tabel: Warna latar belakang C8CEEE & Teks hitam */
-    [data-testid="stDataFrame"] {
-        background-color: #C8CEEE !important;
-        border: 2px solid #B0B9D6 !important;
-    }
-    /* Memastikan isi sel tabel terlihat */
-    [data-testid="stDataFrame"] div[data-testid="stElementContainer"] {
-        background-color: #C8CEEE !important;
-        color: #000000 !important;
-    }
-    
-    /* 4. Tombol: D8BEE5 dengan Teks Gelap */
+    /* 6. Tombol tetap menggunakan warna aksen sebelumnya */
     button {
         background-color: #D8BEE5 !important;
         color: #2D3142 !important;
-        border: 1px solid #C5A5D5 !important;
         font-weight: 800 !important;
-    }
-    
-    /* Pastikan warna teks dalam input box terlihat */
-    input, select {
-        background-color: #FFFFFF !important;
-        color: #2D3142 !important;
-        border: 1px solid #C8CEEE !important;
+        border: 1px solid #C5A5D5 !important;
     }
     </style>
 """, unsafe_allow_html=True)
