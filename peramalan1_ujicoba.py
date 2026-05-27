@@ -22,34 +22,39 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  INJEKSI CSS — FORMAL + COLORFUL PROFESSIONAL THEME
+#  INJEKSI CSS — FORMAL RED, WHITE & CREAM PROFESSIONAL THEME
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
 /* ── ROOT VARIABLES ── */
 :root {
-    --navy:       #0B1B3E;
-    --navy-mid:   #122252;
-    --navy-light: #1A2F6B;
-    --blue:       #1D6FE8;
-    --blue-light: #3B8CF0;
-    --teal:       #0EBFBF;
-    --teal-light: #30D9D9;
-    --amber:      #F59E0B;
-    --amber-light:#FCD34D;
-    --rose:       #F43F5E;
-    --violet:     #7C3AED;
-    --green:      #10B981;
-    --surface:    #0F2240;
-    --surface2:   #152B4E;
-    --surface3:   #1C3762;
-    --border:     rgba(59, 140, 240, 0.18);
-    --text:       #E8F0FE;
-    --text-dim:   #93B4DB;
-    --font:       'Plus Jakarta Sans', sans-serif;
-    --mono:       'JetBrains Mono', monospace;
+    --crimson:      #9B1C1C;
+    --crimson-deep: #7A1515;
+    --crimson-mid:  #B91C1C;
+    --crimson-soft: #DC2626;
+    --crimson-pale: #FEE2E2;
+    --gold:         #B45309;
+    --gold-light:   #D97706;
+    --cream:        #FDF8F0;
+    --cream-deep:   #F5EDD8;
+    --cream-mid:    #EFE3C8;
+    --ivory:        #FAFAF7;
+    --white:        #FFFFFF;
+    --charcoal:     #1C1917;
+    --brown:        #44403C;
+    --warm-gray:    #78716C;
+    --border:       rgba(155,28,28,0.18);
+    --border-cream: rgba(180,83,9,0.22);
+    --text:         #1C1917;
+    --text-mid:     #44403C;
+    --text-dim:     #78716C;
+    --font:         'Source Sans 3', sans-serif;
+    --display:      'Playfair Display', serif;
+    --mono:         'JetBrains Mono', monospace;
+    --shadow-red:   rgba(155,28,28,0.15);
+    --shadow-warm:  rgba(180,83,9,0.12);
 }
 
 /* ── GLOBAL RESET ── */
@@ -57,27 +62,28 @@ st.markdown("""
 
 /* ── APP BACKGROUND ── */
 .stApp {
-    background: linear-gradient(135deg, #060E22 0%, #0B1B3E 50%, #071428 100%) !important;
+    background: linear-gradient(160deg, #FDF8F0 0%, #FAF4E8 40%, #F5EDD8 100%) !important;
     font-family: var(--font) !important;
 }
 
-/* Subtle grid overlay */
+/* Subtle damask/linen texture overlay */
 .stApp::before {
     content: '';
     position: fixed;
     inset: 0;
     background-image:
-        linear-gradient(rgba(29,111,232,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(29,111,232,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
+        radial-gradient(ellipse at 20% 20%, rgba(155,28,28,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(180,83,9,0.04) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L55 20 L55 40 L30 55 L5 40 L5 20 Z' fill='none' stroke='rgba(155,28,28,0.025)' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: cover, cover, 60px 60px;
     pointer-events: none;
     z-index: 0;
 }
 
 /* ── SIDEBAR ── */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #050D1E 0%, #0B1B3E 100%) !important;
-    border-right: 1px solid var(--border) !important;
+    background: linear-gradient(180deg, #7A1515 0%, #9B1C1C 45%, #7A1515 100%) !important;
+    border-right: 3px solid rgba(180,83,9,0.4) !important;
 }
 
 [data-testid="stSidebar"] > div:first-child {
@@ -88,10 +94,11 @@ st.markdown("""
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: var(--teal-light) !important;
+    color: #FCD34D !important;
+    font-family: var(--display) !important;
     font-weight: 700 !important;
-    letter-spacing: 0.04em !important;
-    font-size: 0.85rem !important;
+    letter-spacing: 0.03em !important;
+    font-size: 0.82rem !important;
     text-transform: uppercase !important;
     margin-bottom: 0.6rem !important;
 }
@@ -99,58 +106,88 @@ st.markdown("""
 [data-testid="stSidebar"] label,
 [data-testid="stSidebar"] p,
 [data-testid="stSidebar"] span {
-    color: var(--text-dim) !important;
+    color: rgba(253,248,240,0.85) !important;
     font-size: 0.82rem !important;
 }
 
-/* Sidebar divider */
 [data-testid="stSidebar"] hr {
-    border-color: var(--border) !important;
+    border-color: rgba(252,211,77,0.25) !important;
     margin: 1rem 0 !important;
 }
 
+/* Sidebar selectbox / inputs */
+[data-testid="stSidebar"] .stSelectbox > div > div {
+    background: rgba(122,21,21,0.6) !important;
+    border: 1px solid rgba(252,211,77,0.3) !important;
+    border-radius: 6px !important;
+    color: #FDF8F0 !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stNumberInput"] input,
+[data-testid="stSidebar"] [data-testid="stTextInput"] input {
+    background: rgba(122,21,21,0.6) !important;
+    border: 1px solid rgba(252,211,77,0.3) !important;
+    border-radius: 6px !important;
+    color: #FDF8F0 !important;
+    font-family: var(--mono) !important;
+    font-size: 0.85rem !important;
+}
+
+[data-testid="stSidebar"] .stRadio label {
+    color: rgba(253,248,240,0.85) !important;
+}
+
+/* Sidebar slider */
+[data-testid="stSidebar"] [data-testid="stSlider"] > div > div > div {
+    background: #FCD34D !important;
+}
+
 /* ── TYPOGRAPHY (MAIN) ── */
-h1 { 
-    color: #FFFFFF !important; 
+h1 {
+    color: var(--charcoal) !important;
+    font-family: var(--display) !important;
     font-weight: 800 !important;
     font-size: 2rem !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: -0.01em !important;
     line-height: 1.2 !important;
 }
 
-h2 { 
-    color: var(--text) !important; 
+h2 {
+    color: var(--crimson-deep) !important;
+    font-family: var(--display) !important;
     font-weight: 700 !important;
-    font-size: 1.25rem !important;
-    letter-spacing: -0.01em !important;
+    font-size: 1.2rem !important;
+    letter-spacing: 0.01em !important;
     border-bottom: 2px solid var(--border) !important;
     padding-bottom: 0.4rem !important;
     margin-bottom: 1rem !important;
 }
 
 h3 {
-    color: var(--teal-light) !important;
+    color: var(--crimson) !important;
+    font-family: var(--display) !important;
     font-weight: 600 !important;
     font-size: 1rem !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.01em !important;
 }
 
 p, li, .stMarkdown p {
-    color: var(--text-dim) !important;
+    color: var(--text-mid) !important;
     font-size: 0.9rem !important;
-    line-height: 1.6 !important;
+    line-height: 1.65 !important;
 }
 
 label { color: var(--text-dim) !important; font-size: 0.82rem !important; }
 
 /* ── METRIC CARDS ── */
 [data-testid="stMetric"] {
-    background: linear-gradient(135deg, var(--surface2), var(--surface3)) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
+    background: linear-gradient(135deg, #FFFFFF 0%, #FDF8F0 100%) !important;
+    border: 1px solid rgba(155,28,28,0.15) !important;
+    border-radius: 10px !important;
     padding: 1.2rem 1.4rem !important;
     position: relative !important;
     overflow: hidden !important;
+    box-shadow: 0 2px 12px var(--shadow-red) !important;
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
@@ -159,124 +196,139 @@ label { color: var(--text-dim) !important; font-size: 0.82rem !important; }
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--blue), var(--teal), var(--amber));
+    background: linear-gradient(90deg, var(--crimson-deep), var(--crimson-soft), var(--gold-light));
+}
+
+[data-testid="stMetric"]::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 60px; height: 60px;
+    border-radius: 50% 0 0 0;
+    background: rgba(155,28,28,0.04);
 }
 
 [data-testid="stMetric"]:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 32px rgba(29,111,232,0.2) !important;
+    box-shadow: 0 6px 24px var(--shadow-red) !important;
 }
 
 [data-testid="stMetricLabel"] {
-    color: var(--text-dim) !important;
-    font-size: 0.75rem !important;
+    color: var(--warm-gray) !important;
+    font-size: 0.72rem !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.1em !important;
+    font-family: var(--font) !important;
 }
 
 [data-testid="stMetricValue"] {
-    color: #FFFFFF !important;
-    font-size: 1.6rem !important;
-    font-weight: 800 !important;
+    color: var(--crimson-deep) !important;
+    font-size: 1.7rem !important;
+    font-weight: 700 !important;
     font-family: var(--mono) !important;
 }
 
-[data-testid="stMetricDelta"] { color: var(--green) !important; }
+[data-testid="stMetricDelta"] { color: var(--gold) !important; }
 
 /* ── BUTTONS ── */
 .stButton > button {
-    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%) !important;
+    background: linear-gradient(135deg, var(--crimson-deep) 0%, var(--crimson-mid) 100%) !important;
     color: #FFFFFF !important;
-    font-weight: 700 !important;
-    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    font-size: 0.84rem !important;
     font-family: var(--font) !important;
-    letter-spacing: 0.04em !important;
-    border: none !important;
-    border-radius: 8px !important;
+    letter-spacing: 0.06em !important;
+    border: 1px solid rgba(180,83,9,0.3) !important;
+    border-radius: 6px !important;
     padding: 0.6rem 1.4rem !important;
     transition: all 0.2s ease !important;
-    box-shadow: 0 4px 16px rgba(29,111,232,0.35) !important;
+    box-shadow: 0 3px 12px var(--shadow-red) !important;
     text-transform: uppercase !important;
 }
 
 .stButton > button:hover {
-    background: linear-gradient(135deg, var(--blue-light) 0%, var(--teal) 100%) !important;
+    background: linear-gradient(135deg, var(--crimson-mid) 0%, var(--crimson-soft) 100%) !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 24px rgba(29,111,232,0.5) !important;
+    box-shadow: 0 5px 20px rgba(155,28,28,0.3) !important;
 }
 
-/* Primary button (sidebar run button) */
 .stButton > button[kind="primary"] {
-    background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%) !important;
-    font-size: 0.9rem !important;
+    background: linear-gradient(135deg, var(--crimson-deep) 0%, #C41E1E 100%) !important;
+    font-size: 0.88rem !important;
     padding: 0.7rem 1.6rem !important;
     width: 100% !important;
+    border: 1px solid rgba(252,211,77,0.4) !important;
 }
 
 /* Download button */
 .stDownloadButton > button {
-    background: linear-gradient(135deg, var(--green) 0%, var(--teal) 100%) !important;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%) !important;
     color: #FFFFFF !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     border: none !important;
-    border-radius: 8px !important;
+    border-radius: 6px !important;
     font-family: var(--font) !important;
     font-size: 0.82rem !important;
     padding: 0.6rem 1.2rem !important;
-    box-shadow: 0 4px 16px rgba(16,185,129,0.3) !important;
+    box-shadow: 0 3px 12px var(--shadow-warm) !important;
     transition: all 0.2s ease !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
 }
 
 .stDownloadButton > button:hover {
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 24px rgba(16,185,129,0.5) !important;
+    box-shadow: 0 5px 20px rgba(180,83,9,0.3) !important;
 }
 
 /* ── DATAFRAME / TABLES ── */
 [data-testid="stDataFrame"],
 div[data-testid="stElementContainer"] > div[data-testid="stDataFrame"] {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 10px !important;
+    background: var(--white) !important;
+    border: 1px solid rgba(155,28,28,0.12) !important;
+    border-radius: 8px !important;
     overflow: hidden !important;
+    box-shadow: 0 2px 8px var(--shadow-red) !important;
 }
 
 .stDataFrame thead tr th {
-    background: linear-gradient(135deg, var(--navy-light), var(--surface3)) !important;
-    color: var(--teal-light) !important;
+    background: linear-gradient(135deg, var(--crimson-deep), var(--crimson)) !important;
+    color: var(--cream) !important;
     font-weight: 700 !important;
-    font-size: 0.78rem !important;
+    font-size: 0.75rem !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.07em !important;
-    border-bottom: 2px solid var(--border) !important;
-    padding: 0.7rem 1rem !important;
+    letter-spacing: 0.09em !important;
+    border-bottom: 2px solid rgba(180,83,9,0.5) !important;
+    padding: 0.75rem 1rem !important;
+    font-family: var(--font) !important;
 }
 
 .stDataFrame tbody tr td {
-    background: var(--surface2) !important;
+    background: var(--white) !important;
     color: var(--text) !important;
     font-family: var(--mono) !important;
     font-size: 0.82rem !important;
-    border-bottom: 1px solid rgba(59,140,240,0.08) !important;
+    border-bottom: 1px solid rgba(155,28,28,0.06) !important;
     padding: 0.55rem 1rem !important;
 }
 
+.stDataFrame tbody tr:nth-child(even) td {
+    background: #FDF8F0 !important;
+}
+
 .stDataFrame tbody tr:hover td {
-    background: var(--surface3) !important;
+    background: #FEE2E2 !important;
 }
 
 /* ── TABS ── */
-[data-testid="stTabs"] [data-testid="stHorizontalBlock"] {
-    gap: 0.25rem !important;
-}
-
 .stTabs [data-baseweb="tab-list"] {
-    background: var(--surface2) !important;
-    border-radius: 10px !important;
+    background: var(--white) !important;
+    border-radius: 8px !important;
     padding: 0.3rem !important;
     gap: 0.2rem !important;
-    border: 1px solid var(--border) !important;
+    border: 1px solid rgba(155,28,28,0.15) !important;
+    box-shadow: 0 2px 8px var(--shadow-red) !important;
 }
 
 .stTabs [data-baseweb="tab"] {
@@ -285,24 +337,25 @@ div[data-testid="stElementContainer"] > div[data-testid="stDataFrame"] {
     font-weight: 600 !important;
     font-size: 0.82rem !important;
     font-family: var(--font) !important;
-    border-radius: 7px !important;
+    border-radius: 6px !important;
     padding: 0.5rem 1.2rem !important;
     transition: all 0.2s ease !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.03em !important;
+    text-transform: uppercase !important;
 }
 
 .stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, var(--blue), var(--teal)) !important;
+    background: linear-gradient(135deg, var(--crimson-deep), var(--crimson-mid)) !important;
     color: #FFFFFF !important;
     font-weight: 700 !important;
-    box-shadow: 0 2px 12px rgba(29,111,232,0.4) !important;
+    box-shadow: 0 2px 10px rgba(155,28,28,0.35) !important;
 }
 
-/* ── SELECT / RADIO / SLIDER ── */
+/* ── SELECT / RADIO / SLIDER (MAIN) ── */
 .stSelectbox > div > div {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
+    background: var(--white) !important;
+    border: 1px solid rgba(155,28,28,0.2) !important;
+    border-radius: 6px !important;
     color: var(--text) !important;
     font-size: 0.85rem !important;
 }
@@ -312,110 +365,114 @@ div[data-testid="stElementContainer"] > div[data-testid="stDataFrame"] {
 }
 
 .stRadio label {
-    color: var(--text-dim) !important;
-    font-size: 0.82rem !important;
+    color: var(--text-mid) !important;
+    font-size: 0.84rem !important;
 }
 
 [data-testid="stSlider"] > div > div > div {
-    background: var(--blue) !important;
+    background: var(--crimson) !important;
 }
 
 /* ── INFO / WARNING / SUCCESS BOXES ── */
 .stAlert {
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     border: none !important;
     font-size: 0.85rem !important;
 }
 
 [data-testid="stInfo"] {
-    background: rgba(29,111,232,0.12) !important;
-    border-left: 4px solid var(--blue) !important;
+    background: rgba(155,28,28,0.07) !important;
+    border-left: 4px solid var(--crimson) !important;
     color: var(--text) !important;
 }
 
 [data-testid="stSuccess"],
 div[data-testid="stAlert"][data-type="success"] {
-    background: rgba(16,185,129,0.12) !important;
-    border-left: 4px solid var(--green) !important;
+    background: rgba(180,83,9,0.08) !important;
+    border-left: 4px solid var(--gold) !important;
     color: var(--text) !important;
 }
 
 [data-testid="stWarning"] {
-    background: rgba(245,158,11,0.12) !important;
-    border-left: 4px solid var(--amber) !important;
+    background: rgba(180,83,9,0.08) !important;
+    border-left: 4px solid var(--gold-light) !important;
     color: var(--text) !important;
 }
 
 /* ── CONTAINERS / BORDERS ── */
 [data-testid="stVerticalBlockBorderWrapper"] {
-    background: linear-gradient(135deg, var(--surface2), var(--surface3)) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
+    background: var(--white) !important;
+    border: 1px solid rgba(155,28,28,0.12) !important;
+    border-radius: 10px !important;
     padding: 1.2rem !important;
+    box-shadow: 0 2px 10px var(--shadow-red) !important;
 }
 
 /* ── EXPANDER ── */
 .streamlit-expanderHeader {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
-    color: var(--text-dim) !important;
+    background: #FDF8F0 !important;
+    border: 1px solid rgba(155,28,28,0.15) !important;
+    border-radius: 6px !important;
+    color: var(--crimson-deep) !important;
     font-size: 0.85rem !important;
     font-weight: 600 !important;
     transition: all 0.2s ease !important;
+    font-family: var(--font) !important;
 }
 
 .streamlit-expanderHeader:hover {
-    background: var(--surface3) !important;
-    color: var(--teal-light) !important;
+    background: #FEE2E2 !important;
+    border-color: rgba(155,28,28,0.3) !important;
 }
 
 .streamlit-expanderContent {
-    background: var(--surface) !important;
-    border: 1px solid var(--border) !important;
+    background: var(--ivory) !important;
+    border: 1px solid rgba(155,28,28,0.12) !important;
     border-top: none !important;
-    border-radius: 0 0 8px 8px !important;
+    border-radius: 0 0 6px 6px !important;
 }
 
 /* ── FILE UPLOADER ── */
 [data-testid="stFileUploader"] {
-    background: var(--surface2) !important;
-    border: 2px dashed rgba(29,111,232,0.35) !important;
-    border-radius: 10px !important;
+    background: rgba(253,248,240,0.8) !important;
+    border: 2px dashed rgba(252,211,77,0.5) !important;
+    border-radius: 8px !important;
     transition: border-color 0.2s ease !important;
 }
 
 [data-testid="stFileUploader"]:hover {
-    border-color: var(--teal) !important;
+    border-color: rgba(252,211,77,0.9) !important;
+    background: rgba(254,226,226,0.3) !important;
 }
 
-/* ── NUMBER INPUT ── */
+/* ── NUMBER INPUT (MAIN) ── */
 [data-testid="stNumberInput"] input {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
+    background: var(--white) !important;
+    border: 1px solid rgba(155,28,28,0.2) !important;
+    border-radius: 6px !important;
     color: var(--text) !important;
     font-family: var(--mono) !important;
     font-size: 0.88rem !important;
 }
 
 [data-testid="stTextInput"] input {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 8px !important;
+    background: var(--white) !important;
+    border: 1px solid rgba(155,28,28,0.2) !important;
+    border-radius: 6px !important;
     color: var(--text) !important;
     font-size: 0.85rem !important;
 }
 
 /* ── MAIN TITLE HEADER BLOCK ── */
 .title-block {
-    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--surface3) 100%);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    background: linear-gradient(135deg, #7A1515 0%, #9B1C1C 50%, #7A1515 100%);
+    border: 1px solid rgba(180,83,9,0.4);
+    border-radius: 14px;
     padding: 2rem 2.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 8px 32px rgba(122,21,21,0.3);
 }
 
 .title-block::before {
@@ -423,40 +480,55 @@ div[data-testid="stAlert"][data-type="success"] {
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--blue), var(--teal), var(--amber), var(--rose));
+    background: linear-gradient(90deg, #FCD34D, #F59E0B, #FCD34D, #B45309);
 }
 
 .title-block::after {
     content: '';
     position: absolute;
-    top: -60px; right: -60px;
-    width: 200px; height: 200px;
+    top: -80px; right: -80px;
+    width: 240px; height: 240px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(14,191,191,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(252,211,77,0.07) 0%, transparent 70%);
+}
+
+/* Decorative left bar on title block */
+.title-block .deco-left {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: linear-gradient(180deg, #FCD34D, #F59E0B, #B45309);
+    border-radius: 14px 0 0 14px;
 }
 
 .title-block h1 {
     margin: 0 0 0.4rem 0 !important;
-    font-size: 1.9rem !important;
+    font-size: 1.85rem !important;
+    color: #FFFFFF !important;
+    font-family: var(--display) !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .title-block p {
     margin: 0 !important;
     font-size: 0.9rem !important;
-    color: var(--text-dim) !important;
+    color: rgba(253,248,240,0.82) !important;
 }
 
 .title-badge {
     display: inline-block;
-    background: linear-gradient(135deg, var(--blue), var(--teal));
-    color: #fff !important;
-    font-size: 0.7rem !important;
+    background: rgba(252,211,77,0.18);
+    border: 1px solid rgba(252,211,77,0.45);
+    color: #FCD34D !important;
+    font-size: 0.68rem !important;
     font-weight: 700 !important;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 0.25rem 0.7rem;
+    padding: 0.25rem 0.8rem;
     border-radius: 100px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.85rem;
+    font-family: var(--font) !important;
 }
 
 /* ── SECTION LABELS ── */
@@ -471,42 +543,61 @@ div[data-testid="stAlert"][data-type="success"] {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--teal), var(--blue));
+    background: linear-gradient(135deg, var(--crimson), var(--gold));
     flex-shrink: 0;
 }
 
 /* ── PLOTLY CHART WRAPPER ── */
 [data-testid="stPlotlyChart"] {
-    background: var(--surface2) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
+    background: var(--white) !important;
+    border: 1px solid rgba(155,28,28,0.12) !important;
+    border-radius: 10px !important;
     padding: 0.5rem !important;
     overflow: hidden !important;
+    box-shadow: 0 2px 10px var(--shadow-red) !important;
 }
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--navy-light); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: rgba(155,28,28,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--crimson); }
 
 /* ── BEST METHOD BADGE ── */
 .best-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(14,191,191,0.15));
-    border: 1px solid rgba(16,185,129,0.4);
-    border-radius: 10px;
-    padding: 0.8rem 1.4rem;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, rgba(155,28,28,0.07), rgba(180,83,9,0.05));
+    border: 1px solid rgba(155,28,28,0.25);
+    border-left: 4px solid var(--crimson);
+    border-radius: 8px;
+    padding: 0.85rem 1.4rem;
     margin: 1rem 0;
     font-family: var(--font);
 }
 
 .best-badge span {
-    color: var(--green) !important;
+    color: var(--crimson-deep) !important;
     font-weight: 700 !important;
     font-size: 0.9rem !important;
+}
+
+/* ── DIVIDER ── */
+hr {
+    border-color: rgba(155,28,28,0.12) !important;
+}
+
+/* ── STALE CAPTION / SMALL TEXT ── */
+.stCaption, small {
+    color: var(--text-dim) !important;
+    font-size: 0.78rem !important;
+}
+
+/* ── COLUMN HEADERS IN MAIN ── */
+[data-testid="column"] h3 {
+    color: var(--crimson) !important;
+    font-family: var(--display) !important;
 }
 
 </style>
@@ -597,41 +688,41 @@ def make_future_labels(period_dates, existing_labels, horizon: int):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  FUNGSI GRAFIK PLOTLY — professional dark theme
+#  FUNGSI GRAFIK PLOTLY — Formal Red & Cream Theme
 # ─────────────────────────────────────────────────────────────────────────────
 
 PLOT_LAYOUT = dict(
-    paper_bgcolor="rgba(15,34,64,0)",
-    plot_bgcolor="rgba(15,34,64,0)",
-    font=dict(family="Plus Jakarta Sans, sans-serif", color="#93B4DB", size=11),
+    paper_bgcolor="rgba(255,255,255,0)",
+    plot_bgcolor="rgba(253,248,240,0.4)",
+    font=dict(family="Source Sans 3, sans-serif", color="#78716C", size=11),
     xaxis=dict(
-        gridcolor="rgba(59,140,240,0.08)",
-        linecolor="rgba(59,140,240,0.2)",
-        tickfont=dict(color="#93B4DB", size=10),
-        title_font=dict(color="#93B4DB"),
-        zerolinecolor="rgba(59,140,240,0.15)",
+        gridcolor="rgba(155,28,28,0.07)",
+        linecolor="rgba(155,28,28,0.15)",
+        tickfont=dict(color="#78716C", size=10),
+        title_font=dict(color="#44403C"),
+        zerolinecolor="rgba(155,28,28,0.1)",
     ),
     yaxis=dict(
-        gridcolor="rgba(59,140,240,0.08)",
-        linecolor="rgba(59,140,240,0.2)",
-        tickfont=dict(color="#93B4DB", size=10),
-        title_font=dict(color="#93B4DB"),
-        zerolinecolor="rgba(59,140,240,0.15)",
+        gridcolor="rgba(155,28,28,0.07)",
+        linecolor="rgba(155,28,28,0.15)",
+        tickfont=dict(color="#78716C", size=10),
+        title_font=dict(color="#44403C"),
+        zerolinecolor="rgba(155,28,28,0.1)",
     ),
     legend=dict(
-        bgcolor="rgba(11,27,62,0.85)",
-        bordercolor="rgba(59,140,240,0.3)",
+        bgcolor="rgba(253,248,240,0.92)",
+        bordercolor="rgba(155,28,28,0.2)",
         borderwidth=1,
-        font=dict(color="#E8F0FE", size=11),
+        font=dict(color="#1C1917", size=11),
         orientation="h",
         yanchor="bottom", y=1.02,
         xanchor="right", x=1,
     ),
     hovermode="x unified",
     hoverlabel=dict(
-        bgcolor="rgba(11,27,62,0.95)",
-        bordercolor="rgba(59,140,240,0.4)",
-        font=dict(color="#E8F0FE", size=11, family="JetBrains Mono, monospace"),
+        bgcolor="rgba(122,21,21,0.92)",
+        bordercolor="rgba(180,83,9,0.5)",
+        font=dict(color="#FDF8F0", size=11, family="JetBrains Mono, monospace"),
     ),
     margin=dict(l=20, r=20, t=50, b=30),
 )
@@ -641,16 +732,16 @@ def plot_actual_forecast(periods, actual, forecast, title):
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=periods, y=actual, mode="lines+markers", name="Aktual",
-        line=dict(color="#1D6FE8", width=2.5),
-        marker=dict(size=6, color="#1D6FE8", line=dict(color="#FFFFFF", width=1.2)),
+        line=dict(color="#9B1C1C", width=2.5),
+        marker=dict(size=6, color="#9B1C1C", line=dict(color="#FFFFFF", width=1.2)),
     ))
     fig.add_trace(go.Scatter(
         x=periods, y=forecast, mode="lines+markers", name="Forecast",
-        line=dict(color="#F59E0B", width=2.5),
-        marker=dict(size=6, color="#F59E0B", symbol="diamond", line=dict(color="#FFFFFF", width=1.2)),
+        line=dict(color="#B45309", width=2.5),
+        marker=dict(size=6, color="#B45309", symbol="diamond", line=dict(color="#FFFFFF", width=1.2)),
     ))
     layout = dict(PLOT_LAYOUT)
-    layout["title"] = dict(text=title, font=dict(color="#E8F0FE", size=14, family="Plus Jakarta Sans"), x=0.02)
+    layout["title"] = dict(text=title, font=dict(color="#1C1917", size=14, family="Playfair Display, serif"), x=0.02)
     layout["xaxis"] = dict(PLOT_LAYOUT["xaxis"], title="Periode")
     layout["yaxis"] = dict(PLOT_LAYOUT["yaxis"], title="Nilai")
     fig.update_layout(**layout)
@@ -661,8 +752,8 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=all_periods, y=actual_values, mode="lines+markers", name="Data Historis",
-        line=dict(color="#1D6FE8", width=2.5),
-        marker=dict(size=5, color="#1D6FE8", line=dict(color="#FFFFFF", width=1)),
+        line=dict(color="#9B1C1C", width=2.5),
+        marker=dict(size=5, color="#9B1C1C", line=dict(color="#FFFFFF", width=1)),
     ))
     if residual_std > 0:
         upper_bound = future_forecast + (1.96 * residual_std)
@@ -671,18 +762,18 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
             x=future_periods + future_periods[::-1],
             y=list(upper_bound) + list(lower_bound[::-1]),
             fill="toself",
-            fillcolor="rgba(14,191,191,0.10)",
-            line=dict(color="rgba(14,191,191,0.25)", width=1),
+            fillcolor="rgba(180,83,9,0.10)",
+            line=dict(color="rgba(180,83,9,0.25)", width=1),
             name="Interval Keyakinan 95%",
             hoverinfo="skip",
         ))
     fig.add_trace(go.Scatter(
         x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi",
-        line=dict(color="#0EBFBF", width=2.5, dash="dash"),
-        marker=dict(size=7, color="#0EBFBF", symbol="star", line=dict(color="#FFFFFF", width=1.5)),
+        line=dict(color="#B45309", width=2.5, dash="dash"),
+        marker=dict(size=7, color="#D97706", symbol="star", line=dict(color="#FFFFFF", width=1.5)),
     ))
     layout = dict(PLOT_LAYOUT)
-    layout["title"] = dict(text="Grafik Proyeksi Nilai Masa Depan", font=dict(color="#E8F0FE", size=14, family="Plus Jakarta Sans"), x=0.02)
+    layout["title"] = dict(text="Grafik Proyeksi Nilai Masa Depan", font=dict(color="#1C1917", size=14, family="Playfair Display, serif"), x=0.02)
     layout["xaxis"] = dict(PLOT_LAYOUT["xaxis"], title="Periode")
     layout["yaxis"] = dict(PLOT_LAYOUT["yaxis"], title="Nilai")
     fig.update_layout(**layout)
@@ -880,7 +971,7 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
         best_df = pd.DataFrame({"Periode": future_labels, "Forecast Utama": future_forecast})
         best_df.to_excel(writer, index=False, sheet_name='Proyeksi_Metode_Terbaik')
         workbook = writer.book
-        header_format = workbook.add_format({'bold': True, 'bg_color': '#1D6FE8', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#9B1C1C', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
         text_format = workbook.add_format({'border': 1, 'align': 'left'})
         ws1 = writer.sheets['Perbandingan_Metode']
@@ -907,7 +998,7 @@ def convert_df_to_excel(df):
         workbook = writer.book
         worksheet = writer.sheets['Hasil_Proyeksi']
         worksheet.set_row(0, 24)
-        header_format = workbook.add_format({'bold': True, 'bg_color': '#1D6FE8', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#9B1C1C', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
         text_format = workbook.add_format({'border': 1, 'align': 'left'})
         for col_num, value in enumerate(df.columns.values):
@@ -925,6 +1016,7 @@ def convert_df_to_excel(df):
 # Header utama
 st.markdown("""
 <div class="title-block">
+    <div class="deco-left"></div>
     <div class="title-badge">📊 Analytical Intelligence Platform</div>
     <h1>✦ Dashboard Peramalan Data Historis</h1>
     <p>Aplikasi analitik interaktif berbasis sains data untuk menghitung peramalan tingkat lanjut dengan 10 metode statistik.</p>
@@ -1072,11 +1164,11 @@ with tab_data:
         roll_fig = go.Figure()
         roll_fig.add_trace(go.Scatter(
             x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines",
-            line=dict(color="#1D6FE8", width=2)
+            line=dict(color="#9B1C1C", width=2)
         ))
         roll_fig.add_trace(go.Scatter(
             x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Rolling Mean",
-            line=dict(dash="dot", color="#0EBFBF", width=2)
+            line=dict(dash="dot", color="#B45309", width=2)
         ))
         rl = dict(PLOT_LAYOUT)
         rl["height"] = 320
@@ -1088,13 +1180,13 @@ with tab_grafik:
     history_fig = go.Figure()
     history_fig.add_trace(go.Scatter(
         x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual",
-        line=dict(color="#7C3AED", width=2.5),
-        marker=dict(size=5, color="#7C3AED", line=dict(color="#FFFFFF", width=1)),
+        line=dict(color="#9B1C1C", width=2.5),
+        marker=dict(size=5, color="#9B1C1C", line=dict(color="#FFFFFF", width=1)),
         fill="tozeroy",
-        fillcolor="rgba(124,58,237,0.07)",
+        fillcolor="rgba(155,28,28,0.07)",
     ))
     hl = dict(PLOT_LAYOUT)
-    hl["title"] = dict(text="Visualisasi Runtun Waktu Historis", font=dict(color="#E8F0FE", size=14), x=0.02)
+    hl["title"] = dict(text="Visualisasi Runtun Waktu Historis", font=dict(color="#1C1917", size=14, family="Playfair Display, serif"), x=0.02)
     hl["xaxis"] = dict(PLOT_LAYOUT["xaxis"], title="Periode")
     hl["yaxis"] = dict(PLOT_LAYOUT["yaxis"], title="Nilai")
     history_fig.update_layout(**hl)
@@ -1181,7 +1273,7 @@ with tab_grafik:
             st.markdown(f"""
             <div class="best-badge">
                 <span>✅ Rekomendasi Model Terbaik:</span>
-                <span style="color:#0EBFBF !important; font-size:1rem !important;">{best_method}</span>
+                <span style="color:#B45309 !important; font-size:1rem !important;">{best_method}</span>
             </div>
             """, unsafe_allow_html=True)
 
