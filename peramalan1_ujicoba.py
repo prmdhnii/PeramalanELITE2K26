@@ -1,3 +1,20 @@
+import warnings
+warnings.filterwarnings("ignore")
+
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+import streamlit as st  # <--- Pastikan baris ini ada SEBELUM st.set_page_config
+import io
+
+try:
+    from statsmodels.tsa.holtwinters import ExponentialSmoothing, SimpleExpSmoothing
+    from statsmodels.tsa.arima.model import ARIMA
+    STATSMODELS_AVAILABLE = True
+except Exception:
+    STATSMODELS_AVAILABLE = False
+
+# Sekarang Streamlit sudah di-import, fungsi ini tidak akan error lagi
 st.set_page_config(
     page_title="Dashboard Peramalan Modern",
     page_icon="📈",
@@ -5,10 +22,11 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# PERBARUAN: SUNTIKAN CSS - MODERN, FORMAL & COLORFUL PREMIUM SLATE STYLE
+# SUNTIKAN CSS - MODERN, FORMAL & COLORFUL PREMIUM SLATE STYLE
 # ==============================================================================
 st.markdown("""
     <style>
+    /* ... kode CSS yang kemarin dilanjutkan di sini ... */
     /* 1. Background utama slate premium */
     .stApp {
         background-color: #0b0f19 !important;
