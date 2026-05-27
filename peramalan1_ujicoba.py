@@ -26,89 +26,88 @@ st.set_page_config(
 # ==============================================================================
 st.markdown("""
     <style>
-    /* ... kode CSS yang kemarin dilanjutkan di sini ... */
-    /* 1. Background utama slate premium */
+    /* 1. Latar Belakang Utama */
     .stApp {
         background-color: #0b0f19 !important;
-        background-image: radial-gradient(at 0% 0%, rgba(30, 41, 59, 0.3) 0, transparent 50%), 
-                          radial-gradient(at 50% 0%, rgba(79, 70, 229, 0.05) 0, transparent 50%) !important;
+        background-image: radial-gradient(at 0% 0%, rgba(30, 41, 59, 0.4) 0, transparent 50%), 
+                          radial-gradient(at 50% 0%, rgba(79, 70, 229, 0.1) 0, transparent 50%) !important;
     }
 
-    /* 2. Styling Container & Tabel (Dataframe) */
+    /* 2. Styling Wadah Konten & Dataframe (Tabel) */
     [data-testid="stDataFrame"], 
-    div[data-testid="stElementContainer"] div[data-style="border"] {
+    div[data-testid="stElementContainer"] div[data-style="border"],
+    .stCustomBlockContainer {
         background-color: #131c2e !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         border-radius: 12px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
     }
     
-    /* Perbaikan tampilan internal tabel streamlit */
-    .stDataFrame div {
-        background-color: #131c2e !important;
-    }
-    
-    /* 3. Tipografi & Judul Modern */
-    h1, h2, h3, h4, p, label, .stMarkdown, .stText {
+    /* 3. Tipografi Aman (Menghindari Teks Hilang) */
+    h1, h2, h3, h4, .stMarkdown p, label [data-testid="stMarkdownContainer"] p {
         color: #f1f5f9 !important; 
         font-family: 'Inter', 'Segoe UI', sans-serif !important;
     }
     
-    /* Judul Utama dengan efek Gradien Colorful */
+    /* Judul Utama dengan Gradien Colorful */
     .main-title {
-        font-size: 2.5rem !important;
+        font-size: 2.3rem !important;
         font-weight: 800 !important;
         background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        padding-top: 10px;
     }
 
-    /* 4. Sidebar dengan pembatas warna neon tipis */
+    /* 4. Panel Kontrol Kiri (Sidebar) */
     [data-testid="stSidebar"] {
         background-color: #070a12 !important;
         border-right: 1px solid rgba(99, 102, 241, 0.15) !important;
     }
+    
+    /* Memastikan teks di dalam sidebar tetap terlihat jelas */
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] label {
+        color: #f8fafc !important;
+    }
 
-    /* 5. Tombol Utama (Gradien Modern & Hover Effect) */
+    /* 5. Tombol Utama (Gradien & Efek Hover Modern) */
     button[kind="primary"] {
         background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
         color: #ffffff !important;
         font-weight: 600 !important;
         border-radius: 8px !important;
         border: none !important;
-        padding: 0.6rem 1.5rem !important;
-        transition: all 0.3s ease !important;
+        padding: 0.5rem 1.5rem !important;
         box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+        transition: all 0.2s ease !important;
     }
     
     button[kind="primary"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5) !important;
-        background: linear-gradient(135deg, #5a52e6 0%, #8b46f7 100%) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4) !important;
     }
 
-    /* Target umum untuk tombol standard lainnya */
-    div.stButton > button {
-        border-radius: 8px !important;
-    }
-
-    /* 6. Tabs styling Custom */
+    /* 6. Tabs Navigasi Modern */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background-color: rgba(255,255,255,0.03);
+        background-color: rgba(255, 255, 255, 0.03);
         padding: 6px;
         border-radius: 10px;
+        border-bottom: none !important;
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 6px !important;
         color: #94a3b8 !important;
-        padding: 6px 16px !important;
+        padding: 8px 16px !important;
+        border-bottom: none !important;
     }
     .stTabs [aria-selected="true"] {
         background-color: #4f46e5 !important;
-        color: white !important;
-        font-weight: 600;
+        color: #ffffff !important;
+        font-weight: 600 !important;
     }
     </style>
 """, unsafe_allow_html=True)
