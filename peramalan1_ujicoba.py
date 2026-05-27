@@ -16,59 +16,506 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Dashboard Peramalan Colorful",
+    page_title="Dashboard Peramalan",
     page_icon="📈",
     layout="wide"
 )
 
-# Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
+# ─────────────────────────────────────────────────────────────────────────────
+#  INJEKSI CSS — FORMAL + COLORFUL PROFESSIONAL THEME
+# ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
-    <style>
-    /* 1. Background utama yang elegan */
-    .stApp {
-        background-color: #0f172a !important;
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
-    /* 2. Styling Tabel (Dataframe) */
-    [data-testid="stDataFrame"], 
-    div[data-testid="stElementContainer"] {
-        background-color: #1e293b !important;
-        border: 1px solid #334155 !important;
-        border-radius: 8px !important;
-    }
-    
-    table, th, td, tr {
-        background-color: #1e293b !important;
-        color: #f8fafc !important; 
-        border-bottom: 1px solid #334155 !important;
-    }
-    
-    /* 3. Tipografi: Putih agar kontras di latar gelap */
-    h1, h2, h3, h4, p, label, .stMarkdown, .stText, .stButton {
-        color: #f8fafc !important; 
-        font-family: 'Segoe UI', sans-serif !important;
-    }
+/* ── ROOT VARIABLES ── */
+:root {
+    --navy:       #0B1B3E;
+    --navy-mid:   #122252;
+    --navy-light: #1A2F6B;
+    --blue:       #1D6FE8;
+    --blue-light: #3B8CF0;
+    --teal:       #0EBFBF;
+    --teal-light: #30D9D9;
+    --amber:      #F59E0B;
+    --amber-light:#FCD34D;
+    --rose:       #F43F5E;
+    --violet:     #7C3AED;
+    --green:      #10B981;
+    --surface:    #0F2240;
+    --surface2:   #152B4E;
+    --surface3:   #1C3762;
+    --border:     rgba(59, 140, 240, 0.18);
+    --text:       #E8F0FE;
+    --text-dim:   #93B4DB;
+    --font:       'Plus Jakarta Sans', sans-serif;
+    --mono:       'JetBrains Mono', monospace;
+}
 
-    /* 4. Sidebar dengan warna lebih gelap */
-    [data-testid="stSidebar"] {
-        background-color: #020617 !important;
-    }
+/* ── GLOBAL RESET ── */
+*, *::before, *::after { box-sizing: border-box; }
 
-    /* 5. Tombol dengan warna aksen (Neon Blue/Indigo) */
-    button {
-        background-color: #4f46e5 !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        border-radius: 5px !important;
-        border: none !important;
-    }
-    
-    button:hover {
-        background-color: #6366f1 !important;
-    }
-    </style>
+/* ── APP BACKGROUND ── */
+.stApp {
+    background: linear-gradient(135deg, #060E22 0%, #0B1B3E 50%, #071428 100%) !important;
+    font-family: var(--font) !important;
+}
+
+/* Subtle grid overlay */
+.stApp::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(29,111,232,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,111,232,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── SIDEBAR ── */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #050D1E 0%, #0B1B3E 100%) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 1.5rem;
+}
+
+/* Sidebar headers */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: var(--teal-light) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    font-size: 0.85rem !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.6rem !important;
+}
+
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] span {
+    color: var(--text-dim) !important;
+    font-size: 0.82rem !important;
+}
+
+/* Sidebar divider */
+[data-testid="stSidebar"] hr {
+    border-color: var(--border) !important;
+    margin: 1rem 0 !important;
+}
+
+/* ── TYPOGRAPHY (MAIN) ── */
+h1 { 
+    color: #FFFFFF !important; 
+    font-weight: 800 !important;
+    font-size: 2rem !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1.2 !important;
+}
+
+h2 { 
+    color: var(--text) !important; 
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    letter-spacing: -0.01em !important;
+    border-bottom: 2px solid var(--border) !important;
+    padding-bottom: 0.4rem !important;
+    margin-bottom: 1rem !important;
+}
+
+h3 {
+    color: var(--teal-light) !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.02em !important;
+}
+
+p, li, .stMarkdown p {
+    color: var(--text-dim) !important;
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+}
+
+label { color: var(--text-dim) !important; font-size: 0.82rem !important; }
+
+/* ── METRIC CARDS ── */
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, var(--surface2), var(--surface3)) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 1.2rem 1.4rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+[data-testid="stMetric"]::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--teal), var(--amber));
+}
+
+[data-testid="stMetric"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 32px rgba(29,111,232,0.2) !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: var(--text-dim) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: #FFFFFF !important;
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    font-family: var(--mono) !important;
+}
+
+[data-testid="stMetricDelta"] { color: var(--green) !important; }
+
+/* ── BUTTONS ── */
+.stButton > button {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    font-family: var(--font) !important;
+    letter-spacing: 0.04em !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 1.4rem !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 16px rgba(29,111,232,0.35) !important;
+    text-transform: uppercase !important;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, var(--blue-light) 0%, var(--teal) 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 24px rgba(29,111,232,0.5) !important;
+}
+
+/* Primary button (sidebar run button) */
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%) !important;
+    font-size: 0.9rem !important;
+    padding: 0.7rem 1.6rem !important;
+    width: 100% !important;
+}
+
+/* Download button */
+.stDownloadButton > button {
+    background: linear-gradient(135deg, var(--green) 0%, var(--teal) 100%) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-family: var(--font) !important;
+    font-size: 0.82rem !important;
+    padding: 0.6rem 1.2rem !important;
+    box-shadow: 0 4px 16px rgba(16,185,129,0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+.stDownloadButton > button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 24px rgba(16,185,129,0.5) !important;
+}
+
+/* ── DATAFRAME / TABLES ── */
+[data-testid="stDataFrame"],
+div[data-testid="stElementContainer"] > div[data-testid="stDataFrame"] {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+.stDataFrame thead tr th {
+    background: linear-gradient(135deg, var(--navy-light), var(--surface3)) !important;
+    color: var(--teal-light) !important;
+    font-weight: 700 !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+    border-bottom: 2px solid var(--border) !important;
+    padding: 0.7rem 1rem !important;
+}
+
+.stDataFrame tbody tr td {
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    font-family: var(--mono) !important;
+    font-size: 0.82rem !important;
+    border-bottom: 1px solid rgba(59,140,240,0.08) !important;
+    padding: 0.55rem 1rem !important;
+}
+
+.stDataFrame tbody tr:hover td {
+    background: var(--surface3) !important;
+}
+
+/* ── TABS ── */
+[data-testid="stTabs"] [data-testid="stHorizontalBlock"] {
+    gap: 0.25rem !important;
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    background: var(--surface2) !important;
+    border-radius: 10px !important;
+    padding: 0.3rem !important;
+    gap: 0.2rem !important;
+    border: 1px solid var(--border) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: transparent !important;
+    color: var(--text-dim) !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    font-family: var(--font) !important;
+    border-radius: 7px !important;
+    padding: 0.5rem 1.2rem !important;
+    transition: all 0.2s ease !important;
+    letter-spacing: 0.02em !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, var(--blue), var(--teal)) !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 12px rgba(29,111,232,0.4) !important;
+}
+
+/* ── SELECT / RADIO / SLIDER ── */
+.stSelectbox > div > div {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    font-size: 0.85rem !important;
+}
+
+.stRadio > div {
+    gap: 0.5rem !important;
+}
+
+.stRadio label {
+    color: var(--text-dim) !important;
+    font-size: 0.82rem !important;
+}
+
+[data-testid="stSlider"] > div > div > div {
+    background: var(--blue) !important;
+}
+
+/* ── INFO / WARNING / SUCCESS BOXES ── */
+.stAlert {
+    border-radius: 10px !important;
+    border: none !important;
+    font-size: 0.85rem !important;
+}
+
+[data-testid="stInfo"] {
+    background: rgba(29,111,232,0.12) !important;
+    border-left: 4px solid var(--blue) !important;
+    color: var(--text) !important;
+}
+
+[data-testid="stSuccess"],
+div[data-testid="stAlert"][data-type="success"] {
+    background: rgba(16,185,129,0.12) !important;
+    border-left: 4px solid var(--green) !important;
+    color: var(--text) !important;
+}
+
+[data-testid="stWarning"] {
+    background: rgba(245,158,11,0.12) !important;
+    border-left: 4px solid var(--amber) !important;
+    color: var(--text) !important;
+}
+
+/* ── CONTAINERS / BORDERS ── */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: linear-gradient(135deg, var(--surface2), var(--surface3)) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 1.2rem !important;
+}
+
+/* ── EXPANDER ── */
+.streamlit-expanderHeader {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    color: var(--text-dim) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+.streamlit-expanderHeader:hover {
+    background: var(--surface3) !important;
+    color: var(--teal-light) !important;
+}
+
+.streamlit-expanderContent {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-top: none !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+/* ── FILE UPLOADER ── */
+[data-testid="stFileUploader"] {
+    background: var(--surface2) !important;
+    border: 2px dashed rgba(29,111,232,0.35) !important;
+    border-radius: 10px !important;
+    transition: border-color 0.2s ease !important;
+}
+
+[data-testid="stFileUploader"]:hover {
+    border-color: var(--teal) !important;
+}
+
+/* ── NUMBER INPUT ── */
+[data-testid="stNumberInput"] input {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    font-family: var(--mono) !important;
+    font-size: 0.88rem !important;
+}
+
+[data-testid="stTextInput"] input {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    font-size: 0.85rem !important;
+}
+
+/* ── MAIN TITLE HEADER BLOCK ── */
+.title-block {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--surface3) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.title-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue), var(--teal), var(--amber), var(--rose));
+}
+
+.title-block::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14,191,191,0.08) 0%, transparent 70%);
+}
+
+.title-block h1 {
+    margin: 0 0 0.4rem 0 !important;
+    font-size: 1.9rem !important;
+}
+
+.title-block p {
+    margin: 0 !important;
+    font-size: 0.9rem !important;
+    color: var(--text-dim) !important;
+}
+
+.title-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    color: #fff !important;
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 100px;
+    margin-bottom: 0.8rem;
+}
+
+/* ── SECTION LABELS ── */
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.section-label-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    flex-shrink: 0;
+}
+
+/* ── PLOTLY CHART WRAPPER ── */
+[data-testid="stPlotlyChart"] {
+    background: var(--surface2) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
+    overflow: hidden !important;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--navy-light); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* ── BEST METHOD BADGE ── */
+.best-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(14,191,191,0.15));
+    border: 1px solid rgba(16,185,129,0.4);
+    border-radius: 10px;
+    padding: 0.8rem 1.4rem;
+    margin: 1rem 0;
+    font-family: var(--font);
+}
+
+.best-badge span {
+    color: var(--green) !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+}
+
+</style>
 """, unsafe_allow_html=True)
-# --- FUNGSI PROSES DAN PERHITUNGAN DASAR ---
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  FUNGSI PROSES DAN PERHITUNGAN DASAR  (tidak diubah)
+# ─────────────────────────────────────────────────────────────────────────────
 
 def clean_numeric_series(series: pd.Series) -> pd.Series:
     numeric = pd.to_numeric(series, errors="coerce")
@@ -87,28 +534,16 @@ def safe_mape(actual, forecast):
 def calculate_error_table(periods, actual, forecast):
     actual = np.array(actual, dtype=float)
     forecast = np.array(forecast, dtype=float)
-
     error = actual - forecast
     abs_error = np.abs(error)
     squared_error = error ** 2
     ape = np.where(actual != 0, np.abs(error / actual) * 100, np.nan)
-
     result_df = pd.DataFrame({
-        "Periode": periods,
-        "Aktual": actual,
-        "Forecast": forecast,
-        "Error": error,
-        "Absolute Error": abs_error,
-        "Squared Error": squared_error,
-        "APE (%)": ape
+        "Periode": periods, "Aktual": actual, "Forecast": forecast,
+        "Error": error, "Absolute Error": abs_error,
+        "Squared Error": squared_error, "APE (%)": ape
     })
-
-    metrics = {
-        "MAD": np.mean(abs_error),
-        "MSE": np.mean(squared_error),
-        "MAPE": safe_mape(actual, forecast)
-    }
-
+    metrics = {"MAD": np.mean(abs_error), "MSE": np.mean(squared_error), "MAPE": safe_mape(actual, forecast)}
     return result_df, metrics
 
 
@@ -116,7 +551,6 @@ def split_train_test(values: np.ndarray, test_percentage: int):
     n = len(values)
     test_size = max(1, int(round(n * test_percentage / 100)))
     test_size = min(test_size, n - 2)
-
     train = values[:-test_size]
     test = values[-test_size:]
     return train, test, test_size
@@ -137,11 +571,9 @@ def parse_weights(weight_text: str):
 def make_period_labels(df: pd.DataFrame, period_col):
     if period_col is None:
         return [f"Periode {i}" for i in range(1, len(df) + 1)], None
-
     raw_period = df[period_col]
     parsed = pd.to_datetime(raw_period, errors="coerce")
     valid_ratio = parsed.notna().mean()
-
     if valid_ratio >= 0.7:
         return parsed.dt.strftime("%Y-%m-%d").fillna(raw_period.astype(str)).tolist(), parsed
     return raw_period.astype(str).tolist(), None
@@ -154,72 +586,112 @@ def make_future_labels(period_dates, existing_labels, horizon: int):
             inferred_freq = pd.infer_freq(valid_dates)
         except Exception:
             inferred_freq = None
-
         last_date = valid_dates.iloc[-1]
         if inferred_freq is not None:
-            future_dates = pd.date_range(
-                start=last_date,
-                periods=horizon + 1,
-                freq=inferred_freq
-            )[1:]
+            future_dates = pd.date_range(start=last_date, periods=horizon + 1, freq=inferred_freq)[1:]
             return future_dates.strftime("%Y-%m-%d").tolist()
-
         delta = valid_dates.iloc[-1] - valid_dates.iloc[-2]
         future_dates = [last_date + (i * delta) for i in range(1, horizon + 1)]
         return [d.strftime("%Y-%m-%d") for d in future_dates]
-
     return [f"Periode {len(existing_labels) + i}" for i in range(1, horizon + 1)]
 
 
-# --- FUNGSI GRAFIK PLOTLY (COLORFUL & VIBRANT THESIS STYLE) ---
+# ─────────────────────────────────────────────────────────────────────────────
+#  FUNGSI GRAFIK PLOTLY — professional dark theme
+# ─────────────────────────────────────────────────────────────────────────────
+
+PLOT_LAYOUT = dict(
+    paper_bgcolor="rgba(15,34,64,0)",
+    plot_bgcolor="rgba(15,34,64,0)",
+    font=dict(family="Plus Jakarta Sans, sans-serif", color="#93B4DB", size=11),
+    xaxis=dict(
+        gridcolor="rgba(59,140,240,0.08)",
+        linecolor="rgba(59,140,240,0.2)",
+        tickfont=dict(color="#93B4DB", size=10),
+        title_font=dict(color="#93B4DB"),
+        zerolinecolor="rgba(59,140,240,0.15)",
+    ),
+    yaxis=dict(
+        gridcolor="rgba(59,140,240,0.08)",
+        linecolor="rgba(59,140,240,0.2)",
+        tickfont=dict(color="#93B4DB", size=10),
+        title_font=dict(color="#93B4DB"),
+        zerolinecolor="rgba(59,140,240,0.15)",
+    ),
+    legend=dict(
+        bgcolor="rgba(11,27,62,0.85)",
+        bordercolor="rgba(59,140,240,0.3)",
+        borderwidth=1,
+        font=dict(color="#E8F0FE", size=11),
+        orientation="h",
+        yanchor="bottom", y=1.02,
+        xanchor="right", x=1,
+    ),
+    hovermode="x unified",
+    hoverlabel=dict(
+        bgcolor="rgba(11,27,62,0.95)",
+        bordercolor="rgba(59,140,240,0.4)",
+        font=dict(color="#E8F0FE", size=11, family="JetBrains Mono, monospace"),
+    ),
+    margin=dict(l=20, r=20, t=50, b=30),
+)
+
 
 def plot_actual_forecast(periods, actual, forecast, title):
     fig = go.Figure()
-    # Warna Aktual: Indigo Cerah
-    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Aktual", line=dict(color='#4F46E5', width=3)))
-    # Warna Forecast: Pink/Neon Red Cerah
-    fig.add_trace(go.Scatter(x=periods, y=forecast, mode="lines+markers", name="Forecast", line=dict(color='#EC4899', width=3)))
-    fig.update_layout(title=title, xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white")
+    fig.add_trace(go.Scatter(
+        x=periods, y=actual, mode="lines+markers", name="Aktual",
+        line=dict(color="#1D6FE8", width=2.5),
+        marker=dict(size=6, color="#1D6FE8", line=dict(color="#FFFFFF", width=1.2)),
+    ))
+    fig.add_trace(go.Scatter(
+        x=periods, y=forecast, mode="lines+markers", name="Forecast",
+        line=dict(color="#F59E0B", width=2.5),
+        marker=dict(size=6, color="#F59E0B", symbol="diamond", line=dict(color="#FFFFFF", width=1.2)),
+    ))
+    layout = dict(PLOT_LAYOUT)
+    layout["title"] = dict(text=title, font=dict(color="#E8F0FE", size=14, family="Plus Jakarta Sans"), x=0.02)
+    layout["xaxis"] = dict(PLOT_LAYOUT["xaxis"], title="Periode")
+    layout["yaxis"] = dict(PLOT_LAYOUT["yaxis"], title="Nilai")
+    fig.update_layout(**layout)
     return fig
 
 
 def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, future_forecast, residual_std=0):
     fig = go.Figure()
-    
-    # Historis (Vibrant Indigo)
-    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Aktual Historis", line=dict(color='#4F46E5', width=3)))
-    
-    # Interval Keyakinan (Soft Pink Transparent)
+    fig.add_trace(go.Scatter(
+        x=all_periods, y=actual_values, mode="lines+markers", name="Data Historis",
+        line=dict(color="#1D6FE8", width=2.5),
+        marker=dict(size=5, color="#1D6FE8", line=dict(color="#FFFFFF", width=1)),
+    ))
     if residual_std > 0:
         upper_bound = future_forecast + (1.96 * residual_std)
-        lower_bound = future_forecast - (1.96 * residual_std)
-        lower_bound = np.clip(lower_bound, 0, None)
-        
+        lower_bound = np.clip(future_forecast - (1.96 * residual_std), 0, None)
         fig.add_trace(go.Scatter(
             x=future_periods + future_periods[::-1],
             y=list(upper_bound) + list(lower_bound[::-1]),
-            fill='toself',
-            fillcolor='rgba(236, 72, 153, 0.15)',
-            line=dict(color='rgba(255,255,255,0)'),
+            fill="toself",
+            fillcolor="rgba(14,191,191,0.10)",
+            line=dict(color="rgba(14,191,191,0.25)", width=1),
+            name="Interval Keyakinan 95%",
             hoverinfo="skip",
-            showlegend=True,
-            name="Interval Keyakinan (95%)"
         ))
-
-    # Garis Forecast Masa Depan (Vibrant Pink Putus-putus)
-    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi Utama", line=dict(color='#EC4899', width=3, dash='dash')))
-
-    fig.update_layout(
-        title="Grafik Proyeksi Nilai Masa Depan",
-        xaxis_title="Periode",
-        yaxis_title="Nilai",
-        hovermode="x unified",
-        template="plotly_white"
-    )
+    fig.add_trace(go.Scatter(
+        x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi",
+        line=dict(color="#0EBFBF", width=2.5, dash="dash"),
+        marker=dict(size=7, color="#0EBFBF", symbol="star", line=dict(color="#FFFFFF", width=1.5)),
+    ))
+    layout = dict(PLOT_LAYOUT)
+    layout["title"] = dict(text="Grafik Proyeksi Nilai Masa Depan", font=dict(color="#E8F0FE", size=14, family="Plus Jakarta Sans"), x=0.02)
+    layout["xaxis"] = dict(PLOT_LAYOUT["xaxis"], title="Periode")
+    layout["yaxis"] = dict(PLOT_LAYOUT["yaxis"], title="Nilai")
+    fig.update_layout(**layout)
     return fig
 
 
-# --- ALGORITMA METODE PERAMALAN ---
+# ─────────────────────────────────────────────────────────────────────────────
+#  ALGORITMA METODE PERAMALAN  (tidak diubah)
+# ─────────────────────────────────────────────────────────────────────────────
 
 def forecast_naive(history, horizon, **kwargs):
     if len(history) == 0: return np.zeros(horizon)
@@ -395,14 +867,8 @@ def evaluate_all_methods(train, test, test_periods, params):
     details = {}
     for method_name in FORECAST_METHODS.keys():
         forecast, error_table, metrics = evaluate_one_method(method_name, train, test, test_periods, params)
-        rows.append({
-            "Metode": method_name,
-            "MAD": metrics["MAD"],
-            "MSE": metrics["MSE"],
-            "MAPE": metrics["MAPE"]
-        })
+        rows.append({"Metode": method_name, "MAD": metrics["MAD"], "MSE": metrics["MSE"], "MAPE": metrics["MAPE"]})
         details[method_name] = {"forecast": forecast, "error_table": error_table, "metrics": metrics}
-    
     comparison_df = pd.DataFrame(rows).sort_values(by=["MAPE", "MAD", "MSE"], ascending=True, na_position="last").reset_index(drop=True)
     return comparison_df, details
 
@@ -411,45 +877,26 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         comparison_df.to_excel(writer, index=False, sheet_name='Perbandingan_Metode')
-        
         best_df = pd.DataFrame({"Periode": future_labels, "Forecast Utama": future_forecast})
         best_df.to_excel(writer, index=False, sheet_name='Proyeksi_Metode_Terbaik')
-        
-        workbook  = writer.book
-        
-        header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#4F46E5', 'font_color': '#FFFFFF', 
-            'border': 1, 'align': 'center', 'valign': 'vcenter'
-        })
+        workbook = writer.book
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#1D6FE8', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
         text_format = workbook.add_format({'border': 1, 'align': 'left'})
-        
-        # Format Sheet 1
         ws1 = writer.sheets['Perbandingan_Metode']
         ws1.set_row(0, 24)
         for col_num, value in enumerate(comparison_df.columns.values):
             ws1.write(0, col_num, value, header_format)
-            
         for i, col in enumerate(comparison_df.columns):
             max_len = max(comparison_df[col].astype(str).map(len).max(), len(col)) + 4
-            if col == "Metode":
-                ws1.set_column(i, i, max_len, text_format)
-            else:
-                ws1.set_column(i, i, max_len, num_format)
-                
-        # Format Sheet 2
+            ws1.set_column(i, i, max_len, text_format if col == "Metode" else num_format)
         ws2 = writer.sheets['Proyeksi_Metode_Terbaik']
         ws2.set_row(0, 24)
         for col_num, value in enumerate(best_df.columns.values):
             ws2.write(0, col_num, value, header_format)
-            
         for i, col in enumerate(best_df.columns):
             max_len = max(best_df[col].astype(str).map(len).max(), len(col)) + 5
-            if col == "Periode":
-                ws2.set_column(i, i, max_len, text_format)
-            else:
-                ws2.set_column(i, i, max_len, num_format)
-            
+            ws2.set_column(i, i, max_len, text_format if col == "Periode" else num_format)
     return output.getvalue()
 
 
@@ -457,53 +904,51 @@ def convert_df_to_excel(df):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         df.to_excel(writer, index=False, sheet_name='Hasil_Proyeksi')
-        
-        workbook  = writer.book
+        workbook = writer.book
         worksheet = writer.sheets['Hasil_Proyeksi']
         worksheet.set_row(0, 24)
-        
-        header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#4F46E5', 'font_color': '#FFFFFF', 
-            'border': 1, 'align': 'center', 'valign': 'vcenter'
-        })
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#1D6FE8', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
         text_format = workbook.add_format({'border': 1, 'align': 'left'})
-        
         for col_num, value in enumerate(df.columns.values):
             worksheet.write(0, col_num, value, header_format)
-            
         for i, col in enumerate(df.columns):
             max_len = max(df[col].astype(str).map(len).max(), len(col)) + 4
-            if col in ["No", "Periode"]:
-                worksheet.set_column(i, i, max_len, text_format)
-            else:
-                worksheet.set_column(i, i, max_len, num_format)
-                
+            worksheet.set_column(i, i, max_len, text_format if col in ["No", "Periode"] else num_format)
     return output.getvalue()
 
 
-# --- INTERFACE UTAMA DASHBOARD ---
+# ─────────────────────────────────────────────────────────────────────────────
+#  INTERFACE UTAMA
+# ─────────────────────────────────────────────────────────────────────────────
 
-st.title("✨ Dashboard Peramalan Data Historis")
-st.write("Aplikasi analitik interaktif berbasis sains data untuk menghitung peramalan tingkat lanjut.")
+# Header utama
+st.markdown("""
+<div class="title-block">
+    <div class="title-badge">📊 Analytical Intelligence Platform</div>
+    <h1>✦ Dashboard Peramalan Data Historis</h1>
+    <p>Aplikasi analitik interaktif berbasis sains data untuk menghitung peramalan tingkat lanjut dengan 10 metode statistik.</p>
+</div>
+""", unsafe_allow_html=True)
 
 if not STATSMODELS_AVAILABLE:
-    st.warning("⚠️ Library statsmodels belum tersedia. Metode Exponential Smoothing dan ARIMA memakai fallback Naive Forecast.")
+    st.warning("⚠️ Library **statsmodels** belum tersedia. Metode Exponential Smoothing dan ARIMA menggunakan fallback Naive Forecast.")
 
+# ── SIDEBAR ──
 with st.sidebar:
-    st.header("🔮 Pengaturan Input")
+    st.markdown("### 🔮 Pengaturan Input")
     uploaded_file = st.file_uploader("Upload data historis (.csv / .xlsx)", type=["csv", "xlsx"])
     st.divider()
 
-    st.header("⚙️ Pengaturan Evaluasi")
+    st.markdown("### ⚙️ Pengaturan Evaluasi")
     test_percentage = st.slider("Persentase data uji (%)", min_value=10, max_value=50, value=20, step=5)
     future_horizon = st.number_input("Jumlah periode ke depan", min_value=1, max_value=60, value=6, step=1)
     mode = st.radio("Mode Perhitungan", ["Satu metode", "Bandingkan semua metode"])
     selected_method = st.selectbox("Pilih Metode Utama", list(FORECAST_METHODS.keys()))
     st.divider()
 
-    st.header("🛠️ Parameter Tambahan")
-    st.write("**Exponential Smoothing Parameters**")
+    st.markdown("### 🛠️ Parameter Tambahan")
+    st.markdown("**Exponential Smoothing Parameters**")
     smoothing_mode = st.radio("Metode Penyetelan", ["Optimasi otomatis", "Input manual"])
 
     if smoothing_mode == "Input manual":
@@ -517,17 +962,20 @@ with st.sidebar:
     wma_weight_text = st.text_input("Bobot WMA (Pisahkan koma)", value="0.2, 0.3, 0.5")
     seasonal_periods = st.number_input("Seasonal Periods (Musiman)", min_value=2, max_value=52, value=12, step=1)
 
-    st.write("**ARIMA Parameters (p, d, q)**")
+    st.markdown("**ARIMA Parameters (p, d, q)**")
     arima_p = st.number_input("Order p (AR)", min_value=0, max_value=5, value=1, step=1)
     arima_d = st.number_input("Order d (I)", min_value=0, max_value=2, value=1, step=1)
     arima_q = st.number_input("Order q (MA)", min_value=0, max_value=5, value=1, step=1)
 
+    st.divider()
     process_button = st.button("🚀 Jalankan Proses", type="primary")
 
 
+# ── HALAMAN AWAL (belum ada file) ──
 if uploaded_file is None:
-    st.info("💡 Petunjuk: Silakan unggah berkas excel atau csv kamu di panel bagian kiri untuk memulai analisis.")
-    st.subheader("📋 Contoh Struktur Tabel Excel/CSV yang Benar")
+    st.info("💡 **Petunjuk:** Unggah berkas Excel atau CSV di panel kiri untuk memulai analisis peramalan.")
+
+    st.markdown("### 📋 Contoh Struktur Data yang Valid")
     sample = pd.DataFrame({
         "Tanggal": pd.date_range("2024-01-01", periods=12, freq="MS"),
         "Penjualan": [120, 135, 128, 140, 150, 160, 155, 170, 180, 175, 190, 200]
@@ -537,6 +985,7 @@ if uploaded_file is None:
     st.dataframe(preview_df, use_container_width=True, hide_index=True)
     st.stop()
 
+# ── BACA FILE ──
 try:
     df_raw = pd.read_csv(uploaded_file) if uploaded_file.name.endswith(".csv") else pd.read_excel(uploaded_file)
 except Exception as e:
@@ -545,22 +994,22 @@ except Exception as e:
 if df_raw.empty:
     st.error("File tidak memiliki data."); st.stop()
 
-st.subheader("📊 Pratinjau Data Unggahan")
+# ── PREVIEW DATA ──
+st.markdown("### 📂 Pratinjau Data Unggahan")
 preview_df = df_raw.head(20).copy()
 preview_df.insert(0, "No", range(1, len(preview_df) + 1))
 st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
+# ── PEMILIHAN KOLOM ──
 columns = df_raw.columns.tolist()
 col1, col2 = st.columns(2)
-
 with col1:
     period_options = ["Tidak ada"] + columns
     default_period_index = period_options.index("Tanggal") if "Tanggal" in period_options else 0
-    period_option = st.selectbox("Pilih Kolom Indeks Waktu/Periode", period_options, index=default_period_index)
-
+    period_option = st.selectbox("📅 Kolom Indeks Waktu / Periode", period_options, index=default_period_index)
 with col2:
     default_value_index = columns.index("Penjualan") if "Penjualan" in columns else 0
-    value_col = st.selectbox("Pilih Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
+    value_col = st.selectbox("📈 Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
 
 period_col = None if period_option == "Tidak ada" else period_option
 df = df_raw.copy()
@@ -575,7 +1024,7 @@ if period_col is not None:
 
 values_series = clean_numeric_series(df[value_col])
 if len(values_series) < 6:
-    st.error("Data numerik terdeteksi terlalu sedikit! Mohon gunakan minimal 6 baris data numerik.")
+    st.error("Data numerik terlalu sedikit! Gunakan minimal **6 baris** data numerik.")
     st.stop()
 
 df = df.loc[values_series.index].reset_index(drop=True)
@@ -583,8 +1032,10 @@ values = values_series.reset_index(drop=True).values
 period_labels, period_dates = make_period_labels(df, period_col)
 
 params = {
-    "window": int(ma_window), "weights": parse_weights(wma_weight_text), "seasonal_periods": int(seasonal_periods),
-    "arima_order": (int(arima_p), int(arima_d), int(arima_q)), "optimized": smoothing_mode == "Optimasi otomatis",
+    "window": int(ma_window), "weights": parse_weights(wma_weight_text),
+    "seasonal_periods": int(seasonal_periods),
+    "arima_order": (int(arima_p), int(arima_d), int(arima_q)),
+    "optimized": smoothing_mode == "Optimasi otomatis",
     "alpha": alpha_input, "beta": beta_input, "gamma": gamma_input
 }
 
@@ -592,94 +1043,122 @@ train, test, test_size = split_train_test(values, test_percentage)
 train_periods = period_labels[:-test_size]
 test_periods = period_labels[-test_size:]
 
-st.subheader("📌 Ringkasan Distribusi Data")
+# ── RINGKASAN DISTRIBUSI DATA ──
+st.markdown("### 📌 Ringkasan Dataset")
 metric_col1, metric_col2, metric_col3 = st.columns(3)
 metric_col1.metric("Total Observasi", len(values))
 metric_col2.metric("Dataset Latih (Train)", len(train))
 metric_col3.metric("Dataset Uji (Test Validation)", len(test))
 
+st.divider()
 
-# --- AREA IMPLEMENTASI GRID TAB & PROSES UTAMA ---
-
-tab_data, tab_grafik = st.tabs(["🔍 Karakteristik & Tren Data", "📊 Hasil Komputasi Peramalan"])
+# ── TAB UTAMA ──
+tab_data, tab_grafik = st.tabs(["🔍  Karakteristik & Tren Data", "📊  Hasil Komputasi Peramalan"])
 
 with tab_data:
-    st.write("### Analisis Karakteristik Data Historis")
+    st.markdown("### Analisis Karakteristik Data Historis")
     c_desc, c_roll = st.columns([1, 2])
-    
+
     with c_desc:
-        st.write("**Statistik Deskriptif Utama**")
+        st.markdown("**Statistik Deskriptif**")
         desc_df = pd.DataFrame(values, columns=[value_col]).describe()
         st.dataframe(desc_df, use_container_width=True)
-        
+
     with c_roll:
-        st.write("**Deteksi Pergerakan Tren (Rolling Mean)**")
+        st.markdown("**Deteksi Pergerakan Tren (Rolling Mean)**")
         roll_df = pd.DataFrame({"Periode": period_labels, "Aktual": values})
         roll_df["Rolling_Mean"] = roll_df["Aktual"].rolling(window=min(3, len(values)), min_periods=1).mean()
-        
+
         roll_fig = go.Figure()
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines", line=dict(color="#4F46E5")))
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Tren Isyarat (MA)", line=dict(dash='dot', color='#06B6D4', width=2)))
-        roll_fig.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), template="plotly_white")
+        roll_fig.add_trace(go.Scatter(
+            x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines",
+            line=dict(color="#1D6FE8", width=2)
+        ))
+        roll_fig.add_trace(go.Scatter(
+            x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Rolling Mean",
+            line=dict(dash="dot", color="#0EBFBF", width=2)
+        ))
+        rl = dict(PLOT_LAYOUT)
+        rl["height"] = 320
+        rl["margin"] = dict(l=20, r=20, t=20, b=20)
+        roll_fig.update_layout(**rl)
         st.plotly_chart(roll_fig, use_container_width=True)
 
 with tab_grafik:
     history_fig = go.Figure()
-    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual", line=dict(color="#A855F7", width=3)))
-    history_fig.update_layout(title="Visualisasi Runtun Waktu Historis", xaxis_title="Periode", yaxis_title="Nilai", template="plotly_white")
+    history_fig.add_trace(go.Scatter(
+        x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual",
+        line=dict(color="#7C3AED", width=2.5),
+        marker=dict(size=5, color="#7C3AED", line=dict(color="#FFFFFF", width=1)),
+        fill="tozeroy",
+        fillcolor="rgba(124,58,237,0.07)",
+    ))
+    hl = dict(PLOT_LAYOUT)
+    hl["title"] = dict(text="Visualisasi Runtun Waktu Historis", font=dict(color="#E8F0FE", size=14), x=0.02)
+    hl["xaxis"] = dict(PLOT_LAYOUT["xaxis"], title="Periode")
+    hl["yaxis"] = dict(PLOT_LAYOUT["yaxis"], title="Nilai")
+    history_fig.update_layout(**hl)
     st.plotly_chart(history_fig, use_container_width=True)
 
+    # ── PROSES ──
     if process_button:
         if mode == "Satu metode":
             forecast_test, error_table, metrics = evaluate_one_method(selected_method, train, test, test_periods, params)
             _, used_params = run_forecast_with_params(selected_method, train, len(test), params)
             future_forecast = run_forecast(selected_method, values, int(future_horizon), params)
             future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
-
             residuals = test - forecast_test
             std_error = np.std(residuals)
 
-            st.subheader(f"📊 Hasil Analisis: {selected_method}")
+            st.markdown(f"### 📊 Hasil Analisis — {selected_method}")
+
+            # Metric akurasi
             with st.container(border=True):
-                st.write("**🎯 Metrik Validasi Tingkat Akurasi**")
+                st.markdown("**🎯 Metrik Validasi Tingkat Akurasi**")
                 m1, m2, m3 = st.columns(3)
                 m1.metric("Akurasi (MAPE)", f"{metrics['MAPE']:.2f}%" if not np.isnan(metrics['MAPE']) else "N/A")
                 m2.metric("Error (MAD)", f"{metrics['MAD']:.4f}")
                 m3.metric("Error (MSE)", f"{metrics['MSE']:.4f}")
 
+            # Parameter smoothing
             if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"]:
                 with st.container(border=True):
-                    st.write("**⚙️ Nilai Parameter Alpha, Beta, Gamma Optimal**")
+                    st.markdown("**⚙️ Nilai Parameter Optimal**")
                     p1, p2, p3 = st.columns(3)
                     p1.metric("Alpha (Level)", format_param(used_params.get("Alpha")))
                     p2.metric("Beta (Trend)", format_param(used_params.get("Beta")))
                     p3.metric("Gamma (Seasonality)", format_param(used_params.get("Gamma")))
 
-            st.write("") 
-            tab1, tab2 = st.tabs(["📉 Grafik Evaluasi Model", "🔮 Hasil Proyeksi Masa Depan"])
+            tab1, tab2 = st.tabs(["📉  Grafik Evaluasi Model", "🔮  Hasil Proyeksi Masa Depan"])
 
             with tab1:
-                st.plotly_chart(plot_actual_forecast(test_periods, test, forecast_test, "Uji Validasi: Data Aktual vs Estimasi Model"), use_container_width=True)
-                with st.expander("Lihat Rincian Tabel Komputasi Error"):
+                st.plotly_chart(
+                    plot_actual_forecast(test_periods, test, forecast_test, "Uji Validasi: Data Aktual vs Estimasi Model"),
+                    use_container_width=True
+                )
+                with st.expander("📋 Lihat Rincian Tabel Komputasi Error"):
                     error_table_view = error_table.copy()
                     error_table_view.insert(0, "No", range(1, len(error_table_view) + 1))
                     st.dataframe(error_table_view, use_container_width=True, hide_index=True)
 
             with tab2:
-                st.write("### 🔮 Proyeksi Nilai Masa Depan")
-                st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error), use_container_width=True)
+                st.markdown("### 🔮 Proyeksi Nilai Masa Depan")
+                st.plotly_chart(
+                    plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error),
+                    use_container_width=True
+                )
                 st.divider()
 
                 col_tabel, col_download = st.columns([2, 1])
                 with col_tabel:
-                    st.write("**Tabel Angka Hasil Prediksi**")
+                    st.markdown("**Tabel Angka Hasil Prediksi**")
                     f_df = pd.DataFrame({"Periode": future_labels, "Hasil Forecast": future_forecast})
                     f_df_view = f_df.copy()
                     f_df_view.insert(0, "No", range(1, len(f_df_view) + 1))
                     st.dataframe(f_df_view, use_container_width=True, hide_index=True)
-                
+
                 with col_download:
-                    st.write("**Unduh Hasil**")
+                    st.markdown("**Unduh Hasil**")
                     excel_data = convert_df_to_excel(f_df)
                     st.download_button(
                         label="📥 Download Hasil (.xlsx)",
@@ -692,19 +1171,25 @@ with tab_grafik:
             # Mode: Bandingkan semua metode
             comparison_df, details = evaluate_all_methods(train, test, test_periods, params)
             best_method = comparison_df.iloc[0]["Metode"]
-            
             future_forecast = run_forecast(best_method, values, int(future_horizon), params)
             future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
-            
-            st.subheader("🏆 Tabel Perbandingan Akurasi Semua Metode")
-            st.write("Diurutkan otomatis dari model dengan tingkat error (MAPE) terkecil.")
-            
+
+            st.markdown("### 🏆 Perbandingan Akurasi Semua Metode")
+            st.caption("Diurutkan otomatis dari model dengan tingkat error (MAPE) terkecil ke terbesar.")
             st.dataframe(comparison_df, use_container_width=True, hide_index=True)
-            
-            st.success(f"💡 Rekomendasi Model Terbaik Berdasarkan Uji Akurasi: **{best_method}**")
-            
-            st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, 0), use_container_width=True)
-            
+
+            st.markdown(f"""
+            <div class="best-badge">
+                <span>✅ Rekomendasi Model Terbaik:</span>
+                <span style="color:#0EBFBF !important; font-size:1rem !important;">{best_method}</span>
+            </div>
+            """, unsafe_allow_html=True)
+
+            st.plotly_chart(
+                plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, 0),
+                use_container_width=True
+            )
+
             excel_all = convert_all_to_excel(comparison_df, best_method, future_labels, future_forecast)
             st.download_button(
                 label="📥 Download Laporan Perbandingan Lengkap (.xlsx)",
