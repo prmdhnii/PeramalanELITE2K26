@@ -599,7 +599,7 @@ def convert_df_to_excel(df):
 # --- INTERFACE UTAMA DASHBOARD ---
 
 st.title("✨ Predictive Production Planning for MSMEs")
-st.write("Aplikasi analitik interaktif berbasis sains data untuk menghitung peramalan tingkat lanjut.")
+st.write("An interactive data science–based analytics application for advanced forecasting")
 
 if not STATSMODELS_AVAILABLE:
     st.warning("⚠️ Library statsmodels belum tersedia. Metode Exponential Smoothing dan ARIMA memakai fallback Naive Forecast.")
