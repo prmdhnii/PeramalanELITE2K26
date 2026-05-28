@@ -84,7 +84,7 @@ st.markdown("""
     }
     
     [data-testid="stFileUploader"] button::after {
-        content: "Pilih File Kamu" !important;
+        content: "Choose Your File" !important;
         color: #FFFFFF !important;
         font-size: 0.85rem !important;
         font-weight: 600 !important;
@@ -616,9 +616,9 @@ with st.sidebar:
     selected_method = st.selectbox("Select Primary Method", list(FORECAST_METHODS.keys()))
     st.divider()
 
-    st.header("🛠️ Parameter Tambahan")
+    st.header("🛠️ Additional Parameters")
     st.write("**Exponential Smoothing Parameters**")
-    smoothing_mode = st.radio("Metode Penyetelan", ["Optimasi otomatis", "Input manual"])
+    smoothing_mode = st.radio("Tuning Method", ["Automatic Optimization", "Manual Input"])
 
     if smoothing_mode == "Input manual":
         alpha_input = st.slider("Alpha (Level)", min_value=0.01, max_value=0.99, value=0.30, step=0.01)
