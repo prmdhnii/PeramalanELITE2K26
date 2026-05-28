@@ -8,12 +8,6 @@ import streamlit as st
 import io
 
 try:
-    from scipy import stats as scipy_stats
-    SCIPY_AVAILABLE = True
-except Exception:
-    SCIPY_AVAILABLE = False
-
-try:
     from statsmodels.tsa.holtwinters import ExponentialSmoothing, SimpleExpSmoothing
     from statsmodels.tsa.arima.model import ARIMA
     STATSMODELS_AVAILABLE = True
@@ -22,7 +16,7 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Forecasting Dashboard",
+    page_title="Colorful Forecasting Dashboard",
     page_icon="📈",
     layout="wide"
 )
@@ -602,223 +596,6 @@ def convert_df_to_excel(df):
     return output.getvalue()
 
 
-
-# ─── FEATURE 4: MAPE Interpretation ───────────────────────────────────────────
-def interpret_mape(mape_value):
-    """Return (label, color, description) based on Lewis scale."""
-    if mape_value is None or (isinstance(mape_value, float) and np.isnan(mape_value)):
-        return "N/A", "#94A3B8", "Cannot be calculated"
-    if mape_value < 10:
-        return "Highly Accurate", "#10B981", "Excellent — forecast error is very low (< 10%)"
-    elif mape_value < 20:
-        return "Good", "#3B82F6", "Good — forecast error is acceptable (10–20%)"
-    elif mape_value < 50:
-        return "Reasonable", "#F59E0B", "Reasonable — use with caution (20–50%)"
-    else:
-        return "Inaccurate", "#EF4444", "Poor — forecast error is too high (> 50%)"
-
-
-# ─── FEATURE 2: Data Quality Check ────────────────────────────────────────────
-def check_data_quality(df, value_col, period_col):
-    issues = []
-    total = len(df)
-
-    # Missing values
-    missing = df[value_col].isna().sum()
-    if missing > 0:
-        issues.append({"type": "⚠️ Missing Values", "detail": f"{missing} missing value(s) in '{value_col}'", "severity": "warning"})
-
-    # Negative values
-    neg = (pd.to_numeric(df[value_col], errors="coerce") < 0).sum()
-    if neg > 0:
-        issues.append({"type": "⚠️ Negative Values", "detail": f"{neg} negative value(s) detected — may affect forecast accuracy", "severity": "warning"})
-
-    # Outlier detection (Z-score)
-    numeric_vals = pd.to_numeric(df[value_col], errors="coerce").dropna()
-    if len(numeric_vals) >= 4:
-        z_scores = np.abs((numeric_vals - numeric_vals.mean()) / numeric_vals.std())
-        outliers = (z_scores > 3).sum()
-        if outliers > 0:
-            issues.append({"type": "🔴 Outliers Detected", "detail": f"{outliers} extreme outlier(s) (Z-score > 3) found in value column", "severity": "error"})
-
-    # Duplicate dates
-    if period_col is not None:
-        dupes = df[period_col].duplicated().sum()
-        if dupes > 0:
-            issues.append({"type": "⚠️ Duplicate Periods", "detail": f"{dupes} duplicate period/date value(s) found", "severity": "warning"})
-
-    return issues
-
-
-# ─── FEATURE 1 & 3: Multi-method comparison chart ──────────────────────────────
-def plot_all_methods_comparison(test_periods, test, details_dict):
-    """Plot actual vs all method forecasts on one chart."""
-    colors = [
-        "#4F46E5","#EC4899","#10B981","#F59E0B","#EF4444",
-        "#06B6D4","#8B5CF6","#F97316","#84CC16","#64748B"
-    ]
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=test_periods, y=test, mode="lines+markers",
-        name="Actual", line=dict(color="#1E1B4B", width=4),
-        marker=dict(size=8, symbol="circle")
-    ))
-    for i, (method_name, detail) in enumerate(details_dict.items()):
-        fig.add_trace(go.Scatter(
-            x=test_periods, y=detail["forecast"], mode="lines+markers",
-            name=method_name, line=dict(color=colors[i % len(colors)], width=2, dash="dot"),
-            marker=dict(size=5), opacity=0.85
-        ))
-    fig.update_layout(
-        title="All Methods vs Actual Data — Validation Period",
-        xaxis_title="Period", yaxis_title="Value",
-        hovermode="x unified", template="plotly_white",
-        legend=dict(orientation="h", yanchor="bottom", y=-0.4, xanchor="center", x=0.5),
-        height=500
-    )
-    return fig
-
-
-# ─── FEATURE 5: Residual Analysis ─────────────────────────────────────────────
-def plot_residual_analysis(test_periods, residuals):
-    """Return two figures: residual over time + histogram."""
-    fig_time = go.Figure()
-    fig_time.add_trace(go.Scatter(
-        x=test_periods, y=residuals, mode="lines+markers",
-        name="Residual", line=dict(color="#6366F1", width=2),
-        marker=dict(size=6)
-    ))
-    fig_time.add_hline(y=0, line_dash="dash", line_color="#EF4444", line_width=2)
-    fig_time.update_layout(
-        title="Residuals Over Time (Actual − Forecast)",
-        xaxis_title="Period", yaxis_title="Residual",
-        template="plotly_white", height=300
-    )
-
-    fig_hist = go.Figure()
-    fig_hist.add_trace(go.Histogram(
-        x=residuals, nbinsx=15,
-        marker_color="#A855F7", opacity=0.8,
-        name="Residual Distribution"
-    ))
-    fig_hist.update_layout(
-        title="Residual Distribution (Histogram)",
-        xaxis_title="Residual Value", yaxis_title="Frequency",
-        template="plotly_white", height=300,
-        showlegend=False
-    )
-    return fig_time, fig_hist
-
-
-# ─── FEATURE 7: Seasonality Decomposition ─────────────────────────────────────
-def plot_decomposition(values, period_labels, seasonal_periods=12):
-    """Simple additive decomposition: trend + seasonal + residual."""
-    n = len(values)
-    if n < 2 * seasonal_periods:
-        return None
-
-    # Trend via centered moving average
-    half = seasonal_periods // 2
-    trend = np.full(n, np.nan)
-    for i in range(half, n - half):
-        trend[i] = np.mean(values[i - half: i + half + 1])
-
-    # Seasonal component
-    detrended = values - trend
-    seasonal = np.full(n, np.nan)
-    season_avgs = np.zeros(seasonal_periods)
-    counts = np.zeros(seasonal_periods)
-    for i in range(n):
-        if not np.isnan(detrended[i]):
-            season_avgs[i % seasonal_periods] += detrended[i]
-            counts[i % seasonal_periods] += 1
-    season_avgs = np.where(counts > 0, season_avgs / counts, 0)
-    for i in range(n):
-        seasonal[i] = season_avgs[i % seasonal_periods]
-
-    residual = values - trend - seasonal
-
-    fig = go.Figure()
-    colors_decomp = ["#4F46E5", "#10B981", "#F59E0B", "#EF4444"]
-    components = [
-        ("Original", values),
-        ("Trend", trend),
-        ("Seasonal", seasonal),
-        ("Residual", residual),
-    ]
-    for idx, (label, data) in enumerate(components):
-        fig.add_trace(go.Scatter(
-            x=period_labels, y=data, name=label,
-            line=dict(color=colors_decomp[idx], width=2),
-            mode="lines"
-        ))
-    fig.update_layout(
-        title=f"Time Series Decomposition (Seasonal Period = {seasonal_periods})",
-        xaxis_title="Period", yaxis_title="Value",
-        template="plotly_white", height=420,
-        hovermode="x unified",
-        legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="center", x=0.5)
-    )
-    return fig
-
-
-# ─── FEATURE 8: Export chart as HTML (downloadable) ───────────────────────────
-def fig_to_html_bytes(fig):
-    import io as _io
-    buf = _io.StringIO()
-    fig.write_html(buf)
-    return buf.getvalue().encode("utf-8")
-
-
-# ─── FEATURE 3: Full comparison Excel export with all error tables ─────────────
-def convert_full_comparison_excel(comparison_df, details_dict, future_labels, future_forecast, best_method):
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-        workbook = writer.book
-        header_fmt = workbook.add_format({"bold": True, "bg_color": "#4F46E5", "font_color": "#FFFFFF", "border": 1, "align": "center", "valign": "vcenter"})
-        num_fmt    = workbook.add_format({"num_format": "#,##0.00", "border": 1, "align": "right"})
-        text_fmt   = workbook.add_format({"border": 1, "align": "left"})
-        good_fmt   = workbook.add_format({"bg_color": "#D1FAE5", "border": 1, "align": "left", "bold": True})
-
-        # Sheet 1 – Method Comparison
-        comparison_df.to_excel(writer, index=False, sheet_name="Method_Comparison")
-        ws1 = writer.sheets["Method_Comparison"]
-        ws1.set_row(0, 24)
-        for ci, col in enumerate(comparison_df.columns):
-            ws1.write(0, ci, col, header_fmt)
-            max_len = max(comparison_df[col].astype(str).map(len).max(), len(col)) + 4
-            ws1.set_column(ci, ci, max_len, text_fmt if col == "Method" else num_fmt)
-        # Highlight best row
-        best_row_idx = comparison_df[comparison_df["Method"] == best_method].index
-        if len(best_row_idx):
-            excel_row = int(best_row_idx[0]) + 1
-            for ci in range(len(comparison_df.columns)):
-                ws1.write(excel_row, ci, comparison_df.iloc[int(best_row_idx[0]), ci], good_fmt)
-
-        # Sheet 2 – Best Method Projection
-        best_df = pd.DataFrame({"Period": future_labels, "Forecast": future_forecast})
-        best_df.to_excel(writer, index=False, sheet_name="Best_Projection")
-        ws2 = writer.sheets["Best_Projection"]
-        ws2.set_row(0, 24)
-        for ci, col in enumerate(best_df.columns):
-            ws2.write(0, ci, col, header_fmt)
-            max_len = max(best_df[col].astype(str).map(len).max(), len(col)) + 5
-            ws2.set_column(ci, ci, max_len, text_fmt if col == "Period" else num_fmt)
-
-        # Sheets 3+ – Error detail per method
-        for method_name, detail in details_dict.items():
-            safe_name = method_name[:25].replace("/", "-").replace(":", "")
-            et = detail["error_table"].copy()
-            et.to_excel(writer, index=False, sheet_name=safe_name)
-            ws = writer.sheets[safe_name]
-            ws.set_row(0, 22)
-            for ci, col in enumerate(et.columns):
-                ws.write(0, ci, col, header_fmt)
-                max_len = max(et[col].astype(str).map(len).max(), len(col)) + 4
-                ws.set_column(ci, ci, max_len, text_fmt if col in ["Period"] else num_fmt)
-
-    return output.getvalue()
-
 # --- MAIN DASHBOARD INTERFACE ---
 
 st.title("✨ Predictive Production Planning for MSMEs")
@@ -834,7 +611,7 @@ with st.sidebar:
 
     st.header("⚙️ Evaluation Settings")
     test_percentage = st.slider("Test Data Percentage (%)", min_value=10, max_value=50, value=20, step=5)
-    future_horizon = st.number_input("Number of Future Periods", min_value=1, max_value=120, value=6, step=1)
+    future_horizon = st.number_input("Number of Future Periods", min_value=1, max_value=60, value=6, step=1)
     mode = st.radio("Calculation Mode", ["Single Method", "Compare All Methods"])
     selected_method = st.selectbox("Select Primary Method", list(FORECAST_METHODS.keys()))
     st.divider()
@@ -867,20 +644,37 @@ if uploaded_file is None:
     st.subheader("📋 Example of a Proper Excel/CSV Table Structure")
     st.markdown(
         """
-        <div style="background:linear-gradient(135deg,#F0F4FF 0%,#EEF2FF 100%);border:1.5px solid #A5B4FC;
-            border-radius:10px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
-            <span style="font-size:1.3rem;">📥</span>
-            <span style="color:#4A5568;font-weight:500;font-size:0.95rem;">
+        <div style="
+            background: linear-gradient(135deg, #F0F4FF 0%, #EEF2FF 100%);
+            border: 1.5px solid #A5B4FC;
+            border-radius: 10px;
+            padding: 12px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        ">
+            <span style="font-size: 1.3rem;">📥</span>
+            <span style="color: #4A5568; font-weight: 500; font-size: 0.95rem;">
                 Download the data template here: &nbsp;
                 <a href="https://docs.google.com/spreadsheets/d/1DVghuZxRV-Xj269UMerp_NLRkCuLys5j/edit?usp=sharing&ouid=104043343223917321673&rtpof=true&sd=true"
                    target="_blank"
-                   style="color:#4F46E5;font-weight:700;text-decoration:none;background:#E0E7FF;
-                          padding:4px 12px;border-radius:6px;border:1px solid #C7D2FE;">
+                   style="
+                       color: #4F46E5;
+                       font-weight: 700;
+                       text-decoration: none;
+                       background: #E0E7FF;
+                       padding: 4px 12px;
+                       border-radius: 6px;
+                       border: 1px solid #C7D2FE;
+                       transition: background 0.2s;
+                   ">
                     📊 Open Template in Google Drive
                 </a>
             </span>
         </div>
-        """, unsafe_allow_html=True
+        """,
+        unsafe_allow_html=True
     )
     sample = pd.DataFrame({
         "Date": pd.date_range("2024-01-01", periods=12, freq="MS"),
@@ -900,20 +694,14 @@ if df_raw.empty:
     st.error("The file contains no data."); st.stop()
 
 st.subheader("📊 Uploaded Data Preview")
-total_rows = len(df_raw)
-st.markdown(
-    f"""<div style="background:linear-gradient(135deg,#EEF2FF 0%,#F5F3FF 100%);border-left:4px solid #4F46E5;
-        border-radius:8px;padding:10px 16px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-        <span style="font-size:1.2rem;">📂</span>
-        <span style="color:#3730A3;font-weight:600;font-size:0.95rem;">
-            File loaded successfully — <b>{total_rows} rows</b> detected. All rows are used for analysis.
-        </span></div>""",
-    unsafe_allow_html=True
-)
-preview_df = df_raw.copy()
+preview_df = df_raw.head(20).copy()
+# Check if "No" column already exists before adding it
 if "No" not in preview_df.columns:
     preview_df.insert(0, "No", range(1, len(preview_df) + 1))
-st.dataframe(preview_df, use_container_width=True, hide_index=True, height=min(420, 45 + len(preview_df) * 35))
+else:
+    # If already present, use existing or skip
+    pass
+st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
 columns = df_raw.columns.tolist()
 col1, col2 = st.columns(2)
@@ -937,23 +725,6 @@ if period_col is not None:
         df = df.sort_values("_parsed_period").drop(columns=["_parsed_period"])
     else:
         df = df.sort_values(period_col)
-
-# ── FEATURE 2: Data Quality Check ──────────────────────────────────────
-quality_issues = check_data_quality(df, value_col, period_col)
-if quality_issues:
-    with st.expander("⚠️ Data Quality Issues Detected — Click to Review", expanded=True):
-        for issue in quality_issues:
-            color = "#FEF3C7" if issue["severity"] == "warning" else "#FEE2E2"
-            border = "#F59E0B" if issue["severity"] == "warning" else "#EF4444"
-            st.markdown(
-                f"""<div style="background:{color};border-left:4px solid {border};border-radius:6px;
-                    padding:8px 14px;margin-bottom:6px;">
-                    <b>{issue['type']}</b> — {issue['detail']}
-                </div>""",
-                unsafe_allow_html=True
-            )
-else:
-    st.success("✅ Data quality check passed — no issues detected.")
 
 values_series = clean_numeric_series(df[value_col])
 if len(values_series) < 6:
@@ -983,7 +754,7 @@ metric_col3.metric("Test Dataset (Validation)", len(test))
 
 # --- TAB GRID & MAIN PROCESS IMPLEMENTATION AREA ---
 
-tab_data, tab_decomp, tab_grafik = st.tabs(["🔍 Data Characteristics & Trends", "🌊 Seasonality Decomposition", "📊 Forecasting Computation Results"])
+tab_data, tab_grafik = st.tabs(["🔍 Data Characteristics & Trends", "📊 Forecasting Computation Results"])
 
 with tab_data:
     st.write("### Historical Data Characteristics Analysis")
@@ -1004,22 +775,6 @@ with tab_data:
         roll_fig.add_trace(go.Scatter(x=roll_df["Period"], y=roll_df["Rolling_Mean"], name="Trend Signal (MA)", line=dict(dash='dot', color='#06B6D4', width=2)))
         roll_fig.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), template="plotly_white")
         st.plotly_chart(roll_fig, use_container_width=True)
-
-with tab_decomp:
-    st.write("### 🌊 Time Series Decomposition (Additive)")
-    st.write("Breaks down the data into **Trend**, **Seasonal**, and **Residual** components.")
-    decomp_fig = plot_decomposition(values, period_labels, int(seasonal_periods))
-    if decomp_fig is not None:
-        st.plotly_chart(decomp_fig, use_container_width=True)
-        decomp_html = fig_to_html_bytes(decomp_fig)
-        st.download_button(
-            label="📥 Download Decomposition Chart (.html)",
-            data=decomp_html,
-            file_name="decomposition_chart.html",
-            mime="text/html"
-        )
-    else:
-        st.info(f"ℹ️ Not enough data for decomposition. Need at least {2 * int(seasonal_periods)} data points. Currently have {len(values)}.")
 
 with tab_grafik:
     history_fig = go.Figure()
@@ -1046,19 +801,6 @@ with tab_grafik:
                 m2.metric("Error (MAD)", f"{metrics['MAD']:.4f}")
                 m3.metric("Error (MSE)", f"{metrics['MSE']:.4f}")
 
-            # ── FEATURE 4: MAPE Interpretation ──────────────────────────────
-            mape_label, mape_color, mape_desc = interpret_mape(metrics['MAPE'])
-            st.markdown(
-                f"""<div style="background:{mape_color}18;border-left:5px solid {mape_color};border-radius:8px;
-                    padding:10px 18px;margin:8px 0;">
-                    <span style="font-size:1rem;font-weight:700;color:{mape_color};">
-                        📊 Forecast Accuracy Level: {mape_label}
-                    </span><br>
-                    <span style="color:#4A5568;font-size:0.9rem;">{mape_desc}</span>
-                </div>""",
-                unsafe_allow_html=True
-            )
-
             if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"]:
                 with st.container(border=True):
                     st.write("**⚙️ Optimal Alpha, Beta, Gamma Parameter Values**")
@@ -1071,44 +813,15 @@ with tab_grafik:
             tab1, tab2 = st.tabs(["📉 Model Evaluation Chart", "🔮 Future Projection Results"])
 
             with tab1:
-                eval_fig = plot_actual_forecast(test_periods, test, forecast_test, "Validation Test: Actual Data vs Model Estimate")
-                st.plotly_chart(eval_fig, use_container_width=True)
-
-                # ── FEATURE 8: Download chart ─────────────────────────────
-                st.download_button(
-                    label="📥 Download Evaluation Chart (.html)",
-                    data=fig_to_html_bytes(eval_fig),
-                    file_name=f"eval_chart_{selected_method}.html",
-                    mime="text/html"
-                )
-
+                st.plotly_chart(plot_actual_forecast(test_periods, test, forecast_test, "Validation Test: Actual Data vs Model Estimate"), use_container_width=True)
                 with st.expander("View Error Computation Table Details"):
                     error_table_view = error_table.copy()
                     error_table_view.insert(0, "No", range(1, len(error_table_view) + 1))
                     st.dataframe(error_table_view, use_container_width=True, hide_index=True)
 
-                # ── FEATURE 5: Residual Analysis ──────────────────────────
-                st.write("#### 📉 Residual Analysis")
-                res_time_fig, res_hist_fig = plot_residual_analysis(test_periods, residuals)
-                rc1, rc2 = st.columns(2)
-                with rc1:
-                    st.plotly_chart(res_time_fig, use_container_width=True)
-                with rc2:
-                    st.plotly_chart(res_hist_fig, use_container_width=True)
-                st.caption("💡 Ideal residuals: randomly scattered around zero with no clear pattern, and normally distributed in the histogram.")
-
             with tab2:
                 st.write("### 🔮 Future Value Projection")
-                proj_fig = plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error)
-                st.plotly_chart(proj_fig, use_container_width=True)
-
-                # ── FEATURE 8: Download projection chart ──────────────────
-                st.download_button(
-                    label="📥 Download Projection Chart (.html)",
-                    data=fig_to_html_bytes(proj_fig),
-                    file_name=f"projection_chart_{selected_method}.html",
-                    mime="text/html"
-                )
+                st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error), use_container_width=True)
                 st.divider()
 
                 col_tabel, col_download = st.columns([2, 1])
@@ -1133,70 +846,23 @@ with tab_grafik:
             # Mode: Compare all methods
             comparison_df, details = evaluate_all_methods(train, test, test_periods, params)
             best_method = comparison_df.iloc[0]["Method"]
-
+            
             future_forecast = run_forecast(best_method, values, int(future_horizon), params)
             future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
-
-            # ── FEATURE 1: Multi-method comparison chart ──────────────────
+            
             st.subheader("🏆 Accuracy Comparison Table for All Methods")
             st.write("Automatically sorted from the model with the lowest error rate (MAPE).")
-
-            # Add MAPE interpretation column to table
-            comparison_display = comparison_df.copy()
-            comparison_display["MAPE Interpretation"] = comparison_display["MAPE"].apply(
-                lambda x: interpret_mape(x)[0]
+            
+            st.dataframe(comparison_df, use_container_width=True, hide_index=True)
+            
+            st.success(f"💡 Best Model Recommendation Based on Accuracy Test: **{best_method}**")
+            
+            st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, 0), use_container_width=True)
+            
+            excel_all = convert_all_to_excel(comparison_df, best_method, future_labels, future_forecast)
+            st.download_button(
+                label="📥 Download Full Comparison Report (.xlsx)",
+                data=excel_all,
+                file_name="Forecasting_Method_Comparison_Report.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
-            st.dataframe(comparison_display, use_container_width=True, hide_index=True)
-
-            # ── FEATURE 4: Best method MAPE interpretation ─────────────────
-            best_mape = comparison_df.iloc[0]["MAPE"]
-            mape_label, mape_color, mape_desc = interpret_mape(best_mape)
-            st.markdown(
-                f"""<div style="background:{mape_color}18;border-left:5px solid {mape_color};border-radius:8px;
-                    padding:10px 18px;margin:8px 0;">
-                    <b style="color:{mape_color};">💡 Best Model: {best_method}</b>
-                    &nbsp;|&nbsp; MAPE: {best_mape:.2f}% &nbsp;|&nbsp;
-                    <span style="color:{mape_color};font-weight:700;">{mape_label}</span><br>
-                    <span style="color:#4A5568;font-size:0.9rem;">{mape_desc}</span>
-                </div>""",
-                unsafe_allow_html=True
-            )
-
-            # Tabs for compare mode
-            ctab1, ctab2, ctab3 = st.tabs(["📊 All Methods Chart", "🔮 Best Method Projection", "📥 Download Reports"])
-
-            with ctab1:
-                multi_fig = plot_all_methods_comparison(test_periods, test, details)
-                st.plotly_chart(multi_fig, use_container_width=True)
-                st.download_button(
-                    label="📥 Download Comparison Chart (.html)",
-                    data=fig_to_html_bytes(multi_fig),
-                    file_name="all_methods_comparison.html",
-                    mime="text/html"
-                )
-
-            with ctab2:
-                proj_fig_cmp = plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, 0)
-                st.plotly_chart(proj_fig_cmp, use_container_width=True)
-                st.download_button(
-                    label="📥 Download Projection Chart (.html)",
-                    data=fig_to_html_bytes(proj_fig_cmp),
-                    file_name=f"projection_{best_method}.html",
-                    mime="text/html"
-                )
-                proj_df = pd.DataFrame({"Period": future_labels, "Forecast Result": future_forecast})
-                proj_df_view = proj_df.copy()
-                proj_df_view.insert(0, "No", range(1, len(proj_df_view) + 1))
-                st.dataframe(proj_df_view, use_container_width=True, hide_index=True)
-
-            with ctab3:
-                st.write("**Download all results in one Excel file with separate sheets per method:**")
-                # ── FEATURE 3: Full comparison export ──────────────────────
-                excel_full = convert_full_comparison_excel(comparison_df, details, future_labels, future_forecast, best_method)
-                st.download_button(
-                    label="📥 Download Full Report — All Error Tables (.xlsx)",
-                    data=excel_full,
-                    file_name="Full_Forecasting_Comparison_Report.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-                st.caption("📋 Sheets included: Method Comparison summary, Best Method Projection, + individual error table for each of the 10 methods.")
