@@ -598,7 +598,7 @@ def convert_df_to_excel(df):
 
 # --- INTERFACE UTAMA DASHBOARD ---
 
-st.title("✨ Dashboard Peramalan Data Historis")
+st.title("✨ Implementation of a Streamlit-based Forecasting Dashboard for Optimizing Industrial Production Planning on an MSME Scale")
 st.write("Aplikasi analitik interaktif berbasis sains data untuk menghitung peramalan tingkat lanjut.")
 
 if not STATSMODELS_AVAILABLE:
