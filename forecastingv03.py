@@ -16,15 +16,15 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Dashboard Peramalan Colorful",
+    page_title="Colorful Forecasting Dashboard",
     page_icon="📈",
     layout="wide"
 )
 
-# Suntikan CSS - VIBRANT COLORFUL LIGHT STYLE
+# CSS Injection - VIBRANT COLORFUL LIGHT STYLE
 st.markdown("""
     <style>
-    /* 1. Fondasi Font & Background Utama Cerah */
+    /* 1. Font & Main Background Foundation */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
     
     html, body, [class*="st-"] {
@@ -35,7 +35,7 @@ st.markdown("""
         background: linear-gradient(135deg, #F5F7FF 0%, #FAFAFA 100%) !important;
     }
 
-    /* 2. Sidebar Cerah & Segar */
+    /* 2. Bright & Fresh Sidebar */
     [data-testid="stSidebar"] {
         background-color: #FFFFFF !important;
         border-right: 2px solid #E0E4FF !important;
@@ -61,7 +61,7 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
 
-    /* 3. Layout Uploader Colorful */
+    /* 3. Colorful File Uploader Layout */
     [data-testid="stFileUploader"] {
         background-color: #F0F4FF !important;
         border: 2px dashed #6366F1 !important;
@@ -99,7 +99,7 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* 4. Area Konten Utama */
+    /* 4. Main Content Area */
     .main h1 {
         background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
         -webkit-background-clip: text;
@@ -114,7 +114,7 @@ st.markdown("""
         font-weight: 500;
     }
 
-    /* 5. Metric Cards Penuh Warna Pastel */
+    /* 5. Colorful Pastel Metric Cards */
     [data-testid="stMetricValue"] {
         background: #FFFFFF !important;
         color: #1E1B4B !important;
@@ -136,7 +136,7 @@ st.markdown("""
         margin-left: 5px !important;
     }
 
-    /* 6. Tombol Utama Pro (Neon/Bright Coral Style) */
+    /* 6. Pro Main Button (Neon/Bright Coral Style) */
     .stButton>button {
         width: 100%;
         border-radius: 8px;
@@ -157,7 +157,7 @@ st.markdown("""
         color: #FFFFFF !important;            
     }
 
-    /* 7. Desain Tabel Data Grid */
+    /* 7. Data Grid Table Design */
     .stDataFrame {
         background-color: #FFFFFF;
         border: 2px solid #F0F2FF !important;
@@ -165,7 +165,7 @@ st.markdown("""
         box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
     }
 
-    /* Customisasi Tabs Streamlit agar Colorful */
+    /* Colorful Streamlit Tabs Customization */
     button[data-baseweb="tab"] {
         font-weight: 700 !important;
         color: #64748B !important;
@@ -182,7 +182,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- FUNGSI PROSES DAN PERHITUNGAN DASAR ---
+# --- CORE PROCESSING AND CALCULATION FUNCTIONS ---
 
 def clean_numeric_series(series: pd.Series) -> pd.Series:
     numeric = pd.to_numeric(series, errors="coerce")
@@ -208,8 +208,8 @@ def calculate_error_table(periods, actual, forecast):
     ape = np.where(actual != 0, np.abs(error / actual) * 100, np.nan)
 
     result_df = pd.DataFrame({
-        "Periode": periods,
-        "Aktual": actual,
+        "Period": periods,
+        "Actual": actual,
         "Forecast": forecast,
         "Error": error,
         "Absolute Error": abs_error,
@@ -250,7 +250,7 @@ def parse_weights(weight_text: str):
 
 def make_period_labels(df: pd.DataFrame, period_col):
     if period_col is None:
-        return [f"Periode {i}" for i in range(1, len(df) + 1)], None
+        return [f"Period {i}" for i in range(1, len(df) + 1)], None
 
     raw_period = df[period_col]
     parsed = pd.to_datetime(raw_period, errors="coerce")
@@ -282,28 +282,28 @@ def make_future_labels(period_dates, existing_labels, horizon: int):
         future_dates = [last_date + (i * delta) for i in range(1, horizon + 1)]
         return [d.strftime("%Y-%m-%d") for d in future_dates]
 
-    return [f"Periode {len(existing_labels) + i}" for i in range(1, horizon + 1)]
+    return [f"Period {len(existing_labels) + i}" for i in range(1, horizon + 1)]
 
 
-# --- FUNGSI GRAFIK PLOTLY (COLORFUL & VIBRANT THESIS STYLE) ---
+# --- PLOTLY CHART FUNCTIONS (COLORFUL & VIBRANT THESIS STYLE) ---
 
 def plot_actual_forecast(periods, actual, forecast, title):
     fig = go.Figure()
-    # Warna Aktual: Indigo Cerah
-    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Aktual", line=dict(color='#4F46E5', width=3)))
-    # Warna Forecast: Pink/Neon Red Cerah
+    # Actual Color: Bright Indigo
+    fig.add_trace(go.Scatter(x=periods, y=actual, mode="lines+markers", name="Actual", line=dict(color='#4F46E5', width=3)))
+    # Forecast Color: Bright Pink/Neon Red
     fig.add_trace(go.Scatter(x=periods, y=forecast, mode="lines+markers", name="Forecast", line=dict(color='#EC4899', width=3)))
-    fig.update_layout(title=title, xaxis_title="Periode", yaxis_title="Nilai", hovermode="x unified", template="plotly_white")
+    fig.update_layout(title=title, xaxis_title="Period", yaxis_title="Value", hovermode="x unified", template="plotly_white")
     return fig
 
 
 def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, future_forecast, residual_std=0):
     fig = go.Figure()
     
-    # Historis (Vibrant Indigo)
-    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Aktual Historis", line=dict(color='#4F46E5', width=3)))
+    # Historical (Vibrant Indigo)
+    fig.add_trace(go.Scatter(x=all_periods, y=actual_values, mode="lines+markers", name="Historical Actual", line=dict(color='#4F46E5', width=3)))
     
-    # Interval Keyakinan (Soft Pink Transparent)
+    # Confidence Interval (Soft Pink Transparent)
     if residual_std > 0:
         upper_bound = future_forecast + (1.96 * residual_std)
         lower_bound = future_forecast - (1.96 * residual_std)
@@ -317,23 +317,23 @@ def plot_future_forecast_with_ci(all_periods, actual_values, future_periods, fut
             line=dict(color='rgba(255,255,255,0)'),
             hoverinfo="skip",
             showlegend=True,
-            name="Interval Keyakinan (95%)"
+            name="Confidence Interval (95%)"
         ))
 
-    # Garis Forecast Masa Depan (Vibrant Pink Putus-putus)
-    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Proyeksi Utama", line=dict(color='#EC4899', width=3, dash='dash')))
+    # Future Forecast Line (Vibrant Dashed Pink)
+    fig.add_trace(go.Scatter(x=future_periods, y=future_forecast, mode="lines+markers", name="Main Projection", line=dict(color='#EC4899', width=3, dash='dash')))
 
     fig.update_layout(
-        title="Grafik Proyeksi Nilai Masa Depan",
-        xaxis_title="Periode",
-        yaxis_title="Nilai",
+        title="Future Value Projection Chart",
+        xaxis_title="Period",
+        yaxis_title="Value",
         hovermode="x unified",
         template="plotly_white"
     )
     return fig
 
 
-# --- ALGORITMA METODE PERAMALAN ---
+# --- FORECASTING METHOD ALGORITHMS ---
 
 def forecast_naive(history, horizon, **kwargs):
     if len(history) == 0: return np.zeros(horizon)
@@ -510,7 +510,7 @@ def evaluate_all_methods(train, test, test_periods, params):
     for method_name in FORECAST_METHODS.keys():
         forecast, error_table, metrics = evaluate_one_method(method_name, train, test, test_periods, params)
         rows.append({
-            "Metode": method_name,
+            "Method": method_name,
             "MAD": metrics["MAD"],
             "MSE": metrics["MSE"],
             "MAPE": metrics["MAPE"]
@@ -524,10 +524,10 @@ def evaluate_all_methods(train, test, test_periods, params):
 def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_forecast):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        comparison_df.to_excel(writer, index=False, sheet_name='Perbandingan_Metode')
+        comparison_df.to_excel(writer, index=False, sheet_name='Method_Comparison')
         
-        best_df = pd.DataFrame({"Periode": future_labels, "Forecast Utama": future_forecast})
-        best_df.to_excel(writer, index=False, sheet_name='Proyeksi_Metode_Terbaik')
+        best_df = pd.DataFrame({"Period": future_labels, "Main Forecast": future_forecast})
+        best_df.to_excel(writer, index=False, sheet_name='Best_Method_Projection')
         
         workbook  = writer.book
         
@@ -539,27 +539,27 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
         text_format = workbook.add_format({'border': 1, 'align': 'left'})
         
         # Format Sheet 1
-        ws1 = writer.sheets['Perbandingan_Metode']
+        ws1 = writer.sheets['Method_Comparison']
         ws1.set_row(0, 24)
         for col_num, value in enumerate(comparison_df.columns.values):
             ws1.write(0, col_num, value, header_format)
             
         for i, col in enumerate(comparison_df.columns):
             max_len = max(comparison_df[col].astype(str).map(len).max(), len(col)) + 4
-            if col == "Metode":
+            if col == "Method":
                 ws1.set_column(i, i, max_len, text_format)
             else:
                 ws1.set_column(i, i, max_len, num_format)
                 
         # Format Sheet 2
-        ws2 = writer.sheets['Proyeksi_Metode_Terbaik']
+        ws2 = writer.sheets['Best_Method_Projection']
         ws2.set_row(0, 24)
         for col_num, value in enumerate(best_df.columns.values):
             ws2.write(0, col_num, value, header_format)
             
         for i, col in enumerate(best_df.columns):
             max_len = max(best_df[col].astype(str).map(len).max(), len(col)) + 5
-            if col == "Periode":
+            if col == "Period":
                 ws2.set_column(i, i, max_len, text_format)
             else:
                 ws2.set_column(i, i, max_len, num_format)
@@ -570,10 +570,10 @@ def convert_all_to_excel(comparison_df, best_method_name, future_labels, future_
 def convert_df_to_excel(df):
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Hasil_Proyeksi')
+        df.to_excel(writer, index=False, sheet_name='Projection_Results')
         
         workbook  = writer.book
-        worksheet = writer.sheets['Hasil_Proyeksi']
+        worksheet = writer.sheets['Projection_Results']
         worksheet.set_row(0, 24)
         
         header_format = workbook.add_format({
@@ -588,7 +588,7 @@ def convert_df_to_excel(df):
             
         for i, col in enumerate(df.columns):
             max_len = max(df[col].astype(str).map(len).max(), len(col)) + 4
-            if col in ["No", "Periode"]:
+            if col in ["No", "Period"]:
                 worksheet.set_column(i, i, max_len, text_format)
             else:
                 worksheet.set_column(i, i, max_len, num_format)
@@ -596,13 +596,13 @@ def convert_df_to_excel(df):
     return output.getvalue()
 
 
-# --- INTERFACE UTAMA DASHBOARD ---
+# --- MAIN DASHBOARD INTERFACE ---
 
 st.title("✨ Predictive Production Planning for MSMEs")
 st.write("An interactive data science–based analytics application for advanced forecasting")
 
 if not STATSMODELS_AVAILABLE:
-    st.warning("⚠️ Library statsmodels belum tersedia. Metode Exponential Smoothing dan ARIMA memakai fallback Naive Forecast.")
+    st.warning("⚠️ The statsmodels library is not available. Exponential Smoothing and ARIMA methods will fall back to Naive Forecast.")
 
 with st.sidebar:
     st.header("🔮 Input Settings")
@@ -620,7 +620,7 @@ with st.sidebar:
     st.write("**Exponential Smoothing Parameters**")
     smoothing_mode = st.radio("Tuning Method", ["Automatic Optimization", "Manual Input"])
 
-    if smoothing_mode == "Input manual":
+    if smoothing_mode == "Manual Input":
         alpha_input = st.slider("Alpha (Level)", min_value=0.01, max_value=0.99, value=0.30, step=0.01)
         beta_input = st.slider("Beta (Trend)", min_value=0.01, max_value=0.99, value=0.20, step=0.01)
         gamma_input = st.slider("Gamma (Seasonality)", min_value=0.01, max_value=0.99, value=0.10, step=0.01)
@@ -628,7 +628,7 @@ with st.sidebar:
         alpha_input = beta_input = gamma_input = None
 
     ma_window = st.number_input("Window Moving Average", min_value=2, max_value=24, value=3, step=1)
-    wma_weight_text = st.text_input("Bobot WMA (Comma Separator)", value="0.2, 0.3, 0.5")
+    wma_weight_text = st.text_input("WMA Weights (Comma Separated)", value="0.2, 0.3, 0.5")
     seasonal_periods = st.number_input("Seasonal Periods (Seasonal)", min_value=2, max_value=52, value=12, step=1)
 
     st.write("**ARIMA Parameters (p, d, q)**")
@@ -654,18 +654,18 @@ if uploaded_file is None:
 try:
     df_raw = pd.read_csv(uploaded_file) if uploaded_file.name.endswith(".csv") else pd.read_excel(uploaded_file)
 except Exception as e:
-    st.error(f"File gagal dibaca: {e}"); st.stop()
+    st.error(f"Failed to read file: {e}"); st.stop()
 
 if df_raw.empty:
-    st.error("File tidak memiliki data."); st.stop()
+    st.error("The file contains no data."); st.stop()
 
 st.subheader("📊 Uploaded Data Preview")
 preview_df = df_raw.head(20).copy()
-# Cek apakah kolom "No" sudah ada sebelum menambahkannya
+# Check if "No" column already exists before adding it
 if "No" not in preview_df.columns:
     preview_df.insert(0, "No", range(1, len(preview_df) + 1))
 else:
-    # Jika sudah ada, gunakan yang sudah ada atau lewati
+    # If already present, use existing or skip
     pass
 st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
@@ -673,15 +673,15 @@ columns = df_raw.columns.tolist()
 col1, col2 = st.columns(2)
 
 with col1:
-    period_options = ["Tidak ada"] + columns
-    default_period_index = period_options.index("Tanggal") if "Tanggal" in period_options else 0
-    period_option = st.selectbox("Pilih Kolom Indeks Waktu/Periode", period_options, index=default_period_index)
+    period_options = ["None"] + columns
+    default_period_index = period_options.index("Date") if "Date" in period_options else 0
+    period_option = st.selectbox("Select Time/Period Index Column", period_options, index=default_period_index)
 
 with col2:
-    default_value_index = columns.index("Penjualan") if "Penjualan" in columns else 0
-    value_col = st.selectbox("Pilih Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
+    default_value_index = columns.index("Sales") if "Sales" in columns else 0
+    value_col = st.selectbox("Select Actual Value Column (Numeric)", columns, index=default_value_index)
 
-period_col = None if period_option == "Tidak ada" else period_option
+period_col = None if period_option == "None" else period_option
 df = df_raw.copy()
 
 if period_col is not None:
@@ -694,7 +694,7 @@ if period_col is not None:
 
 values_series = clean_numeric_series(df[value_col])
 if len(values_series) < 6:
-    st.error("Data numerik terdeteksi terlalu sedikit! Mohon gunakan minimal 6 baris data numerik.")
+    st.error("Too few numeric data points detected! Please use at least 6 rows of numeric data.")
     st.stop()
 
 df = df.loc[values_series.index].reset_index(drop=True)
@@ -703,7 +703,7 @@ period_labels, period_dates = make_period_labels(df, period_col)
 
 params = {
     "window": int(ma_window), "weights": parse_weights(wma_weight_text), "seasonal_periods": int(seasonal_periods),
-    "arima_order": (int(arima_p), int(arima_d), int(arima_q)), "optimized": smoothing_mode == "Optimasi otomatis",
+    "arima_order": (int(arima_p), int(arima_d), int(arima_q)), "optimized": smoothing_mode == "Automatic Optimization",
     "alpha": alpha_input, "beta": beta_input, "gamma": gamma_input
 }
 
@@ -711,45 +711,45 @@ train, test, test_size = split_train_test(values, test_percentage)
 train_periods = period_labels[:-test_size]
 test_periods = period_labels[-test_size:]
 
-st.subheader("📌 Ringkasan Distribusi Data")
+st.subheader("📌 Data Distribution Summary")
 metric_col1, metric_col2, metric_col3 = st.columns(3)
-metric_col1.metric("Total Observasi", len(values))
-metric_col2.metric("Dataset Latih (Train)", len(train))
-metric_col3.metric("Dataset Uji (Test Validation)", len(test))
+metric_col1.metric("Total Observations", len(values))
+metric_col2.metric("Training Dataset", len(train))
+metric_col3.metric("Test Dataset (Validation)", len(test))
 
 
-# --- AREA IMPLEMENTASI GRID TAB & PROSES UTAMA ---
+# --- TAB GRID & MAIN PROCESS IMPLEMENTATION AREA ---
 
-tab_data, tab_grafik = st.tabs(["🔍 Karakteristik & Tren Data", "📊 Hasil Komputasi Peramalan"])
+tab_data, tab_grafik = st.tabs(["🔍 Data Characteristics & Trends", "📊 Forecasting Computation Results"])
 
 with tab_data:
-    st.write("### Analisis Karakteristik Data Historis")
+    st.write("### Historical Data Characteristics Analysis")
     c_desc, c_roll = st.columns([1, 2])
     
     with c_desc:
-        st.write("**Statistik Deskriptif Utama**")
+        st.write("**Main Descriptive Statistics**")
         desc_df = pd.DataFrame(values, columns=[value_col]).describe()
         st.dataframe(desc_df, use_container_width=True)
         
     with c_roll:
-        st.write("**Deteksi Pergerakan Tren (Rolling Mean)**")
-        roll_df = pd.DataFrame({"Periode": period_labels, "Aktual": values})
-        roll_df["Rolling_Mean"] = roll_df["Aktual"].rolling(window=min(3, len(values)), min_periods=1).mean()
+        st.write("**Trend Movement Detection (Rolling Mean)**")
+        roll_df = pd.DataFrame({"Period": period_labels, "Actual": values})
+        roll_df["Rolling_Mean"] = roll_df["Actual"].rolling(window=min(3, len(values)), min_periods=1).mean()
         
         roll_fig = go.Figure()
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Aktual"], name="Aktual", mode="lines", line=dict(color="#4F46E5")))
-        roll_fig.add_trace(go.Scatter(x=roll_df["Periode"], y=roll_df["Rolling_Mean"], name="Tren Isyarat (MA)", line=dict(dash='dot', color='#06B6D4', width=2)))
+        roll_fig.add_trace(go.Scatter(x=roll_df["Period"], y=roll_df["Actual"], name="Actual", mode="lines", line=dict(color="#4F46E5")))
+        roll_fig.add_trace(go.Scatter(x=roll_df["Period"], y=roll_df["Rolling_Mean"], name="Trend Signal (MA)", line=dict(dash='dot', color='#06B6D4', width=2)))
         roll_fig.update_layout(height=300, margin=dict(l=20, r=20, t=20, b=20), template="plotly_white")
         st.plotly_chart(roll_fig, use_container_width=True)
 
 with tab_grafik:
     history_fig = go.Figure()
-    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Nilai Aktual", line=dict(color="#A855F7", width=3)))
-    history_fig.update_layout(title="Visualisasi Runtun Waktu Historis", xaxis_title="Periode", yaxis_title="Nilai", template="plotly_white")
+    history_fig.add_trace(go.Scatter(x=period_labels, y=values, mode="lines+markers", name="Actual Values", line=dict(color="#A855F7", width=3)))
+    history_fig.update_layout(title="Historical Time Series Visualization", xaxis_title="Period", yaxis_title="Value", template="plotly_white")
     st.plotly_chart(history_fig, use_container_width=True)
 
     if process_button:
-        if mode == "Satu metode":
+        if mode == "Single Method":
             forecast_test, error_table, metrics = evaluate_one_method(selected_method, train, test, test_periods, params)
             _, used_params = run_forecast_with_params(selected_method, train, len(test), params)
             future_forecast = run_forecast(selected_method, values, int(future_horizon), params)
@@ -758,76 +758,77 @@ with tab_grafik:
             residuals = test - forecast_test
             std_error = np.std(residuals)
 
-            st.subheader(f"📊 Hasil Analisis: {selected_method}")
+            st.subheader(f"📊 Analysis Results: {selected_method}")
             with st.container(border=True):
-                st.write("**🎯 Metrik Validasi Tingkat Akurasi**")
+                st.write("**🎯 Accuracy Validation Metrics**")
                 m1, m2, m3 = st.columns(3)
-                m1.metric("Akurasi (MAPE)", f"{metrics['MAPE']:.2f}%" if not np.isnan(metrics['MAPE']) else "N/A")
+                mape_val = f"{metrics['MAPE']:.2f}%" if not np.isnan(metrics['MAPE']) else "N/A"
+                m1.metric("Accuracy (MAPE)", mape_val)
                 m2.metric("Error (MAD)", f"{metrics['MAD']:.4f}")
                 m3.metric("Error (MSE)", f"{metrics['MSE']:.4f}")
 
             if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"]:
                 with st.container(border=True):
-                    st.write("**⚙️ Nilai Parameter Alpha, Beta, Gamma Optimal**")
+                    st.write("**⚙️ Optimal Alpha, Beta, Gamma Parameter Values**")
                     p1, p2, p3 = st.columns(3)
                     p1.metric("Alpha (Level)", format_param(used_params.get("Alpha")))
                     p2.metric("Beta (Trend)", format_param(used_params.get("Beta")))
                     p3.metric("Gamma (Seasonality)", format_param(used_params.get("Gamma")))
 
             st.write("") 
-            tab1, tab2 = st.tabs(["📉 Grafik Evaluasi Model", "🔮 Hasil Proyeksi Masa Depan"])
+            tab1, tab2 = st.tabs(["📉 Model Evaluation Chart", "🔮 Future Projection Results"])
 
             with tab1:
-                st.plotly_chart(plot_actual_forecast(test_periods, test, forecast_test, "Uji Validasi: Data Aktual vs Estimasi Model"), use_container_width=True)
-                with st.expander("Lihat Rincian Tabel Komputasi Error"):
+                st.plotly_chart(plot_actual_forecast(test_periods, test, forecast_test, "Validation Test: Actual Data vs Model Estimate"), use_container_width=True)
+                with st.expander("View Error Computation Table Details"):
                     error_table_view = error_table.copy()
                     error_table_view.insert(0, "No", range(1, len(error_table_view) + 1))
                     st.dataframe(error_table_view, use_container_width=True, hide_index=True)
 
             with tab2:
-                st.write("### 🔮 Proyeksi Nilai Masa Depan")
+                st.write("### 🔮 Future Value Projection")
                 st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, std_error), use_container_width=True)
                 st.divider()
 
                 col_tabel, col_download = st.columns([2, 1])
                 with col_tabel:
-                    st.write("**Tabel Angka Hasil Prediksi**")
-                    f_df = pd.DataFrame({"Periode": future_labels, "Hasil Forecast": future_forecast})
+                    st.write("**Forecast Result Table**")
+                    f_df = pd.DataFrame({"Period": future_labels, "Forecast Result": future_forecast})
                     f_df_view = f_df.copy()
                     f_df_view.insert(0, "No", range(1, len(f_df_view) + 1))
                     st.dataframe(f_df_view, use_container_width=True, hide_index=True)
                 
                 with col_download:
-                    st.write("**Unduh Hasil**")
+                    st.write("**Download Results**")
                     excel_data = convert_df_to_excel(f_df)
                     st.download_button(
-                        label="📥 Download Hasil (.xlsx)",
+                        label="📥 Download Results (.xlsx)",
                         data=excel_data,
-                        file_name=f"Hasil_Proyeksi_{selected_method}.xlsx",
+                        file_name=f"Projection_Results_{selected_method}.xlsx",
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
 
         else:
-            # Mode: Bandingkan semua metode
+            # Mode: Compare all methods
             comparison_df, details = evaluate_all_methods(train, test, test_periods, params)
-            best_method = comparison_df.iloc[0]["Metode"]
+            best_method = comparison_df.iloc[0]["Method"]
             
             future_forecast = run_forecast(best_method, values, int(future_horizon), params)
             future_labels = make_future_labels(period_dates, period_labels, int(future_horizon))
             
-            st.subheader("🏆 Tabel Perbandingan Akurasi Semua Metode")
-            st.write("Diurutkan otomatis dari model dengan tingkat error (MAPE) terkecil.")
+            st.subheader("🏆 Accuracy Comparison Table for All Methods")
+            st.write("Automatically sorted from the model with the lowest error rate (MAPE).")
             
             st.dataframe(comparison_df, use_container_width=True, hide_index=True)
             
-            st.success(f"💡 Rekomendasi Model Terbaik Berdasarkan Uji Akurasi: **{best_method}**")
+            st.success(f"💡 Best Model Recommendation Based on Accuracy Test: **{best_method}**")
             
             st.plotly_chart(plot_future_forecast_with_ci(period_labels, values, future_labels, future_forecast, 0), use_container_width=True)
             
             excel_all = convert_all_to_excel(comparison_df, best_method, future_labels, future_forecast)
             st.download_button(
-                label="📥 Download Laporan Perbandingan Lengkap (.xlsx)",
+                label="📥 Download Full Comparison Report (.xlsx)",
                 data=excel_all,
-                file_name="Laporan_Perbandingan_Metode_Peramalan.xlsx",
+                file_name="Forecasting_Method_Comparison_Report.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
