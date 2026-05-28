@@ -661,7 +661,12 @@ if df_raw.empty:
 
 st.subheader("📊 Pratinjau Data Unggahan")
 preview_df = df_raw.head(20).copy()
-preview_df.insert(0, "No", range(1, len(preview_df) + 1))
+# Cek apakah kolom "No" sudah ada sebelum menambahkannya
+if "No" not in preview_df.columns:
+    preview_df.insert(0, "No", range(1, len(preview_df) + 1))
+else:
+    # Jika sudah ada, gunakan yang sudah ada atau lewati
+    pass
 st.dataframe(preview_df, use_container_width=True, hide_index=True)
 
 columns = df_raw.columns.tolist()
