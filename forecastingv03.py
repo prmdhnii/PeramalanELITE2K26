@@ -605,11 +605,11 @@ if not STATSMODELS_AVAILABLE:
     st.warning("⚠️ Library statsmodels belum tersedia. Metode Exponential Smoothing dan ARIMA memakai fallback Naive Forecast.")
 
 with st.sidebar:
-    st.header("🔮 Pengaturan Input")
-    uploaded_file = st.file_uploader("Upload data historis (.csv / .xlsx)", type=["csv", "xlsx"])
+    st.header("🔮 Input Settings")
+    uploaded_file = st.file_uploader("Upload Historical Data (.csv / .xlsx)", type=["csv", "xlsx"])
     st.divider()
 
-    st.header("⚙️ Pengaturan Evaluasi")
+    st.header("⚙️ Evaluation Settings")
     test_percentage = st.slider("Persentase data uji (%)", min_value=10, max_value=50, value=20, step=5)
     future_horizon = st.number_input("Jumlah periode ke depan", min_value=1, max_value=60, value=6, step=1)
     mode = st.radio("Mode Perhitungan", ["Satu metode", "Bandingkan semua metode"])
