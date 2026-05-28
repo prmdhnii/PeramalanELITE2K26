@@ -610,10 +610,10 @@ with st.sidebar:
     st.divider()
 
     st.header("⚙️ Evaluation Settings")
-    test_percentage = st.slider("Persentase data uji (%)", min_value=10, max_value=50, value=20, step=5)
-    future_horizon = st.number_input("Jumlah periode ke depan", min_value=1, max_value=60, value=6, step=1)
-    mode = st.radio("Mode Perhitungan", ["Satu metode", "Bandingkan semua metode"])
-    selected_method = st.selectbox("Pilih Metode Utama", list(FORECAST_METHODS.keys()))
+    test_percentage = st.slider("Test Data Percentage (%)", min_value=10, max_value=50, value=20, step=5)
+    future_horizon = st.number_input("Number of Future Periods", min_value=1, max_value=60, value=6, step=1)
+    mode = st.radio("Calculation Mode", ["Single Method", "Compare All Methods"])
+    selected_method = st.selectbox("Select Primary Method", list(FORECAST_METHODS.keys()))
     st.divider()
 
     st.header("🛠️ Parameter Tambahan")
