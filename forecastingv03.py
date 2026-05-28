@@ -22,7 +22,7 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Forecasting Dashboard",
+    page_title="Forecasting Dashboard Elementary Laboratory",
     page_icon="📈",
     layout="wide"
 )
