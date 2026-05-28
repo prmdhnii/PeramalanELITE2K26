@@ -640,7 +640,7 @@ with st.sidebar:
 
 
 if uploaded_file is None:
-    st.info("💡 Petunjuk: Silakan unggah berkas excel atau csv kamu di panel bagian kiri untuk memulai analisis.")
+    st.info("💡 Instruction: Please upload your Excel or CSV file in the left panel to start the analysis.")
     st.subheader("📋 Contoh Struktur Tabel Excel/CSV yang Benar")
     sample = pd.DataFrame({
         "Tanggal": pd.date_range("2024-01-01", periods=12, freq="MS"),
