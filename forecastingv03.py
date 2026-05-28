@@ -16,7 +16,7 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Forecasting Dashboard ELITE 2026",
+    page_title="Colorful Forecasting Dashboard",
     page_icon="📈",
     layout="wide"
 )
@@ -667,7 +667,6 @@ if uploaded_file is None:
                        padding: 4px 12px;
                        border-radius: 6px;
                        border: 1px solid #C7D2FE;
-                       transition: background 0.2s;
                    ">
                     📊 Open Template in Google Drive
                 </a>
@@ -694,14 +693,35 @@ if df_raw.empty:
     st.error("The file contains no data."); st.stop()
 
 st.subheader("📊 Uploaded Data Preview")
-preview_df = df_raw.head(20).copy()
-# Check if "No" column already exists before adding it
+
+# Show summary row count info
+total_rows = len(df_raw)
+st.markdown(
+    f"""
+    <div style="
+        background: linear-gradient(135deg, #EEF2FF 0%, #F5F3FF 100%);
+        border-left: 4px solid #4F46E5;
+        border-radius: 8px;
+        padding: 10px 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    ">
+        <span style="font-size: 1.2rem;">📂</span>
+        <span style="color: #3730A3; font-weight: 600; font-size: 0.95rem;">
+            File loaded successfully — <b>{total_rows} rows</b> of data detected. All rows are used for analysis.
+        </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Show ALL rows in scrollable table (no head() limit)
+preview_df = df_raw.copy()
 if "No" not in preview_df.columns:
     preview_df.insert(0, "No", range(1, len(preview_df) + 1))
-else:
-    # If already present, use existing or skip
-    pass
-st.dataframe(preview_df, use_container_width=True, hide_index=True)
+st.dataframe(preview_df, use_container_width=True, hide_index=True, height=min(400, 45 + len(preview_df) * 35))
 
 columns = df_raw.columns.tolist()
 col1, col2 = st.columns(2)
