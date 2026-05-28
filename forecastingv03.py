@@ -16,7 +16,7 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Forecasting Dashboard",
+    page_title="Colorful Forecasting Dashboard",
     page_icon="📈",
     layout="wide"
 )
@@ -642,6 +642,40 @@ with st.sidebar:
 if uploaded_file is None:
     st.info("💡 Instruction: Please upload your Excel or CSV file in the left panel to start the analysis.")
     st.subheader("📋 Example of a Proper Excel/CSV Table Structure")
+    st.markdown(
+        """
+        <div style="
+            background: linear-gradient(135deg, #F0F4FF 0%, #EEF2FF 100%);
+            border: 1.5px solid #A5B4FC;
+            border-radius: 10px;
+            padding: 12px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        ">
+            <span style="font-size: 1.3rem;">📥</span>
+            <span style="color: #4A5568; font-weight: 500; font-size: 0.95rem;">
+                Download the data template here: &nbsp;
+                <a href="https://docs.google.com/spreadsheets/d/1DVghuZxRV-Xj269UMerp_NLRkCuLys5j/edit?usp=sharing&ouid=104043343223917321673&rtpof=true&sd=true"
+                   target="_blank"
+                   style="
+                       color: #4F46E5;
+                       font-weight: 700;
+                       text-decoration: none;
+                       background: #E0E7FF;
+                       padding: 4px 12px;
+                       border-radius: 6px;
+                       border: 1px solid #C7D2FE;
+                       transition: background 0.2s;
+                   ">
+                    📊 Open Template in Google Drive
+                </a>
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     sample = pd.DataFrame({
         "Date": pd.date_range("2024-01-01", periods=12, freq="MS"),
         "Sales": [120, 135, 128, 140, 150, 160, 155, 170, 180, 175, 190, 200]
