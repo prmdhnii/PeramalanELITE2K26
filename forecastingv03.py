@@ -678,7 +678,7 @@ with col1:
     period_option = st.selectbox("Select Time/Period Index Column", period_options, index=default_period_index)
 
 with col2:
-    default_value_index = columns.index("Sales") if "Penjualan" in columns else 0
+    default_value_index = columns.index("Penjualan") if "Penjualan" in columns else 0
     value_col = st.selectbox("Pilih Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
 
 period_col = None if period_option == "Tidak ada" else period_option
