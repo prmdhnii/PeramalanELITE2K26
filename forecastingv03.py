@@ -673,7 +673,7 @@ columns = df_raw.columns.tolist()
 col1, col2 = st.columns(2)
 
 with col1:
-    period_options = ["None"] + columns
+    period_options = ["Tidak ada"] + columns
     default_period_index = period_options.index("Tanggal") if "Tanggal" in period_options else 0
     period_option = st.selectbox("Pilih Kolom Indeks Waktu/Periode", period_options, index=default_period_index)
 
