@@ -628,15 +628,15 @@ with st.sidebar:
         alpha_input = beta_input = gamma_input = None
 
     ma_window = st.number_input("Window Moving Average", min_value=2, max_value=24, value=3, step=1)
-    wma_weight_text = st.text_input("Bobot WMA (Pisahkan koma)", value="0.2, 0.3, 0.5")
-    seasonal_periods = st.number_input("Seasonal Periods (Musiman)", min_value=2, max_value=52, value=12, step=1)
+    wma_weight_text = st.text_input("Bobot WMA (Comma Separator)", value="0.2, 0.3, 0.5")
+    seasonal_periods = st.number_input("Seasonal Periods (Seasonal)", min_value=2, max_value=52, value=12, step=1)
 
     st.write("**ARIMA Parameters (p, d, q)**")
     arima_p = st.number_input("Order p (AR)", min_value=0, max_value=5, value=1, step=1)
     arima_d = st.number_input("Order d (I)", min_value=0, max_value=2, value=1, step=1)
     arima_q = st.number_input("Order q (MA)", min_value=0, max_value=5, value=1, step=1)
 
-    process_button = st.button("🚀 Jalankan Proses", type="primary")
+    process_button = st.button("🚀 Run Process", type="primary")
 
 
 if uploaded_file is None:
@@ -659,7 +659,7 @@ except Exception as e:
 if df_raw.empty:
     st.error("File tidak memiliki data."); st.stop()
 
-st.subheader("📊 Pratinjau Data Unggahan")
+st.subheader("📊 Uploaded Data Preview")
 preview_df = df_raw.head(20).copy()
 # Cek apakah kolom "No" sudah ada sebelum menambahkannya
 if "No" not in preview_df.columns:
@@ -673,13 +673,13 @@ columns = df_raw.columns.tolist()
 col1, col2 = st.columns(2)
 
 with col1:
-    period_options = ["Tidak ada"] + columns
+    period_options = ["None"] + columns
     default_period_index = period_options.index("Tanggal") if "Tanggal" in period_options else 0
-    period_option = st.selectbox("Pilih Kolom Indeks Waktu/Periode", period_options, index=default_period_index)
+    period_option = st.selectbox("Select Time/Period Index Column", period_options, index=default_period_index)
 
 with col2:
-    default_value_index = columns.index("Penjualan") if "Penjualan" in columns else 0
-    value_col = st.selectbox("Pilih Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
+    default_value_index = columns.index("Sales") if "Penjualan" in columns else 0
+    value_col = st.selectbox("Select Actual Value Column (Numeric)", columns, index=default_value_index)
 
 period_col = None if period_option == "Tidak ada" else period_option
 df = df_raw.copy()
