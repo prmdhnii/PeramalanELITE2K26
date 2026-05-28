@@ -16,7 +16,7 @@ except Exception:
 
 
 st.set_page_config(
-    page_title="Colorful Forecasting Dashboard",
+    page_title="Forecasting Dashboard ELITE 2026",
     page_icon="📈",
     layout="wide"
 )
