@@ -679,7 +679,7 @@ with col1:
 
 with col2:
     default_value_index = columns.index("Sales") if "Penjualan" in columns else 0
-    value_col = st.selectbox("Select Actual Value Column (Numeric)", columns, index=default_value_index)
+    value_col = st.selectbox("Pilih Kolom Nilai Aktual (Numerik)", columns, index=default_value_index)
 
 period_col = None if period_option == "Tidak ada" else period_option
 df = df_raw.copy()
