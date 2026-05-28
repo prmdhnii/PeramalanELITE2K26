@@ -643,8 +643,8 @@ if uploaded_file is None:
     st.info("💡 Instruction: Please upload your Excel or CSV file in the left panel to start the analysis.")
     st.subheader("📋 Example of a Proper Excel/CSV Table Structure")
     sample = pd.DataFrame({
-        "Tanggal": pd.date_range("2024-01-01", periods=12, freq="MS"),
-        "Penjualan": [120, 135, 128, 140, 150, 160, 155, 170, 180, 175, 190, 200]
+        "Date": pd.date_range("2024-01-01", periods=12, freq="MS"),
+        "Sales": [120, 135, 128, 140, 150, 160, 155, 170, 180, 175, 190, 200]
     })
     preview_df = sample.copy()
     preview_df.insert(0, "No", range(1, len(preview_df) + 1))
