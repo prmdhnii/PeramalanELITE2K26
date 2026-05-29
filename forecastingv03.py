@@ -282,7 +282,7 @@ def render_credit_footer():
     <div class="credit-container">
         <div class="credit-badge">🏭 Developed by</div>
         <div class="credit-lab">
-            Assistant Elementary Laboratory<br>Industrial Engineering
+            Assistant Elementary Laboratory<br>Industrial Engineering<br>Gunadarma University
         </div>
         <div class="credit-author-label">✦ Authors ✦</div>
         <div class="credit-authors">
