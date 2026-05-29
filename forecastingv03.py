@@ -206,6 +206,61 @@ st.markdown("""
         padding: 12px 18px;
         margin-bottom: 10px;
     }
+
+    /* 8. Expander Arrow — jelas dan kontras di semua mode */
+    [data-testid="stExpander"] {
+        border: 1.5px solid #C7D2FE !important;
+        border-radius: 10px !important;
+        background-color: #FAFBFF !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Header baris expander */
+    [data-testid="stExpander"] summary {
+        background-color: #F0F4FF !important;
+        border-radius: 10px !important;
+        padding: 10px 16px !important;
+        cursor: pointer !important;
+    }
+
+    [data-testid="stExpander"] summary:hover {
+        background-color: #E0E7FF !important;
+    }
+
+    /* Teks label expander */
+    [data-testid="stExpander"] summary p,
+    [data-testid="stExpander"] summary span {
+        color: #3730A3 !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Arrow/chevron SVG — paksa warna gelap & ukuran besar */
+    [data-testid="stExpander"] summary svg {
+        fill: #4F46E5 !important;
+        color: #4F46E5 !important;
+        width: 22px !important;
+        height: 22px !important;
+        stroke: #4F46E5 !important;
+        stroke-width: 1.5px !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Pastikan path dalam SVG juga ikut berwarna */
+    [data-testid="stExpander"] summary svg path {
+        fill: #4F46E5 !important;
+        stroke: #4F46E5 !important;
+    }
+
+    /* Fallback: semua detail/summary arrow di Streamlit */
+    details > summary {
+        list-style: none;
+    }
+    details > summary::marker,
+    details > summary::-webkit-details-marker {
+        display: none;
+    }
     </style>
     """, unsafe_allow_html=True)
 
