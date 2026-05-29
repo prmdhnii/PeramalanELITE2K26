@@ -290,7 +290,7 @@ def render_credit_footer():
             <span class="credit-chip">👤 Shafa Khansa Nabila</span>
             <span class="credit-chip">👤 Rafazella Alwan</span>
         </div>
-        <div class="credit-year">© 2025 · Forecasting Dashboard · Elementary Laboratory IE</div>
+        <div class="credit-year">© 2026 · Forecasting Dashboard · Elementary Laboratory IE UG</div>
     </div>
     """, unsafe_allow_html=True)
 
