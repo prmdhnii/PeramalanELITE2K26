@@ -289,6 +289,8 @@ def render_credit_footer():
             <span class="credit-chip">👤 Primadhani Syah Putera</span>
             <span class="credit-chip">👤 Shafa Khansa Nabila</span>
             <span class="credit-chip">👤 Rafazella Alwan</span>
+            <span class="credit-chip">👤 Evral Panjelius</span>
+            <span class="credit-chip">👤 Maulida Boru Butar-Butar</span>
         </div>
         <div class="credit-year">© 2026 · Forecasting Dashboard · Elementary Laboratory IE UG</div>
     </div>
