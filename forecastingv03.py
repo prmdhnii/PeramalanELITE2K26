@@ -668,24 +668,133 @@ def evaluate_all_methods(train, test, test_periods, params):
 
 # ─── EXCEL EXPORT FUNCTIONS ────────────────────────────────────────────────────
 
-def convert_df_to_excel(df):
+def convert_df_to_excel(df, method_name=None, metrics=None, used_params=None,
+                         historical_labels=None, historical_values=None, value_col="Value"):
+    """
+    Membuat file Excel rapi berisi laporan hasil forecasting:
+    - Header judul & waktu pembuatan
+    - Ringkasan akurasi model (MAPE / MAD / MSE) & parameter optimal (jika ada)
+    - Tabel gabungan Data Historis + Hasil Proyeksi, dengan baris proyeksi
+      ditandai warna khusus, header beku (freeze panes), dan autofilter.
+    """
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-        df.to_excel(writer, index=False, sheet_name='Projection_Results')
-        workbook  = writer.book
-        worksheet = writer.sheets['Projection_Results']
-        worksheet.set_row(0, 24)
-        header_format = workbook.add_format({'bold': True, 'bg_color': '#4F46E5', 'font_color': '#FFFFFF', 'border': 1, 'align': 'center', 'valign': 'vcenter'})
+        workbook = writer.book
+        sheet_name = 'Hasil_Forecasting'
+        worksheet = workbook.add_worksheet(sheet_name)
+        writer.sheets[sheet_name] = worksheet
+
+        # ── Formats ──────────────────────────────────────────────────────
+        title_fmt = workbook.add_format({'bold': True, 'font_size': 16, 'font_color': '#4F46E5'})
+        subtitle_fmt = workbook.add_format({'italic': True, 'font_size': 10, 'font_color': '#64748B'})
+        section_fmt = workbook.add_format({'bold': True, 'font_size': 11, 'bg_color': '#EEF2FF',
+                                            'font_color': '#1E1B4B', 'border': 1})
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#4F46E5', 'font_color': '#FFFFFF',
+                                              'border': 1, 'align': 'center', 'valign': 'vcenter'})
+        metric_label_fmt = workbook.add_format({'bold': True, 'border': 1, 'bg_color': '#F0F4FF', 'align': 'left'})
+        metric_val_fmt = workbook.add_format({'border': 1, 'align': 'right'})
+
         num_format = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right'})
         text_format = workbook.add_format({'border': 1, 'align': 'left'})
-        for col_num, value in enumerate(df.columns.values):
-            worksheet.write(0, col_num, value, header_format)
-        for i, col in enumerate(df.columns):
-            max_len = max(df[col].astype(str).map(len).max(), len(col)) + 4
-            if col in ["No", "Period"]:
-                worksheet.set_column(i, i, max_len, text_format)
+        num_format_alt = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right', 'bg_color': '#F8FAFC'})
+        text_format_alt = workbook.add_format({'border': 1, 'align': 'left', 'bg_color': '#F8FAFC'})
+        forecast_num_fmt = workbook.add_format({'num_format': '#,##0.00', 'border': 1, 'align': 'right',
+                                                  'bg_color': '#FEF3C7', 'bold': True})
+        forecast_text_fmt = workbook.add_format({'border': 1, 'align': 'left', 'bg_color': '#FEF3C7', 'bold': True})
+
+        row = 0
+        worksheet.merge_range(row, 0, row, 3, "📈 Laporan Hasil Forecasting", title_fmt)
+        row += 1
+        gen_time = pd.Timestamp.now().strftime("%d %B %Y %H:%M")
+        subtitle_text = f"Metode: {method_name}   |   Dibuat: {gen_time}" if method_name else f"Dibuat: {gen_time}"
+        worksheet.merge_range(row, 0, row, 3, subtitle_text, subtitle_fmt)
+        row += 2
+
+        # ── Ringkasan akurasi model ──────────────────────────────────────
+        if metrics:
+            worksheet.merge_range(row, 0, row, 1, "Ringkasan Akurasi Model", section_fmt)
+            row += 1
+            mape_val = metrics.get("MAPE")
+            mape_display = "N/A" if mape_val is None or (isinstance(mape_val, float) and np.isnan(mape_val)) else f"{mape_val:.2f}%"
+            for label, val in [
+                ("MAPE (Akurasi)", mape_display),
+                ("MAD", f"{metrics.get('MAD', float('nan')):.4f}" if metrics.get('MAD') is not None else "N/A"),
+                ("MSE", f"{metrics.get('MSE', float('nan')):.4f}" if metrics.get('MSE') is not None else "N/A"),
+            ]:
+                worksheet.write(row, 0, label, metric_label_fmt)
+                worksheet.write(row, 1, val, metric_val_fmt)
+                row += 1
+            row += 1
+
+        if used_params:
+            has_param = any(used_params.get(k) is not None for k in ["Alpha", "Beta", "Gamma"])
+            if has_param:
+                worksheet.merge_range(row, 0, row, 1, "Parameter Optimal", section_fmt)
+                row += 1
+                for label, key in [("Alpha (Level)", "Alpha"), ("Beta (Trend)", "Beta"), ("Gamma (Seasonality)", "Gamma")]:
+                    val = used_params.get(key)
+                    if val is not None:
+                        worksheet.write(row, 0, label, metric_label_fmt)
+                        worksheet.write(row, 1, format_param(val), metric_val_fmt)
+                        row += 1
+                row += 1
+
+        # ── Gabungkan data historis + hasil proyeksi ────────────────────
+        combined_periode, combined_value, combined_tipe = [], [], []
+        if historical_labels is not None and historical_values is not None:
+            for lbl, val in zip(historical_labels, historical_values):
+                combined_periode.append(lbl)
+                combined_value.append(val)
+                combined_tipe.append("Historis")
+
+        forecast_periods = df.iloc[:, 0].tolist()
+        forecast_values = df.iloc[:, 1].tolist()
+        for lbl, val in zip(forecast_periods, forecast_values):
+            combined_periode.append(lbl)
+            combined_value.append(val)
+            combined_tipe.append("Proyeksi")
+
+        worksheet.merge_range(row, 0, row, 3, "Data Historis & Hasil Proyeksi", section_fmt)
+        row += 1
+        table_start = row
+        headers = ["No", "Periode", value_col, "Tipe"]
+        worksheet.set_row(table_start, 22)
+        for ci, h in enumerate(headers):
+            worksheet.write(table_start, ci, h, header_format)
+
+        for i in range(len(combined_periode)):
+            excel_row = table_start + 1 + i
+            is_forecast = combined_tipe[i] == "Proyeksi"
+            alt = (i % 2 == 1)
+            if is_forecast:
+                tfmt, nfmt = forecast_text_fmt, forecast_num_fmt
+            elif alt:
+                tfmt, nfmt = text_format_alt, num_format_alt
             else:
-                worksheet.set_column(i, i, max_len, num_format)
+                tfmt, nfmt = text_format, num_format
+            worksheet.write(excel_row, 0, i + 1, tfmt)
+            worksheet.write(excel_row, 1, str(combined_periode[i]), tfmt)
+            worksheet.write(excel_row, 2, float(combined_value[i]) if pd.notna(combined_value[i]) else None, nfmt)
+            worksheet.write(excel_row, 3, combined_tipe[i], tfmt)
+
+        last_row = table_start + len(combined_periode)
+        if len(combined_periode) > 0:
+            worksheet.autofilter(table_start, 0, last_row, 3)
+        worksheet.freeze_panes(table_start + 1, 0)
+
+        # ── Lebar kolom ──────────────────────────────────────────────────
+        periode_len = max([len(str(p)) for p in combined_periode], default=8)
+        worksheet.set_column(0, 0, 6)
+        worksheet.set_column(1, 1, max(14, periode_len + 4))
+        worksheet.set_column(2, 2, 18)
+        worksheet.set_column(3, 3, 13)
+
+        # Legenda warna
+        legend_row = last_row + 2
+        worksheet.write(legend_row, 0, "Keterangan:", metric_label_fmt)
+        worksheet.write(legend_row + 1, 0, "🟡 Kuning", forecast_text_fmt)
+        worksheet.write(legend_row + 1, 1, "= Hasil Proyeksi / Peramalan Masa Depan", subtitle_fmt)
+
     return output.getvalue()
 
 
@@ -1493,7 +1602,15 @@ with tab_grafik:
                 
                 with col_download:
                     st.write("**Download Results**")
-                    excel_data = convert_df_to_excel(f_df)
+                    excel_data = convert_df_to_excel(
+                        f_df,
+                        method_name=selected_method,
+                        metrics=metrics,
+                        used_params=used_params if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"] else None,
+                        historical_labels=period_labels,
+                        historical_values=values,
+                        value_col=value_col
+                    )
                     st.download_button(
                         label="📥 Download Results (.xlsx)",
                         data=excel_data,
@@ -1519,7 +1636,15 @@ with tab_grafik:
                 dl_c1, dl_c2 = st.columns(2)
                 with dl_c1:
                     # Excel
-                    excel_data2 = convert_df_to_excel(f_df)
+                    excel_data2 = convert_df_to_excel(
+                        f_df,
+                        method_name=selected_method,
+                        metrics=metrics,
+                        used_params=used_params if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"] else None,
+                        historical_labels=period_labels,
+                        historical_values=values,
+                        value_col=value_col
+                    )
                     st.download_button(
                         label="📥 Download Projection (.xlsx)",
                         data=excel_data2,
@@ -1603,6 +1728,22 @@ with tab_grafik:
                 proj_df_view = proj_df.copy()
                 proj_df_view.insert(0, "No", range(1, len(proj_df_view) + 1))
                 st.dataframe(proj_df_view, use_container_width=True, hide_index=True)
+
+                best_metrics_for_excel = details[best_method]["metrics"]
+                excel_best_proj = convert_df_to_excel(
+                    proj_df,
+                    method_name=f"{best_method} (Model Terbaik)",
+                    metrics=best_metrics_for_excel,
+                    historical_labels=period_labels,
+                    historical_values=values,
+                    value_col=value_col
+                )
+                st.download_button(
+                    label="📥 Download Hasil Proyeksi (.xlsx)",
+                    data=excel_best_proj,
+                    file_name=f"Projection_Best_{best_method}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
 
                 # Indonesian recommendation
                 rec_text_cmp = get_production_recommendation_id(future_labels, future_forecast, values)
