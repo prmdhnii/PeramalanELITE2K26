@@ -217,47 +217,67 @@ METHOD_INFO = {
 }
 
 
-# --- KODE PERBAIKAN OUTPUT ALGORITMA PERAMALAN (FIXED) ---
+# --- FORECASTING METHOD ALGORITHMS (FIXED MATHEMATICAL LOGIC) ---
 
 def forecast_naive(history, horizon, **kwargs):
-    if len(history) == 0: return np.zeros(horizon)
+    if len(history) == 0:
+        return np.zeros(horizon)
     return np.repeat(history[-1], horizon)
 
 def forecast_moving_average(history, horizon, window=3, **kwargs):
-    if len(history) == 0: return np.zeros(horizon)
+    if len(history) == 0:
+        return np.zeros(horizon)
+    forecasts = []
+    # Logika diperbaiki: Peramalan masa depan jangka panjang menggunakan rata-rata data riil terakhir tanpa rekursif meramal diri sendiri
     usable_window = min(window, len(history))
     pred = np.mean(history[-usable_window:])
-    return np.repeat(pred, horizon)
+    for _ in range(horizon):
+        forecasts.append(pred)
+    return np.array(forecasts)
 
 def forecast_weighted_moving_average(history, horizon, weights=None, **kwargs):
-    if weights is None: weights = [0.2, 0.3, 0.5]
-    if len(history) == 0: return np.zeros(horizon)
+    if weights is None:
+        weights = [0.2, 0.3, 0.5]
+    if len(history) == 0:
+        return np.zeros(horizon)
+    
+    forecasts = []
+    # Logika diperbaiki: Menggunakan kombinasi bobot data riil terakhir secara konstan
     usable_window = min(len(weights), len(history))
     recent_values = np.array(history[-usable_window:], dtype=float)
     recent_weights = np.array(weights[-usable_window:], dtype=float)
     recent_weights = recent_weights / recent_weights.sum()
     pred = np.sum(recent_values * recent_weights)
-    return np.repeat(pred, horizon)
+    
+    for _ in range(horizon):
+        forecasts.append(pred)
+    return np.array(forecasts)
 
 def get_fitted_param(fitted, keys):
     for key in keys:
         value = fitted.params.get(key, None)
-        if value is not None: return value
+        if value is not None:
+            return value
     return None
 
 def format_param(value):
-    if value is None or pd.isna(value): return "-"
-    try: return f"{float(value):.4f}"
-    except Exception: return "-"
+    if value is None or pd.isna(value):
+        return "-"
+    try:
+        return f"{float(value):.4f}"
+    except Exception:
+        return "-"
 
 def limit_smoothing_param(value, minimum=0.01, maximum=0.99):
     try:
-        if value is None or pd.isna(value): return minimum
+        if value is None or pd.isna(value):
+            return minimum
         value = float(value)
-        if value < minimum: return minimum
-        value = maximum if value > maximum else value
-        return value
-    except Exception: return minimum
+        if value < minimum:
+            return minimum
+        return maximum if value > maximum else value
+    except Exception:
+        return minimum
 
 def forecast_single_exponential_smoothing(history, horizon, optimized=True, alpha=None, **kwargs):
     if not STATSMODELS_AVAILABLE or len(history) < 3:
@@ -312,7 +332,8 @@ def forecast_triple_exponential_smoothing(history, horizon, seasonal_periods=12,
         return forecast_double_exponential_smoothing(history, horizon, optimized=optimized, alpha=alpha, beta=beta)
 
 def forecast_linear_trend(history, horizon, **kwargs):
-    if len(history) < 2: return forecast_naive(history, horizon)
+    if len(history) < 2:
+        return forecast_naive(history, horizon)
     x = np.arange(1, len(history) + 1)
     y = np.array(history, dtype=float)
     slope, intercept = np.polyfit(x, y, 1)
@@ -320,7 +341,8 @@ def forecast_linear_trend(history, horizon, **kwargs):
     return np.array(intercept + slope * future_x)
 
 def forecast_least_square_quadratic(history, horizon, **kwargs):
-    if len(history) < 3: return forecast_linear_trend(history, horizon)
+    if len(history) < 3:
+        return forecast_linear_trend(history, horizon)
     x = np.arange(1, len(history) + 1)
     y = np.array(history, dtype=float)
     a, b, c = np.polyfit(x, y, 2)
@@ -328,16 +350,19 @@ def forecast_least_square_quadratic(history, horizon, **kwargs):
     return np.array(a * (future_x ** 2) + b * future_x + c)
 
 def forecast_seasonal_naive(history, horizon, seasonal_periods=12, **kwargs):
-    if len(history) < seasonal_periods: return forecast_naive(history, horizon)
+    if len(history) < seasonal_periods:
+        return forecast_naive(history, horizon)
     forecasts = []
     n = len(history)
+    # Logika diperbaiki: Menggunakan modulo sisa bagi agar tidak terjadi out-of-bounds index saat horizon panjang
     for i in range(horizon):
         idx = (n - seasonal_periods + (i % seasonal_periods)) % n
         forecasts.append(history[idx])
     return np.array(forecasts)
 
 def forecast_arima(history, horizon, arima_order=(1, 1, 1), **kwargs):
-    if not STATSMODELS_AVAILABLE or len(history) < 8: return forecast_naive(history, horizon)
+    if not STATSMODELS_AVAILABLE or len(history) < 8:
+        return forecast_naive(history, horizon)
     try:
         model = ARIMA(history, order=arima_order)
         fitted_model = model.fit()
@@ -351,7 +376,8 @@ def forecast_arima(history, horizon, arima_order=(1, 1, 1), **kwargs):
 def safe_mape(actual, predicted):
     actual, predicted = np.array(actual, dtype=float), np.array(predicted, dtype=float)
     mask = actual != 0
-    if not np.any(mask): return 0.0
+    if not np.any(mask):
+        return 0.0
     return np.mean(np.abs((actual[mask] - predicted[mask]) / actual[mask])) * 100
 
 def calculate_error_table(actuals, fitted_values):
@@ -367,8 +393,10 @@ def calculate_error_table(actuals, fitted_values):
     
     mapes = []
     for a, p in zip(actuals, fitted_values):
-        if a == 0: mapes.append(0.0)
-        else: mapes.append((abs(a - p) / abs(a)) * 100)
+        if a == 0:
+            mapes.append(0.0)
+        else:
+            mapes.append((abs(a - p) / abs(a)) * 100)
     df_err["|et/Yt| % (MAPE)"] = mapes
     
     mad = df_err["|et| (Absolute)"].mean()
@@ -413,7 +441,7 @@ def run_backtest_fitted(history, method_name, params_dict):
     return fitted
 
 
-# --- EXCEL & PDF GENERATORS ---
+# --- REPORT GENERATION HELPERS ---
 
 def generate_excel_report(details, best_method, future_labels, future_forecast, actuals, labels):
     output = io.BytesIO()
@@ -443,7 +471,8 @@ def generate_excel_report(details, best_method, future_labels, future_forecast, 
     return output.getvalue()
 
 def generate_pdf_report(method_name, metrics, future_labels, future_forecast, actuals, labels, val_col, mape_label, mape_color, mape_desc):
-    if not REPORTLAB_AVAILABLE: return None
+    if not REPORTLAB_AVAILABLE:
+        return None
     try:
         buffer = io.BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=2*cm, leftMargin=2*cm, topMargin=2*cm, bottomMargin=2*cm)
@@ -515,7 +544,6 @@ render_title_banner()
 st.sidebar.markdown("## 📊 Pengaturan Data & File")
 uploaded_file = st.sidebar.file_uploader("Unggah Dataset (Excel atau CSV)", type=["csv", "xlsx"])
 
-# DATASET DEFAULT INTERNAL (Bila user belum unggah file)
 if uploaded_file is None:
     st.sidebar.info("💡 Menampilkan dataset bawaan (Contoh Pola Tren & Musiman Bulanan)")
     months = ["Jan 2024", "Feb 2024", "Mar 2024", "Apr 2024", "Mei 2024", "Jun 2024",
@@ -542,7 +570,6 @@ else:
         st.error(f"Gagal membaca file: {e}")
         st.stop()
 
-# VALIDASI DATA
 df = df.dropna(subset=[label_col, value_col])
 values = df[value_col].astype(float).tolist()
 period_labels = df[label_col].astype(str).tolist()
@@ -557,8 +584,10 @@ horizon = st.sidebar.number_input("Horizon Peramalan (Periode ke depan):", min_v
 with st.sidebar.expander("🛠️ Set Detail Parameter Manual"):
     ma_window = st.number_input("Moving Average Window:", min_value=2, max_value=len(values)-1, value=3)
     wma_w_str = st.text_input("WMA Weights (pisahkan koma):", value="0.2,0.3,0.5")
-    try: wma_weights = [float(x.strip()) for x in wma_w_str.split(",")]
-    except Exception: wma_weights = [0.2, 0.3, 0.5]
+    try:
+        wma_weights = [float(x.strip()) for x in wma_w_str.split(",")]
+    except Exception:
+        wma_weights = [0.2, 0.3, 0.5]
     
     st.markdown("---")
     ses_opt = st.checkbox("Optimasi Otomatis SES", value=True)
@@ -594,7 +623,7 @@ params_dict = {
 }
 
 
-# --- PROSES PERHITUNGAN UTAMA (ALL 10 METHODS) ---
+# --- PROCESS FORECASTS ---
 methods_list = [
     "Naive Forecast", "Moving Average", "Weighted Moving Average",
     "Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing",
@@ -609,7 +638,6 @@ for method in methods_list:
     fitted = run_backtest_fitted(values, method, params_dict)
     err_df, metrics = calculate_error_table(values, fitted)
     
-    # Kalkulasi nilai proyeksi ke depan jangka panjang
     if method == "Naive Forecast":
         fut = forecast_naive(values, horizon)
         p_info = {}
@@ -651,20 +679,17 @@ for method in methods_list:
         best_method = method
 
 
-# --- GENERASI LABEL MASA DEPAN (HORIZON) ---
+# --- GENERATE FUTURE TIME LABELS ---
 future_labels = []
 last_label = period_labels[-1]
 try:
-    # Upayakan deteksi jika bertipe angka tahun/integer biasa
     last_num = int(last_label)
     for i in range(1, horizon + 1):
         future_labels.append(str(last_num + i))
 except Exception:
     try:
-        # Upayakan jika berbasis parse penanggalan
         last_date = pd.to_datetime(last_label)
         for i in range(1, horizon + 1):
-            # Asumsi bulanan jika string mengandung spasi / nama bulan
             if " " in last_label or "-" in last_label:
                 next_d = last_date + pd.DateOffset(months=i)
                 future_labels.append(next_d.strftime("%b %Y"))
@@ -672,12 +697,11 @@ except Exception:
                 next_d = last_date + pd.DateOffset(days=i)
                 future_labels.append(next_d.strftime("%Y-%m-%d"))
     except Exception:
-        # Fallback teks biasa + indeks increment h1, h2...
         for i in range(1, horizon + 1):
             future_labels.append(f"H+{i} ({last_label})")
 
 
-# --- RINGKASAN METODE TERBAIK UTAMA ---
+# --- DISPLAY METRICS BANNER ---
 best_metrics = details[best_method]["metrics"]
 m_mape = best_metrics["MAPE"]
 
@@ -713,7 +737,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "📊 Dataset Riwayat (Input)"
 ])
 
-# ─── TAB 1: RINGKASAN KOMPARASI KESELURUHAN ──────────────────────────────────
+# --- TAB 1: ALL METHODS SUMMARY COMPARISON ---
 with tab1:
     st.markdown("### 📊 Peringkat Performa Akurasi Metode Peramalan")
     st.write("Semua metode dijalankan secara *backtesting* satu langkah ke depan (*one-step-ahead fitted values*) untuk menghitung akurasi riwayat nyata secara adil.")
@@ -736,12 +760,10 @@ with tab1:
         use_container_width=True
     )
     
-    # Visualisasi Komparasi Fit Semua Metode vs Aktual
     st.markdown("### 📈 Grafik Komparasi Nilai Fit Histori")
     fig_comp = go.Figure()
     fig_comp.add_trace(go.Scatter(x=period_labels, y=values, name="🔴 AKTUAL NYATA", line=dict(color="#EF4444", width=3.5)))
     
-    # Selalu munculkan yang terbaik dengan garis tebal, sisanya tipis
     for m, d in details.items():
         is_best = (m == best_method)
         fig_comp.add_trace(go.Scatter(
@@ -763,25 +785,18 @@ with tab1:
     st.plotly_chart(fig_comp, use_container_width=True)
 
 
-# ─── TAB 2: PROYEKSI MASA DEPAN (HORIZON FORECAST) ───────────────────────────
+# --- TAB 2: FUTURE HORIZON FORECAST (WITH NEW DOWNLOAD FEATURE) ---
 with tab2:
     st.markdown("### 🔮 Proyeksi Nilai Masa Depan (Hasil Jangka Panjang)")
     st.write(f"Berikut merupakan visualisasi dan tabel hasil proyeksi ke depan menggunakan metode pilihan Anda atau metode terbaik otomatis (**{best_method}**).")
     
-    # Pilihan metode khusus untuk visualisasi masa depan
     selected_view_method = st.selectbox("Ganti Metode Tampilan Proyeksi Gambar:", methods_list, index=methods_list.index(best_method))
     future_forecast = details[selected_view_method]["future"]
     
-    # Gabungkan data untuk visualisasi berkesinambungan
-    extended_labels = period_labels + future_labels
-    
     fig_f = go.Figure()
-    # Garis Aktual Historis
     fig_f.add_trace(go.Scatter(x=period_labels, y=values, name="Aktual Data Histori", line=dict(color="#1E293B", width=3)))
-    # Garis Fit Historis Metode Terpilih
     fig_f.add_trace(go.Scatter(x=period_labels, y=details[selected_view_method]["fitted"], name=f"Fit Histori ({selected_view_method})", line=dict(color="#94A3B8", width=1.5, dash="dot")))
-    # Garis Forecast Jangka Panjang Depan
-    # Agar menyambung dengan data akhir riwayat:
+    
     conn_labels = [period_labels[-1]] + future_labels
     conn_values = [values[-1]] + list(future_forecast)
     fig_f.add_trace(go.Scatter(x=conn_labels, y=conn_values, name=f"🔮 Proyeksi Depan ({selected_view_method})", line=dict(color="#2563EB", width=3.5)))
@@ -796,39 +811,39 @@ with tab2:
     fig_f.update_yaxes(showgrid=True, gridcolor="#F1F5F9")
     st.plotly_chart(fig_f, use_container_width=True)
     
-    # Tampilkan Tabel Hasil Forecast Masa Depan & Fitur Download Hasil Forecast
     st.markdown("#### 📋 Tabel Hasil Nilai Ramalan Masa Depan")
     df_future_table = pd.DataFrame({
         "Periode Masa Depan (Horizon)": future_labels,
         "Nilai Hasil Peramalan Forecast": future_forecast
     })
     
-    col_tbl, col_dl = st.columns([2, 1])
-    with col_tbl:
+    # ─── TAMBAHAN BARU: FITUR DOWNLOAD HASIL FORECAST ───
+    col_table_view, col_download_actions = st.columns([2, 1])
+    with col_table_view:
         st.dataframe(df_future_table.style.format({"Nilai Hasil Peramalan Forecast": "{:.4f}"}), use_container_width=True)
         
-    with col_dl:
+    with col_download_actions:
         st.markdown("<div style='background-color:#EFF6FF; padding:1.2rem; border-radius:10px; border:1px solid #BFDBFE;'>", unsafe_allow_html=True)
-        st.markdown(f"##### 📥 Download Hasil Forecast ({selected_view_method})")
-        st.write("Unduh hasil ramalan proyeksi masa depan ini langsung untuk kebutuhan laporan eksternal.")
+        st.markdown(f"##### 📥 Download Hasil Proyeksi ({selected_view_method})")
+        st.write("Unduh hasil kalkulasi peramalan ini dalam bentuk berkas lembar kerja komputer.")
         
-        # 1. Excel Download
-        buffer_fc_xlsx = io.BytesIO()
-        with pd.ExcelWriter(buffer_fc_xlsx, engine='xlsxwriter') as wr_fc:
-            df_future_table.to_excel(wr_fc, sheet_name="Hasil_Forecast", index=False)
+        # Download ke Excel (.xlsx)
+        buffer_forecast_excel = io.BytesIO()
+        with pd.ExcelWriter(buffer_forecast_excel, engine='xlsxwriter') as wr_f:
+            df_future_table.to_excel(wr_f, sheet_name="Forecast_Result", index=False)
         st.download_button(
-            label="📥 Download Forecast (.xlsx)",
-            data=buffer_fc_xlsx.getvalue(),
+            label="📊 Download Hasil (.xlsx)",
+            data=buffer_forecast_excel.getvalue(),
             file_name=f"Hasil_Forecast_{selected_view_method.replace(' ', '_')}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             use_container_width=True
         )
         
-        # 2. CSV Download
-        csv_fc_data = df_future_table.to_csv(index=False).encode('utf-8')
+        # Download ke CSV (.csv)
+        csv_forecast_data = df_future_table.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="📄 Download Forecast (.csv)",
-            data=csv_fc_data,
+            label="📄 Download Hasil (.csv)",
+            data=csv_forecast_data,
             file_name=f"Hasil_Forecast_{selected_view_method.replace(' ', '_')}.csv",
             mime="text/csv",
             use_container_width=True
@@ -836,19 +851,15 @@ with tab2:
         st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ─── TAB 3: DETAIL PERHITUNGAN GALAT PER METODE & NILAI ALPHA/BETA ───────────
+# --- TAB 3: ERROR BREAKDOWN PER METHOD & SMOOTHING COEFFICIENTS ---
 with tab3:
     st.markdown("### 📑 Telusuri Logika Hitung Galat & Nilai Alpha/Beta/Gamma Model")
     st.write("Gunakan menu dropdown di bawah untuk menginspeksi tabel rincian deviasi sisa error ($e_t$) dari masing-masing 10 metode peramalan.")
     
     inspect_method = st.selectbox("Pilih Metode yang Ingin Dibongkar Perhitungannya:", methods_list, index=methods_list.index(best_method))
-    
-    # Tampilkan Informasi Definisi Metode
     st.info(f"ℹ️ **Informasi Metode ({inspect_method}):** {METHOD_INFO[inspect_method]}")
-    
     target_data = details[inspect_method]
     
-    # Tampilkan Nilai Parameter Eksponensial / Model jika ada
     if target_data["params"]:
         st.markdown("#### ⚙️ Nilai Parameter Koefisien Hasil Fitting")
         p_cols = st.columns(3)
@@ -871,7 +882,7 @@ with tab3:
     )
 
 
-# ─── TAB 4: DATASET RIWAYAT (INPUT) ──────────────────────────────────────────
+# --- TAB 4: DATASET VIEW ---
 with tab4:
     st.markdown("### 📊 Ringkasan Deskriptif Data Aktual Riwayat")
     st.write("Struktur tabel data mentah masukan yang dibaca aktif oleh mesin peramalan cerdas saat ini.")
@@ -920,5 +931,5 @@ with st.expander("🚀 Ekspor Hasil Komparasi Lengkap (Excel / PDF Summary)"):
         else:
             st.info("💡 Install `reportlab` to enable PDF export: `pip install reportlab`")
 
-# ─── CREDIT FOOTER (Results Page) ───────────────────────────────────────────
+# ─── CREDIT FOOTER ───────────────────────────────────────────────────────────
 render_credit_footer()
