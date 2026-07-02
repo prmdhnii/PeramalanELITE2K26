@@ -1592,31 +1592,29 @@ with tab_grafik:
                 )
                 st.divider()
 
-                col_tabel, col_download = st.columns([2, 1])
-                with col_tabel:
-                    st.write("**Forecast Result Table**")
-                    f_df = pd.DataFrame({"Period": future_labels, "Forecast Result": future_forecast})
-                    f_df_view = f_df.copy()
-                    f_df_view.insert(0, "No", range(1, len(f_df_view) + 1))
-                    st.dataframe(f_df_view, use_container_width=True, hide_index=True)
-                
-                with col_download:
-                    st.write("**Download Results**")
-                    excel_data = convert_df_to_excel(
-                        f_df,
-                        method_name=selected_method,
-                        metrics=metrics,
-                        used_params=used_params if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"] else None,
-                        historical_labels=period_labels,
-                        historical_values=values,
-                        value_col=value_col
-                    )
-                    st.download_button(
-                        label="📥 Download Results (.xlsx)",
-                        data=excel_data,
-                        file_name=f"Projection_Results_{selected_method}.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
+                st.write("**📋 Forecast Result Table**")
+                f_df = pd.DataFrame({"Period": future_labels, "Forecast Result": future_forecast})
+                f_df_view = f_df.copy()
+                f_df_view.insert(0, "No", range(1, len(f_df_view) + 1))
+                st.dataframe(f_df_view, use_container_width=True, hide_index=True)
+
+                excel_data = convert_df_to_excel(
+                    f_df,
+                    method_name=selected_method,
+                    metrics=metrics,
+                    used_params=used_params if selected_method in ["Single Exponential Smoothing", "Double Exponential Smoothing", "Triple Exponential Smoothing"] else None,
+                    historical_labels=period_labels,
+                    historical_values=values,
+                    value_col=value_col
+                )
+                st.download_button(
+                    label="📥 Download Hasil Forecast (Excel .xlsx)",
+                    data=excel_data,
+                    file_name=f"Hasil_Forecast_{selected_method}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True,
+                    type="primary"
+                )
 
                 # ─── NEW: Indonesian Recommendation ──────────────────────────────
                 rec_text = get_production_recommendation_id(future_labels, future_forecast, values)
@@ -1739,10 +1737,12 @@ with tab_grafik:
                     value_col=value_col
                 )
                 st.download_button(
-                    label="📥 Download Hasil Proyeksi (.xlsx)",
+                    label="📥 Download Hasil Forecast (Excel .xlsx)",
                     data=excel_best_proj,
-                    file_name=f"Projection_Best_{best_method}.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    file_name=f"Hasil_Forecast_Terbaik_{best_method}.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True,
+                    type="primary"
                 )
 
                 # Indonesian recommendation
